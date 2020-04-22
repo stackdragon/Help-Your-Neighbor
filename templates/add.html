@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block content %}
+  <div class="content-section">
+    <form method="POST" action ="">
+    			{{ form.hidden_tag() }} <!-- this is a CSRF token for security -->
+    	<fieldset class = "form group">
+    		<legend class = "border-bottom mb-4">Make Your Request</legend>
+
+				<!-- display item requested legend -->
+				<div class="form-group">
+					{{ form.item.label(class="form-control-label") }}
+
+					<!-- display error messages if item is entered incorrectly -->
+					{% if form.item.errors %}
+					{{ form.item(class="form-control form-control-lg is-invalid") }}
+					<div class="invalid-feedback">
+						{% for error in form.item.errors %}
+							<span> {{ error }} </span>
+						{% endfor %}
+					</div>
+
+					<!-- otherwise, display item entry input field -->
+					{% else %}
+						{{ form.item(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+
+				<div class="form-group">
+					{{ form.dateNeeded.label(class="form-control-label") }}
+
+					{% if form.dateNeeded.errors %}
+						{{ form.dateNeeded(class="form-control form-control-lg is-invalid") }}
+					<div class="invalid-feedback">
+						{% for error in form.dateNeeded.errors %}
+						<span> {{ error }} </span>
+						{% endfor %}
+					</div>
+
+					{% else %}
+						{{ form.dateNeeded(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+
+    	</fieldset>
+
+    	<div class="form-group">
+				{{ form.submit(class="btn btn-outline-info")}}
+			</div>
+
+    </form>
+  </div>
+
+{% endblock content %}

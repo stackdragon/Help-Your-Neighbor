@@ -1,6 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from datetime import date, datetime
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField
+from wtforms.fields.html5 import DateField, DateTimeField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms_components import DateRange
+
 
 class RegistrationForm(FlaskForm):
 	username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
@@ -15,6 +19,10 @@ class LoginForm(FlaskForm):
 	remember = BooleanField('Remember Me')
 	submit = SubmitField('Login')
 
-class ZipCodeSearchForm(FlaskForm):
-	zip = StringField('Zip', validators=[DataRequired(), Length(min=5, max=5)])
-	submit = SubmitField('Search')
+class AddForm(FlaskForm):
+	item = SelectField('Item Needed', choices = [('tp', 'toilet paper'), ('pt', 'paper towels'), ('aspirin', 'aspirin'), ('milk', 'milk')], validators=[DataRequired()])
+	dateNeeded = DateField('Date Needed', default=date.today, validators=[DataRequired(), DateRange(min=date.today())])
+	submit = SubmitField('Submit')
+
+
+

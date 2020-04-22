@@ -5,7 +5,7 @@ import mysql.connector
 from flask import Flask, render_template, url_for, flash, redirect
 
 #wtForm classes for registration and login forms
-from forms import RegistrationForm, LoginForm
+from forms import RegistrationForm, LoginForm, AddForm
 
 app = Flask(__name__)
 
@@ -33,6 +33,19 @@ def register():
     	flash(f'Account created for {form.username.data}!', 'success')
     	return redirect(url_for('home'))
     return render_template('register.html', title='Register', form = form)
+
+#add page route
+@app.route('/add', methods=['GET', 'POST'])
+def add():
+    form = AddForm()
+    if form.validate_on_submit():
+        #display success message if request successfully added
+
+        # grab the value of the item
+        value = dict(form.item.choices).get(form.item.data)
+        flash(f'You created a request for {value} to be provided by {form.dateNeeded.data}.', 'success')
+        return redirect(url_for('home'))
+    return render_template('add.html', title='Make Your Request', form = form)
 
 # login page route
 @app.route('/login', methods=['GET', 'POST'])
