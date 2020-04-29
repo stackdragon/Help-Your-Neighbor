@@ -65,7 +65,7 @@ def register():
         mycursor = db.cursor()
 
         # run the query to add the user to the database
-        query = f"INSERT INTO Users (userName userEmail, userPW) VALUES ('{form.username.data}', '{form.email.data}', '{hashed_pw}');"
+        query = f"INSERT INTO Users (userName, userEmail, userPW) VALUES ('{form.username.data}', '{form.email.data}', '{hashed_pw}');"
         mycursor.execute(query)
 
         # commit the query
