@@ -1,5 +1,7 @@
 # Neighbors Helping Neighbors App # 
+
 <br>
+
 ## for CS340 at Oregon State University ##
 
 It can often be difficult for those who are elderly, disabled, and otherwise homebound to perform tasks such as grocery shopping or picking up medication. This webapp seeks to help address this problem by providing an interface to facilitate neighborhood acts of kindness by connecting recipients of aid to those who are able to provide it.
