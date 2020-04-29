@@ -48,7 +48,7 @@
   <!-- container below the navbar for displaying db queries --> 
   <main role="main" class="container">
     <div class="row">
-      <div class="col-md-12">
+
        <!-- any status/error messages go here --> 
        {% with messages = get_flashed_messages(with_categories=true) %}
        {% if messages %}
@@ -60,7 +60,7 @@
       {% endif %}
       {% endwith %}
       {% block content %}{% endblock %}
-    </div>
+
 
   </main>
 

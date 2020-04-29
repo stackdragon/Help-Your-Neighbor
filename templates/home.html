@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+<div class="col-md-12">
   <div class="content-section">
   	<h3>Sample Homepage Query</h3>
     <p class='text'>These are the registered users currently stored in the Users table:</p>
@@ -7,5 +8,6 @@
 		<p class='text'>userID: {{ row[0] }}, userName: {{ row[1] }}, userEmail: "{{ row[2] }}""</p>
 	{% endfor %}
   </div>
+ </div>
 
 {% endblock content %}
