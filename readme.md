@@ -1,14 +1,14 @@
-#Neighbors Helping Neighbors App for CS340 at Oregon State University#
+# Neighbors Helping Neighbors App for CS340 at Oregon State University #
 
 It can often be difficult for those who are elderly, disabled, and otherwise homebound to perform tasks such as grocery shopping or picking up medication. This webapp seeks to help address this problem by providing an interface to facilitate neighborhood acts of kindness by connecting recipients of aid to those who are able to provide it.
 
 Recipients can log on to the website to place request posts for needed items and donors can log on and search the requests to assess what they can help with, and then assign themselves to fulfill those requests. This database-driven website records user information, the requests for items that are needed, as well as a record of all matched donor/recipient transactions.
 
-##Usage##
+## Usage ##
 
 Visit [https://thawing-hollows-64523.herokuapp.com/](https://thawing-hollows-64523.herokuapp.com/)
 
-##Built with##
+## Built with ##
 
 -[Flask](https://flask.palletsprojects.com/en/1.1.x/) 
 Backend framework
@@ -28,7 +28,7 @@ Password hashing
 -[Heroku](https://www.heroku.com)
 Hosting
 
-##Setting up a development environment##
+## Setting up a development environment ##
 
 Clone the source locally
 ```
