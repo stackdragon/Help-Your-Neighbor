@@ -1,4 +1,6 @@
 click==7.1.1               
+bcrpyt
+
 Flask==1.1.1               
 Flask-WTF==0.14.2          
 gunicorn==19.10.0          
