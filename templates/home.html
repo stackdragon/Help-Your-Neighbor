@@ -2,6 +2,9 @@
 {% block content %}
   <div class="content-section">
     <p class='text'>Display results of MySQL database queries here.</p>
+    	{% for row in data %}
+		id: {{ row[0]+1 }}, text: "{{ row[1] }}""
+	{% endfor %}
   </div>
 
 {% endblock content %}

@@ -23,13 +23,14 @@
 								<span> {{ error }} </span>
 							{% endfor %}
 						</div>
+
 					<!-- otherwise, display email entry input field -->
 					{% else %}
 						{{ form.email(class="form-control form-control-lg") }}
 					{% endif %}
 				</div>
 
-				<!-- format is the same for other input entry field -->
+				<!-- format is the same for other input entry fields -->
 				<div class="form-group">
 					{{ form.password.label(class="form-control-label") }}
 					{% if form.password.errors %}
@@ -53,6 +54,7 @@
 			<div class="form-group">
 				{{ form.submit(class="btn btn-outline-info")}}
 			</div>
+			
 			<small class="text-muted ml-2">
 				<a href="#">Forgot password?</a>
 			</small>
