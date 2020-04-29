@@ -16,7 +16,7 @@ app = Flask(__name__)
 # create bcrpyt class object for password hashing
 bcrypt = Bcrypt(app)
 
-# this is a CSRF token for security -->
+# this is a CSRF token for security (required for WTForms)
 app.config['SECRET_KEY'] = 'ba8ed3f480b55b599b397e000da63ccf'
 
 #home page route
@@ -30,16 +30,14 @@ def home():
     # set up db cursor
     mycursor = db.cursor()
 
-    mycursor.execute("""DROP TABLE IF EXISTS diagnostic;""")
-    mycursor.execute("""CREATE TABLE diagnostic(id INT PRIMARY KEY, text VARCHAR(255) NOT NULL);""")
-    mycursor.execute("""INSERT INTO diagnostic (text) VALUES ("MySQL is working");""")
-    mycursor.execute("""SELECT * FROM diagnostic;""")
-
+    # run sample query for the homepage
+    mycursor.execute("""SELECT userID FROM Users;""")
     data = mycursor.fetchall()
 
     # close cursor
     db.close()
 	
+    # render the homepage template, passing data to display
     return render_template('home.html', data = data)
 
 #about page route
@@ -50,7 +48,11 @@ def about():
 #registration page route
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+
+    # create registration form object
     form = RegistrationForm()
+
+    # if registration form has been validly submitted
     if form.validate_on_submit():
 
         # hash the password that the user ended
@@ -78,34 +80,53 @@ def register():
         # render homepage
         return redirect(url_for('home'))
 
-    # if no validation, render register page
+    # if no data has been submitted, display the registration page
     return render_template('register.html', title='Register', form = form)
 
 #add page route
 @app.route('/add', methods=['GET', 'POST'])
 def add():
-    form = AddForm()
-    if form.validate_on_submit():
-        #display success message if request successfully added
 
-        # grab the value of the item
+    # create add item form object
+    form = AddForm()
+
+    # if add itme form is validly submitted
+    if form.validate_on_submit():
+
+        # grab the type of item from the form
         value = dict(form.item.choices).get(form.item.data)
+
+        # display success message (this is temporary)
         flash(f'You created a request for {value} to be provided by {form.dateNeeded.data}.', 'success')
+
+        # redirect to the home page
         return redirect(url_for('home'))
+
+    # if no data has been submitted, display the add item page
     return render_template('add.html', title='Make Your Request', form = form)
 
 # login page route
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+
+    # create login form object
     form = LoginForm()
+
+    # if login form has been validly submitted
     if form.validate_on_submit():
 
     	# display success message if user successfully logs in
     	if form.email.data == 'test' and form.password.data == 'password':
     		flash('You are now logged in!', 'success')
+
+            # redirect tome page
     		return redirect(url_for('home'))
+
+         # otherwise, display an error message   
     	else:
     		flash('Username and password combination not found. Please try again.', 'danger')
+
+    # re-display the login page
     return render_template('login.html', title='Login', form = form)
 
 # app will run in debug mode if run from terminal
