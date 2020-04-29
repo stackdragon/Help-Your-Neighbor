@@ -10,4 +10,4 @@ mysql-connector==2.2.9
 
 Werkzeug==0.16.1           
 WTForms==2.1      
-WTForms-Components==0.97         
+WTForms-Components         
