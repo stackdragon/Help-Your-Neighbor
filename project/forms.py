@@ -6,6 +6,8 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, Selec
 from wtforms.fields.html5 import DateField, DateTimeField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from wtforms_components import DateRange
+from project import db
+
 import mysql.connector
 
 class RegistrationForm(FlaskForm):
@@ -18,8 +20,6 @@ class RegistrationForm(FlaskForm):
 	# custom validation to make sure that the username does already exit in the Users table
 	def validate_username(self, username):
 
-		# connect to the database
-		db = mysql.connector.connect(host='us-cdbr-iron-east-01.cleardb.net', user='b94531a8a9be0d', password='440412d5', db='heroku_c22f6c727a9c888')
 		mycursor = db.cursor()
 
 		# run query to see if the username is already in the table
@@ -30,11 +30,9 @@ class RegistrationForm(FlaskForm):
 		# display the validation error
 		if user:
 			raise ValidationError('Username already exists. Please choose a unique username.')
-			db.close()
 
 	# custom validation to make sure that the email address does already exit in the Users table
 	def validate_email(self, email):
-		db = mysql.connector.connect(host='us-cdbr-iron-east-01.cleardb.net', user='b94531a8a9be0d', password='440412d5', db='heroku_c22f6c727a9c888')
 		mycursor = db.cursor()
 		
 		query = f"SELECT userEmail from Users WHERE userEmail='{email.data}';"
@@ -43,8 +41,6 @@ class RegistrationForm(FlaskForm):
 
 		if user:
 			raise ValidationError('Email address already exists in our system. Please enter a unique email address.')
-
-		db.close()
 
 class LoginForm(FlaskForm):
 	email = StringField('Email', validators=[DataRequired(), Email()])
@@ -57,5 +53,11 @@ class AddForm(FlaskForm):
 	dateNeeded = DateField('Date Needed', default=date.today, validators=[DataRequired(), DateRange(min=date.today())])
 	submit = SubmitField('Submit')
 
+#@login_manager.user_loader
+#def load_user(user_id):
+#	db = mysql.connector.connect(host='us-cdbr-iron-east-01.cleardb.net', user='b94531a8a9be0d', password='440412d5', db='heroku_c22f6c727a9c888')
+#	mycursor = db.cursor()
+#	query = f"SELECT * from Users WHERE userID='{user_id}';"
+#	return userID
 
 

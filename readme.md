@@ -17,17 +17,20 @@ Backend framework
 -[Bootstrap](https://getbootstrap.com/docs/4.1/getting-started/introduction/)
 Front-end CSS framework
 
--[MySQL Connector](https://dev.mysql.com/doc/connector-python/en/)
-For communication with the MySQL server
+-[Flask-Bcrypt](https://flask-bcrypt.readthedocs.io/en/latest/)
+Password hashing
+
+-[Flask-Login](https://flask-login.readthedocs.io/en/latest/)
+User login / session management
 
 -[Flask-WTF](https://flask-wtf.readthedocs.io/en/stable/)
 Form validation and rendering 
 
--[Flask-Bcrypt](https://flask-bcrypt.readthedocs.io/en/latest/)
-Password hashing
-
 -[Heroku](https://www.heroku.com)
 Hosting
+
+-[MySQL Connector](https://dev.mysql.com/doc/connector-python/en/)
+MySQL server communication
 
 ## Setting up a development environment ##
 

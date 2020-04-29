@@ -1,31 +1,22 @@
-# import mysql connector module
-import mysql.connector
-
-# import bcrypt for password hashing
-from flask_bcrypt import Bcrypt
-
-# import modules for Flask, rendering templates, message display, and url generation
-from flask import Flask, render_template, url_for, flash, redirect
+# import modules for rendering templates, message display, and url generation
+from flask import render_template, url_for, flash, redirect
 
 # import wtForm classes for registration and login forms
-from forms import RegistrationForm, LoginForm, AddForm
+from project.forms import RegistrationForm, LoginForm, AddForm
 
-# name of webapp
-app = Flask(__name__)
+# import app
+from project import app
 
-# create bcrpyt class object for password hashing
-bcrypt = Bcrypt(app)
+# import mysql db
+from project import db
 
-# this is a CSRF token for security (required for WTForms)
-app.config['SECRET_KEY'] = 'ba8ed3f480b55b599b397e000da63ccf'
+#import bcrypt
+from project import bcrypt
 
 #home page route
 @app.route('/')
 @app.route('/home')
 def home():
-
-    # connect to the database
-    db = mysql.connector.connect(host='us-cdbr-iron-east-01.cleardb.net', user='b94531a8a9be0d', password='440412d5', db='heroku_c22f6c727a9c888')
     
     # set up db cursor
     mycursor = db.cursor()
@@ -33,9 +24,6 @@ def home():
     # run sample query for the homepage
     mycursor.execute("""SELECT userID, userName, userEmail FROM Users;""")
     data = mycursor.fetchall()
-
-    # close cursor
-    db.close()
 	
     # render the homepage template, passing data to display
     return render_template('home.html', data = data)
@@ -58,9 +46,6 @@ def register():
         # hash the password that the user ended
         hashed_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
 
-        # connect to the database
-        db = mysql.connector.connect(host='us-cdbr-iron-east-01.cleardb.net', user='b94531a8a9be0d', password='440412d5', db='heroku_c22f6c727a9c888')
-
         # set up db cursor
         mycursor = db.cursor()
 
@@ -70,9 +55,6 @@ def register():
 
         # commit the query
         db.commit()
-
-        #close the database
-        db.close()
 
     	# display success message if user successfully registered
         flash(f'Your account has been created. Please login.', 'success')
@@ -128,7 +110,3 @@ def login():
 
     # re-display the login page
     return render_template('login.html', title='Login', form = form)
-
-# app will run in debug mode if run from terminal
-if __name__ == '__main__':
-    app.run(debug=True)
