@@ -1,7 +1,7 @@
 click==7.1.1               
-bcrpyt
-
+bcrypt
 Flask==1.1.1               
+Flask-Bcrypt==0.7.1
 Flask-WTF==0.14.2          
 gunicorn==19.10.0          
 itsdangerous==1.1.0        
@@ -9,7 +9,6 @@ Jinja2==2.11.1
 MarkupSafe==1.1.1      
 mysqlclient==1.3.13    
 mysql-connector==2.2.9
-
 Werkzeug==0.16.1           
 WTForms==2.1      
 WTForms-Components         
