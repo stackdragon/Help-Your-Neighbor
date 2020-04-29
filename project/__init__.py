@@ -5,7 +5,7 @@ import mysql.connector
 from flask_bcrypt import Bcrypt
 
 # import flask-login for session management
-from flask_login import LoginManager
+#from flask_login import LoginManager
 
 # import Flask
 from flask import Flask
