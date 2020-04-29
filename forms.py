@@ -15,7 +15,7 @@ class RegistrationForm(FlaskForm):
 	confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
 	submit = SubmitField('Sign Up')
 
-	# custom validation to make sure that the username and password do not already exit in the Users table
+	# custom validation to make sure that the username does already exit in the Users table
 	def validate_username(self, username):
 
 		# connect to the database
@@ -32,6 +32,7 @@ class RegistrationForm(FlaskForm):
 			raise ValidationError('Username already exists. Please choose a unique username.')
 			db.close()
 
+	# custom validation to make sure that the email address does already exit in the Users table
 	def validate_email(self, email):
 		db = mysql.connector.connect(host='us-cdbr-iron-east-01.cleardb.net', user='b94531a8a9be0d', password='440412d5', db='heroku_c22f6c727a9c888')
 		mycursor = db.cursor()
