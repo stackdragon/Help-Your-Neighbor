@@ -31,7 +31,7 @@ def home():
     mycursor = db.cursor()
 
     # run sample query for the homepage
-    mycursor.execute("""SELECT userID FROM Users;""")
+    mycursor.execute("""SELECT userID, userName, userEmail FROM Users;""")
     data = mycursor.fetchall()
 
     # close cursor

@@ -1,9 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
   <div class="content-section">
-    <p class='text'>Display results of MySQL database queries here.</p>
+  	<h3>Sample Homepage Query</h3>
+    <p class='text'>These are the registered users currently stored in the Users table:</p>
     	{% for row in data %}
-		id: {{ row[0]+1 }}, text: "{{ row[1] }}""
+		<p class='text'>userID: {{ row[0] }}, userName: {{ row[1] }}, userEmail: "{{ row[2] }}""</p>
 	{% endfor %}
   </div>
 
