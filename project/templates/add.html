@@ -3,7 +3,7 @@
 <div class="col-md-6">
   <div class="content-section">
     <form method="POST" action ="">
-    			{{ form.hidden_tag() }} <!-- this is a CSRF token for security -->
+    			{{ form.hidden_tag() }} <!-- This function inserts the CSRF security token. Required by WTForms -->
     	<fieldset class = "form group">
     		<legend class = "border-bottom mb-4">Make Your Request</legend>
 

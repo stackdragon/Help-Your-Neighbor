@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="col-md-8">
+	  <div class="content-section">
+	 	<h3>Account page for user: {{ current_user.email }}</h3> <!-- Display the user's email address -->
+	 	<p>A list of this user's requests and fulfillments could go here</p>
+  </div>
+</div>
+{% endblock content %}

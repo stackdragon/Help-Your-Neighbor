@@ -63,4 +63,4 @@ Launch the app locally
 Once the webserver has been activated, the app can be viewed by visiting `http://localhost:5000`.
 
 Note this app requires Python version 3.6 or later. You can check your version with the command `python3 -v`. 
-<br>Update to the latest verison using `sudo apt-get install python3.7`.
+<br>Update to the latest version using `sudo apt-get install python3.7`.

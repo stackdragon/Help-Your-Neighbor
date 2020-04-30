@@ -1,29 +1,39 @@
 # import modules for rendering templates, message display, and url generation
-from flask import render_template, url_for, flash, redirect
+from flask import render_template, url_for, flash, redirect, request
 
 # import wtForm classes for registration and login forms
 from project.forms import RegistrationForm, LoginForm, AddForm
+
+# import User model needed for session validation
+from project.models import User
 
 # import app
 from project import app
 
 # import mysql db
-from project import db
+from project import get_db
 
-#import bcrypt
+# import bcrypt
 from project import bcrypt
+
+# import flask-login
+from flask_login import login_user, logout_user, current_user, login_required
 
 #home page route
 @app.route('/')
 @app.route('/home')
 def home():
     
+    db = get_db()
+
     # set up db cursor
     mycursor = db.cursor()
 
     # run sample query for the homepage
     mycursor.execute("""SELECT userID, userName, userEmail FROM Users;""")
     data = mycursor.fetchall()
+
+    mycursor.close()
 	
     # render the homepage template, passing data to display
     return render_template('home.html', data = data)
@@ -37,6 +47,10 @@ def about():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
 
+    # if user is already logged in, send them to the homepage
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+
     # create registration form object
     form = RegistrationForm()
 
@@ -45,6 +59,8 @@ def register():
 
         # hash the password that the user ended
         hashed_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+
+        db = get_db()
 
         # set up db cursor
         mycursor = db.cursor()
@@ -55,6 +71,8 @@ def register():
 
         # commit the query
         db.commit()
+
+        mycursor.close()
 
     	# display success message if user successfully registered
         flash(f'Your account has been created. Please login.', 'success')
@@ -78,7 +96,7 @@ def add():
         # grab the type of item from the form
         value = dict(form.item.choices).get(form.item.data)
 
-        # display success message (this is temporary)
+        # display success message (this is temporary just to show the form works)
         flash(f'You created a request for {value} to be provided by {form.dateNeeded.data}.', 'success')
 
         # redirect to the home page
@@ -91,22 +109,72 @@ def add():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 
+    # if user is already logged in, send them to the homepage
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+
     # create login form object
     form = LoginForm()
 
     # if login form has been validly submitted
     if form.validate_on_submit():
 
-    	# display success message if user successfully logs in
-    	if form.email.data == 'test' and form.password.data == 'password':
-    		flash('You are now logged in!', 'success')
+        db = get_db()
+        # set up db cursor
+        mycursor = db.cursor()
 
-            # redirect tome page
-    		return redirect(url_for('home'))
+        # query the Users mySQL table for the userID, email address and password
+        query = f"SELECT userID, userEmail, userPW from Users WHERE userEmail='{form.email.data}';"
+        mycursor.execute(query)
+        user = mycursor.fetchone()
+        mycursor.close()
 
-         # otherwise, display an error message   
-    	else:
-    		flash('Username and password combination not found. Please try again.', 'danger')
+        # if the user exists, store the info provided by the query in separate variables
+        if user:
+            userID= user[0]
+            email = user[1]
+            password = user[2]
 
-    # re-display the login page
+            # then verify that the entered password matches the password stored in the db
+            if user and bcrypt.check_password_hash(password, form.password.data):
+
+                # if so, create the a user object (this is necessary for Flask-Login)
+                user = User(userID, email, password)
+
+                # call Flask-Login login_user function to create the session for the user
+                login_user(user, remember=form.remember.data)
+
+                # if there is a next parameter in the url, grab it to forward the user to the appropriate name.
+                next_page = request.args.get('next')
+
+                # now that the user has logged in, send her to either the next page or the home page
+                return redirect(next_page) if next_page else redirect(url_for('home'))
+
+            # if email address is found but password doesn't match, display error message
+            else:
+                flash('Incorrect password.', 'danger')
+        
+        # if email address is not found, display error message
+        else:
+            flash('Email address not found. Have you registered?', 'danger')
+
     return render_template('login.html', title='Login', form = form)
+
+# logout page route
+@app.route('/logout')
+def logout():
+
+    # end the session for the user
+    logout_user()
+
+    # display message to user
+    flash(f'You have been logged out.', 'success')
+
+    # send the user back to the homepage
+    return redirect(url_for('home'))
+
+# user account info
+@app.route('/account')
+@login_required
+def account():
+    return render_template('account.html', title='Account')

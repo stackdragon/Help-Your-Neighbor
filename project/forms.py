@@ -6,8 +6,7 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, Selec
 from wtforms.fields.html5 import DateField, DateTimeField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from wtforms_components import DateRange
-from project import db
-
+from project import get_db
 import mysql.connector
 
 class RegistrationForm(FlaskForm):
@@ -20,12 +19,15 @@ class RegistrationForm(FlaskForm):
 	# custom validation to make sure that the username does already exit in the Users table
 	def validate_username(self, username):
 
+		db = get_db()
+
 		mycursor = db.cursor()
 
 		# run query to see if the username is already in the table
 		query = f"SELECT userName from Users WHERE userName='{username.data}';"
 		mycursor.execute(query)
 		user = mycursor.fetchall()
+		mycursor.close()
 
 		# display the validation error
 		if user:
@@ -38,6 +40,7 @@ class RegistrationForm(FlaskForm):
 		query = f"SELECT userEmail from Users WHERE userEmail='{email.data}';"
 		mycursor.execute(query)
 		user = mycursor.fetchall()
+		mycursor.close()
 
 		if user:
 			raise ValidationError('Email address already exists in our system. Please enter a unique email address.')
@@ -52,12 +55,3 @@ class AddForm(FlaskForm):
 	item = SelectField('Item Needed', choices = [('tp', 'toilet paper'), ('pt', 'paper towels'), ('aspirin', 'aspirin'), ('milk', 'milk')], validators=[DataRequired()])
 	dateNeeded = DateField('Date Needed', default=date.today, validators=[DataRequired(), DateRange(min=date.today())])
 	submit = SubmitField('Submit')
-
-#@login_manager.user_loader
-#def load_user(user_id):
-#	db = mysql.connector.connect(host='us-cdbr-iron-east-01.cleardb.net', user='b94531a8a9be0d', password='440412d5', db='heroku_c22f6c727a9c888')
-#	mycursor = db.cursor()
-#	query = f"SELECT * from Users WHERE userID='{user_id}';"
-#	return userID
-
-
