@@ -209,8 +209,9 @@ def logout():
 def account():
 
     # if user is not already logged in, send them to the registration page
-    #if not current_user.is_authenticated:
-    #    return redirect(url_for('register'))
+    if not current_user.is_authenticated:
+        flash(f'You are not yet logged in: Please log in to access the Account page', 'danger')
+        return redirect(url_for('login'))
 
     # create registration form object
     form = UpdateForm()
@@ -269,3 +270,39 @@ def account():
 
     return render_template('account.html', form=form, title='Account', userInfo=userInfo, requests=requests, fulfillments=fulfillments)
 
+#registration page route
+@app.route('/updateUser', methods=['GET', 'POST'])
+def updateUser():
+
+    # create registration form object
+    form = UpdateForm()
+
+    # if registration form has been validly submitted
+    if form.validate_on_submit():
+
+
+        # hash the password that the user ended
+        #hashed_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+
+        #db = get_db()
+
+        # set up db cursor
+        #mycursor = db.cursor()
+
+        # run the query to update the info in the database
+        #place an update query here
+        #mycursor.execute(query)
+
+        # commit the query
+        #db.commit()
+
+        #mycursor.close()
+
+        # display success message if user successfully registered
+        flash(f'Thank you for updating your information!', 'success')
+
+        # render account page
+        return redirect(url_for('account'))
+
+    # if no data has been submitted, display the registration page
+    return render_template('updateUser.html', title='Update User Information', form = form)

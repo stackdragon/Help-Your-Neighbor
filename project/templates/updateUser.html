@@ -1,0 +1,190 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="col-md-6">
+	<div class="content-section">
+
+		<form method="POST" action ="">
+			{{ form.hidden_tag() }} <!-- This function inserts the CSRF security token. Required by WTForms -->
+
+			<fieldset class ="form-group">
+				<legend class = "border-bottom mb-4">Update Account Information for {{user}}</legend>
+
+				<div class="form-group">
+					{{ form.firstName.label(class="form-control-label") }}
+
+					<!-- display error messages if first name is entered incorrectly -->
+					{% if form.firstName.errors %}
+						{{ form.firstName(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.firstName.errors %}
+								<span> {{ error }} </span>
+							{% endfor %}
+						</div>
+
+					<!-- otherwise, display first name entry input field -->
+					{% else %}
+						{{ form.firstName(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+
+				<div class="form-group">
+					{{ form.lastName.label(class="form-control-label") }}
+
+					<!-- display error messages if last name is entered incorrectly -->
+					{% if form.lastName.errors %}
+						{{ form.lastName(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.lastName.errors %}
+								<span> {{ error }} </span>
+							{% endfor %}
+						</div>
+
+					<!-- otherwise, display last name entry input field -->
+					{% else %}
+						{{ form.lastName(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+
+				<div class="form-group">
+					{{ form.userStreet.label(class="form-control-label") }}
+
+					<!-- display error messages if street address is entered incorrectly -->
+					{% if form.userStreet.errors %}
+						{{ form.userStreet(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.userStreet.errors %}
+								<span> {{ error }} </span>
+							{% endfor %}
+						</div>
+
+					<!-- otherwise, display street address entry input field -->
+					{% else %}
+						{{ form.userStreet(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+
+				<div class="form-group">
+					{{ form.userCity.label(class="form-control-label") }}
+
+					<!-- display error messages if city is entered incorrectly -->
+					{% if form.userCity.errors %}
+						{{ form.userCity(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.userCity.errors %}
+								<span> {{ error }} </span>
+							{% endfor %}
+						</div>
+
+					<!-- otherwise, display city entry input field -->
+					{% else %}
+						{{ form.userCity(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+
+				<div class="form-group">
+					{{ form.userState.label(class="form-control-label") }}
+
+					<!-- display error messages if state is entered incorrectly -->
+					{% if form.userState.errors %}
+						{{ form.userState(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.userState.errors %}
+								<span> {{ error }} </span>
+							{% endfor %}
+						</div>
+
+					<!-- otherwise, display state entry input field -->
+					{% else %}
+						{{ form.userState(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+
+				<div class="form-group">
+					{{ form.userZip.label(class="form-control-label") }}
+
+					<!-- display error messages if zip is entered incorrectly -->
+					{% if form.userZip.errors %}
+						{{ form.userZip(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.userZip.errors %}
+								<span> {{ error }} </span>
+							{% endfor %}
+						</div>
+
+					<!-- otherwise, display zip entry input field -->
+					{% else %}
+						{{ form.userZip(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+
+				<div class="form-group">
+					{{ form.userPhone.label(class="form-control-label") }}
+
+					<!-- display error messages if phone is entered incorrectly -->
+					{% if form.userPhone.errors %}
+						{{ form.userPhone(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.userPhone.errors %}
+								<span> {{ error }} </span>
+							{% endfor %}
+						</div>
+
+					<!-- otherwise, display phone entry input field -->
+					{% else %}
+						{{ form.userPhone(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+
+				<!-- format is the same for other input entry fields -->
+				<div class="form-group">
+					{{ form.email.label(class="form-control-label") }}
+					{% if form.email.errors %}
+						{{ form.email(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.email.errors %}
+								<span> {{ error }} </span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{ form.email(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+
+				<!-- format is the same for other input entry fields -->
+				<div class="form-group">
+					{{ form.password.label(class="form-control-label") }}
+					{% if form.password.errors %}
+						{{ form.password(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.password.errors %}
+								<span> {{ error }} </span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{ form.password(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+
+				<!-- format is the same for other input entry fields -->
+				<div class ="form-group">
+					{{ form.confirm_password.label(class="form-control-label") }}
+					{% if form.confirm_password.errors %}
+						{{ form.confirm_password(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.confirm_password.errors %}
+								<span> {{ error }} </span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{ form.confirm_password(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+			</fieldset>
+			<div class="form-group">
+				{{ form.submit(class="btn btn-outline-info")}}
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock content %}

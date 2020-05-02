@@ -80,7 +80,7 @@ class UpdateForm(FlaskForm):
 	userZip = StringField('Zip Code', validators=[DataRequired(), Length(min=5, max=5)])
 	#is there a way to validate specific chars?
 	userPhone = StringField('Phone Number', validators=[DataRequired(), Length(min=12, max=12)])
-	userEmail = StringField('Email', validators=[DataRequired(), Email()])
+	email = StringField('Email', validators=[DataRequired(), Email()])
 	password = PasswordField('Password', validators=[DataRequired()])
 	confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
 	submit = SubmitField('Update')

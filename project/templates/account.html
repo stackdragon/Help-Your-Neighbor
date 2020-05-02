@@ -5,235 +5,43 @@
     <div class="col-md-4">
     	.<div class="content-section">
     		<h3>Account Info</h3>
-    			<table class="table table-striped table-sm table-responsive-sm">
-				  <tbody>
-					  	<tr>
-					      <th scope="row">First Name:</th>
-					      <td>{{userInfo.firstName}}</td>
-					    </tr>
-					    <tr>
-					      <th scope="row">Last Name:</th>
-					      <td>{{userInfo.lastName}}</td>
-					    </tr>
-					    <tr>
-					      <th scope="row">Street Address:</th>
-					      <td>{{userInfo.userStreet}}</td>
-					    </tr>
-					    <tr>
-					      <th scope="row">City:</th>
-					      <td>{{userInfo.userCity}}</td>
-					    </tr>
-					    <tr>
-					      <th scope="row">State:</th>
-					      <td>{{userInfo.userState}}</td>
-					    </tr>
-					    <tr>
-					      <th scope="row">Zip Code:</th>
-					      <td>{{userInfo.userZip}}</td>
-					    </tr>
-					    <tr>
-					      <th scope="row">Phone Number:</th>
-					      <td>{{userInfo.userPhone}}</td>
-					    </tr>	
-					    <tr>
-					      <th scope="row">Email Address:</th>
-					      <td>{{userInfo.userEmail}}</td>
-					    </tr>
-					    <tr data-toggle="collapse" data-target="#updateDropdown" class="clickable">
-				            <td colspan="2"><button type="button" class="btn btn-sm btn-primary">Update User Info</button></td>
-				        </tr>
-				        <tr>
-				            <td colspan="2">
-				                <div id="updateDropdown" class="collapse">
-				                	<form method="POST" action ="">
-										{{ form.hidden_tag() }} <!-- This function inserts the CSRF security token. Required by WTForms -->
-
-										<fieldset class ="form-group">
-											<!-- captures username -->
-											<!-- display username entry legend -->
-											<div class="form-group">
-												{{ form.firstName.label(class="form-control-label") }}
-
-												<!-- display error messages if username is entered incorrectly -->
-												{% if form.firstName.errors %}
-													{{ form.firstName(class="form-control form-control-lg is-invalid") }}
-													<div class="invalid-feedback">
-														{% for error in form.firstName.errors %}
-															<span> {{ error }} </span>
-														{% endfor %}
-													</div>
-
-												<!-- otherwise, display username entry input field -->
-												{% else %}
-													{{ form.firstName(class="form-control form-control-lg") }}
-												{% endif %}
-											</div>
-
-											<div class="form-group">
-												{{ form.lastName.label(class="form-control-label") }}
-
-												<!-- display error messages if username is entered incorrectly -->
-												{% if form.lastName.errors %}
-													{{ form.lastName(class="form-control form-control-lg is-invalid") }}
-													<div class="invalid-feedback">
-														{% for error in form.lastName.errors %}
-															<span> {{ error }} </span>
-														{% endfor %}
-													</div>
-
-												<!-- otherwise, display username entry input field -->
-												{% else %}
-													{{ form.lastName(class="form-control form-control-lg") }}
-												{% endif %}
-											</div>
-
-											<div class="form-group">
-												{{ form.userStreet.label(class="form-control-label") }}
-
-												<!-- display error messages if username is entered incorrectly -->
-												{% if form.userStreet.errors %}
-													{{ form.userStreet(class="form-control form-control-lg is-invalid") }}
-													<div class="invalid-feedback">
-														{% for error in form.userStreet.errors %}
-															<span> {{ error }} </span>
-														{% endfor %}
-													</div>
-
-												<!-- otherwise, display username entry input field -->
-												{% else %}
-													{{ form.userStreet(class="form-control form-control-lg") }}
-												{% endif %}
-											</div>
-
-											<div class="form-group">
-												{{ form.userCity.label(class="form-control-label") }}
-
-												<!-- display error messages if username is entered incorrectly -->
-												{% if form.userCity.errors %}
-													{{ form.userCity(class="form-control form-control-lg is-invalid") }}
-													<div class="invalid-feedback">
-														{% for error in form.userCity.errors %}
-															<span> {{ error }} </span>
-														{% endfor %}
-													</div>
-
-												<!-- otherwise, display username entry input field -->
-												{% else %}
-													{{ form.userCity(class="form-control form-control-lg") }}
-												{% endif %}
-											</div>
-
-											<div class="form-group">
-												{{ form.userState.label(class="form-control-label") }}
-
-												<!-- display error messages if username is entered incorrectly -->
-												{% if form.userState.errors %}
-													{{ form.userState(class="form-control form-control-lg is-invalid") }}
-													<div class="invalid-feedback">
-														{% for error in form.userState.errors %}
-															<span> {{ error }} </span>
-														{% endfor %}
-													</div>
-
-												<!-- otherwise, display username entry input field -->
-												{% else %}
-													{{ form.userState(class="form-control form-control-lg") }}
-												{% endif %}
-											</div>
-
-											<div class="form-group">
-												{{ form.userZip.label(class="form-control-label") }}
-
-												<!-- display error messages if username is entered incorrectly -->
-												{% if form.userZip.errors %}
-													{{ form.userZip(class="form-control form-control-lg is-invalid") }}
-													<div class="invalid-feedback">
-														{% for error in form.userZip.errors %}
-															<span> {{ error }} </span>
-														{% endfor %}
-													</div>
-
-												<!-- otherwise, display username entry input field -->
-												{% else %}
-													{{ form.userZip(class="form-control form-control-lg") }}
-												{% endif %}
-											</div>
-
-											<div class="form-group">
-												{{ form.userPhone.label(class="form-control-label") }}
-
-												<!-- display error messages if username is entered incorrectly -->
-												{% if form.userPhone.errors %}
-													{{ form.userPhone(class="form-control form-control-lg is-invalid") }}
-													<div class="invalid-feedback">
-														{% for error in form.userPhone.errors %}
-															<span> {{ error }} </span>
-														{% endfor %}
-													</div>
-
-												<!-- otherwise, display username entry input field -->
-												{% else %}
-													{{ form.userPhone(class="form-control form-control-lg") }}
-												{% endif %}
-											</div>
-
-											<div class="form-group">
-												{{ form.userEmail.label(class="form-control-label") }}
-
-												<!-- display error messages if username is entered incorrectly -->
-												{% if form.userEmail.errors %}
-													{{ form.userEmail(class="form-control form-control-lg is-invalid") }}
-													<div class="invalid-feedback">
-														{% for error in form.userEmail.errors %}
-															<span> {{ error }} </span>
-														{% endfor %}
-													</div>
-
-												<!-- otherwise, display username entry input field -->
-												{% else %}
-													{{ form.userEmail(class="form-control form-control-lg") }}
-												{% endif %}
-											</div>
-
-											<!-- format is the same for other input entry fields -->
-											<div class="form-group">
-												{{ form.password.label(class="form-control-label") }}
-												{% if form.password.errors %}
-													{{ form.password(class="form-control form-control-lg is-invalid") }}
-													<div class="invalid-feedback">
-														{% for error in form.password.errors %}
-															<span> {{ error }} </span>
-														{% endfor %}
-													</div>
-												{% else %}
-													{{ form.password(class="form-control form-control-lg") }}
-												{% endif %}
-											</div>
-
-											<!-- format is the same for other input entry fields -->
-											<div class ="form-group">
-												{{ form.confirm_password.label(class="form-control-label") }}
-												{% if form.confirm_password.errors %}
-													{{ form.confirm_password(class="form-control form-control-lg is-invalid") }}
-													<div class="invalid-feedback">
-														{% for error in form.confirm_password.errors %}
-															<span> {{ error }} </span>
-														{% endfor %}
-													</div>
-												{% else %}
-													{{ form.confirm_password(class="form-control form-control-lg") }}
-												{% endif %}
-											</div>
-										</fieldset>
-										<div class="form-group">
-											{{ form.submit(class="btn btn-outline-info")}}
-										</div>
-									</form>
-				     			</div>
-				            </td>
-				        </tr>				    
-				  </tbody>
-				</table>
+			<table class="table table-striped table-sm table-responsive-sm">
+			  <tbody>
+				  	<tr>
+				      <th scope="row">First Name:</th>
+				      <td>{{userInfo.firstName}}</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">Last Name:</th>
+				      <td>{{userInfo.lastName}}</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">Street Address:</th>
+				      <td>{{userInfo.userStreet}}</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">City:</th>
+				      <td>{{userInfo.userCity}}</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">State:</th>
+				      <td>{{userInfo.userState}}</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">Zip Code:</th>
+				      <td>{{userInfo.userZip}}</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">Phone Number:</th>
+				      <td>{{userInfo.userPhone}}</td>
+				    </tr>	
+				    <tr>
+				      <th scope="row">Email Address:</th>
+				      <td>{{userInfo.userEmail}}</td>
+				    </tr>				    
+			  </tbody>
+			</table>
+			<a href="{{url_for('updateUser')}}" class="btn btn-info" role="button">Update Account Info</a>
     	</div>
     </div>
     <div class="col-md-8">
