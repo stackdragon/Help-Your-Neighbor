@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="col-md-10">
+<div class="col-md-8">
 	<h3>Make a request</h3>
 	<p class="text-justify">On this page you can request help from your neighbors. Just enter the items needed, the quantities you need, and the date your request is needed by. Your request will then be posted for fulfillment by other Help Your Neighbor users.</p>
 	<br>
@@ -12,7 +12,7 @@
 			<fieldset class = "form group">
 				<div class="form-group">
 					<div class ="form-row">
-						<div class="col-md-8">
+						<div class="col-md-10">
 							<!-- display item entry label -->	
 							{{ form.item1.label(class="form-control-label") }}
 
@@ -30,7 +30,7 @@
 							{{ form.item1(class="form-control form-control-lg") }}
 							{% endif %}
 						</div>
-						<div class="col-md-4">	
+						<div class="col-md-2">	
 							<!-- display quantity entry label -->	
 							{{ form.qty1.label(class="form-control-label") }}
 
@@ -53,7 +53,7 @@
 
 				<div class="form-group">
 					<div class ="form-row">
-						<div class="col-md-8">
+						<div class="col-md-10">
 							<!-- display item entry label -->	
 							{{ form.item2.label(class="form-control-label") }}
 
@@ -71,7 +71,7 @@
 							{{ form.item2(class="form-control form-control-lg") }}
 							{% endif %}
 						</div>
-						<div class="col-md-4">	
+						<div class="col-md-2">	
 							<!-- display quantity entry label -->	
 							{{ form.qty2.label(class="form-control-label") }}
 
@@ -93,7 +93,7 @@
 				</div>
 				<div class="form-group">
 					<div class ="form-row">
-						<div class="col-md-8">
+						<div class="col-md-10">
 							<!-- display item entry label -->	
 							{{ form.item2.label(class="form-control-label") }}
 
@@ -111,7 +111,7 @@
 							{{ form.item2(class="form-control form-control-lg") }}
 							{% endif %}
 						</div>
-						<div class="col-md-4">	
+						<div class="col-md-2">	
 							<!-- display quantity entry label -->	
 							{{ form.qty2.label(class="form-control-label") }}
 
@@ -131,9 +131,10 @@
 						</div>
 					</div>
 				</div>
+
 				<div class="form-group">
 					<div class ="form-row">
-						<div class="col-md-8">
+						<div class="col-10">
 
 							{{ form.dateNeeded.label(class="form-control-label") }}
 
@@ -151,6 +152,33 @@
 						</div>
 					</div>
 				</div>
+
+				<div class="form-group">
+					<div class ="form-row">
+
+						<div class="col-md-12">
+							<!-- display item entry label -->	
+							{{ form.specialInstructions.label(class="form-control-label") }}
+
+							<!-- display error message if item is entered incorrectly -->
+							{% if form.specialInstructions.errors %}
+							{{ form.specialInstructions(class="form-control form-control-lg is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.specialInstructions.errors %}
+								<span> {{ error }} </span>
+								{% endfor %}
+							</div>
+
+							<!-- otherwise, display item entry input field -->
+							{% else %}
+							{{ form.specialInstructions(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+
+
+					</div>
+				</div>
+
 			</fieldset>
 			<div class="form-group">
 				{{ form.submit(class="btn btn-outline-info")}}

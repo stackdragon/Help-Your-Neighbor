@@ -59,4 +59,5 @@ class AddForm(FlaskForm):
 	item3 = StringField('Additional Item Needed (if any)', validators=[Optional(), Length(min=2, max=30)])
 	qty3 = IntegerField('Quantity', validators=[Optional(), NumberRange(min=1, max=5)])
 	dateNeeded = DateField('Request Needed By', default=date.today, validators=[DateRange(min=date.today())])
+	specialInstructions = StringField('Special Instructions (if any)', validators=[Optional(), Length(min=2, max=200)])
 	submit = SubmitField('Submit')

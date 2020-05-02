@@ -125,6 +125,8 @@ def add():
     # if add itme form is validly submitted
     if form.validate_on_submit():
 
+        # query db and add request here
+
         # display success message (this is temporary just to show the form works)
         flash(f'You created a new request!', 'success')
 
