@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-<h3 class="h3">Account Page for user: {{ acctInfo.username }}</h3>
+<h3 class="h3">Account Page for user: {{ userInfo.username }}</h3>
   <div class="row">
     <div class="col-md-4">
     	.<div class="content-section">
@@ -9,35 +9,35 @@
 				  <tbody>
 					  	<tr>
 					      <th scope="row">First Name:</th>
-					      <td>{{acctInfo.firstName}}</td>
+					      <td>{{userInfo.firstName}}</td>
 					    </tr>
 					    <tr>
 					      <th scope="row">Last Name:</th>
-					      <td>{{acctInfo.lastName}}</td>
+					      <td>{{userInfo.lastName}}</td>
 					    </tr>
 					    <tr>
 					      <th scope="row">Street Address:</th>
-					      <td>{{acctInfo.userStreet}}</td>
+					      <td>{{userInfo.userStreet}}</td>
 					    </tr>
 					    <tr>
 					      <th scope="row">City:</th>
-					      <td>{{acctInfo.userCity}}</td>
+					      <td>{{userInfo.userCity}}</td>
 					    </tr>
 					    <tr>
 					      <th scope="row">State:</th>
-					      <td>{{acctInfo.userState}}</td>
+					      <td>{{userInfo.userState}}</td>
 					    </tr>
 					    <tr>
 					      <th scope="row">Zip Code:</th>
-					      <td>{{acctInfo.userZip}}</td>
+					      <td>{{userInfo.userZip}}</td>
 					    </tr>
 					    <tr>
 					      <th scope="row">Phone Number:</th>
-					      <td>{{acctInfo.userPhone}}</td>
+					      <td>{{userInfo.userPhone}}</td>
 					    </tr>	
 					    <tr>
 					      <th scope="row">Email Address:</th>
-					      <td>{{acctInfo.userEmail}}</td>
+					      <td>{{userInfo.userEmail}}</td>
 					    </tr>
 					    <tr data-toggle="collapse" data-target="#updateDropdown" class="clickable">
 				            <td colspan="2"><button type="button" class="btn btn-sm btn-primary">Update User Info</button></td>

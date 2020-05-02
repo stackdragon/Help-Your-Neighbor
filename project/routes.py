@@ -245,9 +245,8 @@ def account():
 
     #get acct info from server
     #sham data as a placeholder
-    acctInfo = [
-    {'username': 'enigMAN', 'firstName': 'Alan', 'lastName': 'Turing', 'userStreet': 'Hampton Road', 'userCity': 'Teddington', 'userState': 'NA', 'userZip': 'TW110', 'userPhone': '360-555-5555', 'userEmail': 'aturing@oregonstate.edu'}
-    ]
+    userInfo = {'username': 'enigMAN', 'firstName': 'Alan', 'lastName': 'Turing', 'userStreet': 'Hampton Road', 'userCity': 'Teddington', 'userState': 'EN', 'userZip': 'TW110', 'userPhone': '360-555-5555', 'userEmail': 'aturing@oregonstate.edu'}
+    
     # get data from server for requests by userId of logged in user
     #get requestID, needByDate, requestDate, fulfilled, count
     #with count = number of items associated with request
@@ -268,5 +267,5 @@ def account():
         {'fulfillmentID': 8, 'fulfillDate': 'February 25, 2020'}
         ]
 
-    return render_template('account.html', form=form, title='Account', acctInfo=acctInfo, requests=requests, fulfillments=fulfillments)
+    return render_template('account.html', form=form, title='Account', userInfo=userInfo, requests=requests, fulfillments=fulfillments)
 
