@@ -1,15 +1,15 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="col-md-8">
+<div class="col-md-12">
 	<h3>Make a request</h3>
 	<p class="text-justify">On this page you can request help from your neighbors. Just enter the items needed, the quantities you need, and the date your request is needed by. Your request will then be posted for fulfillment by other Help Your Neighbor users.</p>
-	<br>
 </div>
 <div class="col-md-8">
 	<div class="content-section">
 		<form method="POST" action ="">
 			{{ form.hidden_tag() }} <!-- This function inserts the CSRF security token. Required by WTForms -->
 			<fieldset class = "form group">
+				
 				<div class="form-group">
 					<div class ="form-row">
 						<div class="col-md-10">
@@ -18,7 +18,7 @@
 
 							<!-- display error message if item is entered incorrectly -->
 							{% if form.item1.errors %}
-							{{ form.item1(class="form-control form-control-lg is-invalid") }}
+							{{ form.item1(class="form-control form-control-sm is-invalid") }}
 							<div class="invalid-feedback">
 								{% for error in form.item1.errors %}
 								<span> {{ error }} </span>
@@ -27,7 +27,7 @@
 
 							<!-- otherwise, display item entry input field -->
 							{% else %}
-							{{ form.item1(class="form-control form-control-lg") }}
+							{{ form.item1(class="form-control form-control-sm") }}
 							{% endif %}
 						</div>
 						<div class="col-md-2">	
@@ -36,7 +36,7 @@
 
 							<!-- display error message if qty is entered incorrectly -->
 							{% if form.qty1.errors %}
-							{{ form.qty1(class="form-control form-control-lg is-invalid") }}
+							{{ form.qty1(class="form-control form-control-sm is-invalid") }}
 							<div class="invalid-feedback">
 								{% for error in form.qty1.errors %}
 								<span> {{ error }} </span>
@@ -45,7 +45,7 @@
 
 							<!-- otherwise, display qty entry input field -->
 							{% else %}
-							{{ form.qty1(class="form-control form-control-lg") }}
+							{{ form.qty1(class="form-control form-control-sm") }}
 							{% endif %}
 						</div>
 					</div>
@@ -59,7 +59,7 @@
 
 							<!-- display error message if item is entered incorrectly -->
 							{% if form.item2.errors %}
-							{{ form.item2(class="form-control form-control-lg is-invalid") }}
+							{{ form.item2(class="form-control form-control-sm is-invalid") }}
 							<div class="invalid-feedback">
 								{% for error in form.item2.errors %}
 								<span> {{ error }} </span>
@@ -68,7 +68,7 @@
 
 							<!-- otherwise, display item entry input field -->
 							{% else %}
-							{{ form.item2(class="form-control form-control-lg") }}
+							{{ form.item2(class="form-control form-control-sm") }}
 							{% endif %}
 						</div>
 						<div class="col-md-2">	
@@ -77,7 +77,7 @@
 
 							<!-- display error message if qty is entered incorrectly -->
 							{% if form.qty2.errors %}
-							{{ form.qty2(class="form-control form-control-lg is-invalid") }}
+							{{ form.qty2(class="form-control form-control-sm is-invalid") }}
 							<div class="invalid-feedback">
 								{% for error in form.qty2.errors %}
 								<span> {{ error }} </span>
@@ -86,11 +86,12 @@
 
 							<!-- otherwise, display qty entry input field -->
 							{% else %}
-							{{ form.qty2(class="form-control form-control-lg") }}
+							{{ form.qty2(class="form-control form-control-sm") }}
 							{% endif %}
 						</div>
 					</div>
 				</div>
+
 				<div class="form-group">
 					<div class ="form-row">
 						<div class="col-md-10">
@@ -99,7 +100,7 @@
 
 							<!-- display error message if item is entered incorrectly -->
 							{% if form.item2.errors %}
-							{{ form.item2(class="form-control form-control-lg is-invalid") }}
+							{{ form.item2(class="form-control form-control-sm is-invalid") }}
 							<div class="invalid-feedback">
 								{% for error in form.item2.errors %}
 								<span> {{ error }} </span>
@@ -108,7 +109,7 @@
 
 							<!-- otherwise, display item entry input field -->
 							{% else %}
-							{{ form.item2(class="form-control form-control-lg") }}
+							{{ form.item2(class="form-control form-control-sm") }}
 							{% endif %}
 						</div>
 						<div class="col-md-2">	
@@ -117,7 +118,7 @@
 
 							<!-- display error message if qty is entered incorrectly -->
 							{% if form.qty2.errors %}
-							{{ form.qty2(class="form-control form-control-lg is-invalid") }}
+							{{ form.qty2(class="form-control form-control-sm is-invalid") }}
 							<div class="invalid-feedback">
 								{% for error in form.qty2.errors %}
 								<span> {{ error }} </span>
@@ -126,43 +127,21 @@
 
 							<!-- otherwise, display qty entry input field -->
 							{% else %}
-							{{ form.qty2(class="form-control form-control-lg") }}
+							{{ form.qty2(class="form-control form-control-sm") }}
 							{% endif %}
 						</div>
 					</div>
 				</div>
 
-				<div class="form-group">
+			<div class="form-group">
 					<div class ="form-row">
-						<div class="col-10">
-
-							{{ form.dateNeeded.label(class="form-control-label") }}
-
-							{% if form.dateNeeded.errors %}
-							{{ form.dateNeeded(class="form-control form-control-lg is-invalid") }}
-							<div class="invalid-feedback">
-								{% for error in form.dateNeeded.errors %}
-								<span> {{ error }} </span>
-								{% endfor %}
-							</div>
-
-							{% else %}
-							{{ form.dateNeeded(class="form-control form-control-lg") }}
-							{% endif %}
-						</div>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<div class ="form-row">
-
-						<div class="col-md-12">
+						<div class="col-md-10">
 							<!-- display item entry label -->	
 							{{ form.specialInstructions.label(class="form-control-label") }}
 
 							<!-- display error message if item is entered incorrectly -->
 							{% if form.specialInstructions.errors %}
-							{{ form.specialInstructions(class="form-control form-control-lg is-invalid") }}
+							{{ form.specialInstructions(class="form-control form-control-sm is-invalid") }}
 							<div class="invalid-feedback">
 								{% for error in form.specialInstructions.errors %}
 								<span> {{ error }} </span>
@@ -171,11 +150,32 @@
 
 							<!-- otherwise, display item entry input field -->
 							{% else %}
-							{{ form.specialInstructions(class="form-control form-control-lg") }}
+							{{ form.specialInstructions(class="form-control form-control-sm") }}
 							{% endif %}
 						</div>
+					</div>
+				</div>
 
+						<div class="form-group">
+					<div class ="form-row">
+						<div class="col-md-10">
+							<!-- display item entry label -->	
+							{{ form.dateNeeded.label(class="form-control-label") }}
 
+							<!-- display error message if item is entered incorrectly -->
+							{% if form.dateNeeded.errors %}
+							{{ form.dateNeeded(class="form-control form-control-sm is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.dateNeeded.errors %}
+								<span> {{ error }} </span>
+								{% endfor %}
+							</div>
+
+							<!-- otherwise, display item entry input field -->
+							{% else %}
+							{{ form.dateNeeded(class="form-control form-control-sm") }}
+							{% endif %}
+						</div>
 					</div>
 				</div>
 
@@ -183,7 +183,8 @@
 			<div class="form-group">
 				{{ form.submit(class="btn btn-outline-info")}}
 			</div>
+				</form>
 		</div>
-	</form>
+
 </div>
 {% endblock content %}
