@@ -57,7 +57,7 @@ Install the required packages
 
 Launch the app locally
 ```
-(env) $ python3 project.py
+(env) $ python3 run.py
 ```
 
 Once the webserver has been activated, the app can be viewed by visiting `http://localhost:5000`.
