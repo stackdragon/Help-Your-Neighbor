@@ -205,7 +205,7 @@ def logout():
     return redirect(url_for('home'))
 
 # user account info
-@app.route('/account')
+@app.route('/account', methods=['GET', 'POST'])
 def account():
 
     # if user is not already logged in, send them to the registration page
