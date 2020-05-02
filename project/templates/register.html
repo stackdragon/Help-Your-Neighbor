@@ -30,6 +30,132 @@
 					{% endif %}
 				</div>
 
+				<div class="form-group">
+					{{ form.firstName.label(class="form-control-label") }}
+
+					<!-- display error messages if username is entered incorrectly -->
+					{% if form.firstName.errors %}
+						{{ form.firstName(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.firstName.errors %}
+								<span> {{ error }} </span>
+							{% endfor %}
+						</div>
+
+					<!-- otherwise, display username entry input field -->
+					{% else %}
+						{{ form.firstName(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+
+				<div class="form-group">
+					{{ form.lastName.label(class="form-control-label") }}
+
+					<!-- display error messages if username is entered incorrectly -->
+					{% if form.lastName.errors %}
+						{{ form.lastName(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.lastName.errors %}
+								<span> {{ error }} </span>
+							{% endfor %}
+						</div>
+
+					<!-- otherwise, display username entry input field -->
+					{% else %}
+						{{ form.lastName(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+
+				<div class="form-group">
+					{{ form.userStreet.label(class="form-control-label") }}
+
+					<!-- display error messages if username is entered incorrectly -->
+					{% if form.userStreet.errors %}
+						{{ form.userStreet(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.userStreet.errors %}
+								<span> {{ error }} </span>
+							{% endfor %}
+						</div>
+
+					<!-- otherwise, display username entry input field -->
+					{% else %}
+						{{ form.userStreet(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+
+				<div class="form-group">
+					{{ form.userCity.label(class="form-control-label") }}
+
+					<!-- display error messages if username is entered incorrectly -->
+					{% if form.userCity.errors %}
+						{{ form.userCity(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.userCity.errors %}
+								<span> {{ error }} </span>
+							{% endfor %}
+						</div>
+
+					<!-- otherwise, display username entry input field -->
+					{% else %}
+						{{ form.userCity(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+
+				<div class="form-group">
+					{{ form.userState.label(class="form-control-label") }}
+
+					<!-- display error messages if username is entered incorrectly -->
+					{% if form.userState.errors %}
+						{{ form.userState(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.userState.errors %}
+								<span> {{ error }} </span>
+							{% endfor %}
+						</div>
+
+					<!-- otherwise, display username entry input field -->
+					{% else %}
+						{{ form.userState(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+
+				<div class="form-group">
+					{{ form.userZip.label(class="form-control-label") }}
+
+					<!-- display error messages if username is entered incorrectly -->
+					{% if form.userZip.errors %}
+						{{ form.userZip(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.userZip.errors %}
+								<span> {{ error }} </span>
+							{% endfor %}
+						</div>
+
+					<!-- otherwise, display username entry input field -->
+					{% else %}
+						{{ form.userZip(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+
+				<div class="form-group">
+					{{ form.userPhone.label(class="form-control-label") }}
+
+					<!-- display error messages if username is entered incorrectly -->
+					{% if form.userPhone.errors %}
+						{{ form.userPhone(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.userPhone.errors %}
+								<span> {{ error }} </span>
+							{% endfor %}
+						</div>
+
+					<!-- otherwise, display username entry input field -->
+					{% else %}
+						{{ form.userPhone(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+
 				<!-- format is the same for other input entry fields -->
 				<div class="form-group">
 					{{ form.email.label(class="form-control-label") }}
