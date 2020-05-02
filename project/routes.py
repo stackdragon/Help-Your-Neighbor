@@ -2,7 +2,7 @@
 from flask import render_template, url_for, flash, redirect, request
 
 # import wtForm classes for registration and login forms
-from project.forms import RegistrationForm, LoginForm, AddForm
+from project.forms import RegistrationForm, LoginForm, AddForm, UpdateForm
 
 # import User model needed for session validation
 from project.models import User
@@ -109,8 +109,8 @@ def register():
     	# display success message if user successfully registered
         flash(f'Your account has been created. Please login.', 'success')
 
-        # render homepage
-        return redirect(url_for('home'))
+        # render account page
+        return redirect(url_for('login'))
 
     # if no data has been submitted, display the registration page
     return render_template('register.html', title='Register', form = form)
@@ -178,8 +178,8 @@ def login():
                 # if there is a next parameter in the url, grab it to forward the user to the appropriate name.
                 next_page = request.args.get('next')
 
-                # now that the user has logged in, send her to either the next page or the home page
-                return redirect(next_page) if next_page else redirect(url_for('home'))
+                # now that the user has logged in, send her to either the next page or the account page
+                return redirect(next_page) if next_page else redirect(url_for('account'))
 
             # if email address is found but password doesn't match, display error message
             else:
@@ -206,6 +206,67 @@ def logout():
 
 # user account info
 @app.route('/account')
-@login_required
 def account():
-    return render_template('account.html', title='Account')
+
+    # if user is not already logged in, send them to the registration page
+    #if not current_user.is_authenticated:
+    #    return redirect(url_for('register'))
+
+    # create registration form object
+    form = UpdateForm()
+
+    # if registration form has been validly submitted
+    if form.validate_on_submit():
+
+        # hash the password that the user ended
+        hashed_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+
+        db = get_db()
+
+        # set up db cursor
+        mycursor = db.cursor()
+
+        # run the query to add the user to the database
+        #PUT UPDATE QUERY HERE!
+
+        #query = f"INSERT INTO Users (userName, userEmail, userPW) VALUES ('{form.username.data}', '{form.email.data}', '{hashed_pw}');"
+        #mycursor.execute(query)
+
+        # commit the query
+        #db.commit()
+
+        mycursor.close()
+
+        # display success message if user successfully registered
+        flash(f'Your account has been updated', 'success')
+
+        # render homepage
+        return redirect(url_for('account'))
+
+    #get acct info from server
+    #sham data as a placeholder
+    acctInfo = [
+    {'username': 'enigMAN', 'firstName': 'Alan', 'lastName': 'Turing', 'userStreet': 'Hampton Road', 'userCity': 'Teddington', 'userState': 'NA', 'userZip': 'TW110', 'userPhone': '360-555-5555', 'userEmail': 'aturing@oregonstate.edu'}
+    ]
+    # get data from server for requests by userId of logged in user
+    #get requestID, needByDate, requestDate, fulfilled, count
+    #with count = number of items associated with request
+    #sorted by fulfilled no to fulfilled yes and then date requested newest to oldest (OR MAYBE NEED BY OLDEST TO NEWEST?)
+    #sham data as a placeholder for now
+    requests = [
+        {'requestID': 12, 'needByDate': 'April 19, 2020', 'requestDate': 'April 17, 2020', 'fulfilled': False, 'count': 2},
+        {'requestID': 15, 'needByDate': 'April 29, 2020', 'requestDate': 'April 23, 2020', 'fulfilled': False, 'count': 5},
+        {'requestID': 11, 'needByDate': 'April 2, 2020', 'requestDate': 'March 25, 2020', 'fulfilled': True, 'count': 1}
+        ]
+
+    # get data from server for requests fulfilled by userId of logged in user
+    #select RequestID, user first name, user last name, user phone, needByDate, fulfillmentDate
+    #sorted by date fulfilled newest to oldest
+    #sham data as a placeholder for now
+    fulfillments = [
+        {'fulfillmentID': 10, 'fulfillDate': 'March 24, 2020'},
+        {'fulfillmentID': 8, 'fulfillDate': 'February 25, 2020'}
+        ]
+
+    return render_template('account.html', form=form, title='Account', acctInfo=acctInfo, requests=requests, fulfillments=fulfillments)
+

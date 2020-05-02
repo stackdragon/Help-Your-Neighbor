@@ -35,6 +35,7 @@ class RegistrationForm(FlaskForm):
 
 	# custom validation to make sure that the email address does already exit in the Users table
 	def validate_email(self, email):
+		db = get_db()
 		mycursor = db.cursor()
 		
 		query = f"SELECT userEmail from Users WHERE userEmail='{email.data}';"
@@ -61,3 +62,18 @@ class AddForm(FlaskForm):
 	dateNeeded = DateField('Request Needed By', default=date.today, validators=[DateRange(min=date.today())])
 	specialInstructions = StringField('Special Instructions (if any)', validators=[Optional(), Length(min=2, max=200)])
 	submit = SubmitField('Submit')
+
+class UpdateForm(FlaskForm):
+	firstName = StringField('First Name', validators=[DataRequired(), Length(min=2, max=20)])
+	lastName = StringField('Last Name', validators=[DataRequired(), Length(min=2, max=20)])
+	userStreet = StringField('Street Address', validators=[DataRequired(), Length(min=2, max=50)])
+	userCity = StringField('City', validators=[DataRequired(), Length(min=2, max=30)])
+	userState = StringField('State', validators=[DataRequired(), Length(min=2, max=2)])
+	userZip = StringField('Zip Code', validators=[DataRequired(), Length(min=5, max=5)])
+	#is there a way to validate specific chars?
+	userPhone = StringField('Phone Number', validators=[DataRequired(), Length(min=12, max=12)])
+	userEmail = StringField('Email', validators=[DataRequired(), Email()])
+	password = PasswordField('Password', validators=[DataRequired()])
+	confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+	submit = SubmitField('Update')
+	#HOW TO WE ALLOW CURRENT EMAIL TO PERSIST BUT ALSO VERIFY NOT ALREADY IN SYSTEM FOR SOMEONE ELSE?
