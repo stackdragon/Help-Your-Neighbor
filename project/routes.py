@@ -19,6 +19,38 @@ from project import bcrypt
 # import flask-login
 from flask_login import login_user, logout_user, current_user, login_required
 
+# dummy data for project submission step 3
+requests = [
+    {
+        'city': 'San Francisco',
+        'zip': '94016',
+        'userName': 'Bob437',
+        'item1': 'Toilet paper',
+        'qty1': 4,
+        'needByDate': 'May 9, 2020',
+        'specialInstructions': 'Please leave on back porch steps.'
+    },
+
+    {
+        'city': 'San Francisco',
+        'zip': '94118',
+        'userName': 'catlady',
+        'item1': 'Cat food',
+        'qty1': 1,
+        'needByDate': 'May 8, 2020',
+        'specialInstructions': 'Precious only eats Fancy Feast.'
+    },
+    {
+        'city': 'Oakland',
+        'zip': '94604',
+        'userName': 'PlantLuvr',
+        'item1': 'Tofu',
+        'qty1': 5,
+        'needByDate': 'May 12, 2020',
+        'specialInstructions': 'Organic please.'
+    }
+    ]
+
 #home page route
 @app.route('/')
 @app.route('/home')
@@ -29,14 +61,14 @@ def home():
     # set up db cursor
     mycursor = db.cursor()
 
-    # run sample query for the homepage
-    mycursor.execute("""SELECT userID, userName, userEmail FROM Users;""")
-    data = mycursor.fetchall()
+    # the query to get and display all of the open requests needs to go here
+    # mycursor.execute("""SELECT userID, userName, userEmail FROM Users;""")
+    # requests = mycursor.fetchall()
 
     mycursor.close()
 	
     # render the homepage template, passing data to display
-    return render_template('home.html', data = data)
+    return render_template('home.html', data = requests)
 
 #about page route
 @app.route('/about')
@@ -93,11 +125,8 @@ def add():
     # if add itme form is validly submitted
     if form.validate_on_submit():
 
-        # grab the type of item from the form
-        value = dict(form.item.choices).get(form.item.data)
-
         # display success message (this is temporary just to show the form works)
-        flash(f'You created a request for {value} to be provided by {form.dateNeeded.data}.', 'success')
+        flash(f'You created a new request!', 'success')
 
         # redirect to the home page
         return redirect(url_for('home'))

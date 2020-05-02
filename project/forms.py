@@ -3,8 +3,8 @@
 from flask_wtf import FlaskForm
 from datetime import date, datetime
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField
-from wtforms.fields.html5 import DateField, DateTimeField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms.fields.html5 import DateField, DateTimeField, IntegerField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, NumberRange, Optional	
 from wtforms_components import DateRange
 from project import get_db
 import mysql.connector
@@ -16,7 +16,7 @@ class RegistrationForm(FlaskForm):
 	confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
 	submit = SubmitField('Sign Up')
 
-	# custom validation to make sure that the username does already exit in the Users table
+	# custom validation to make sure that the username doesn't already exist in the Users table
 	def validate_username(self, username):
 
 		db = get_db()
@@ -52,6 +52,11 @@ class LoginForm(FlaskForm):
 	submit = SubmitField('Login')
 
 class AddForm(FlaskForm):
-	item = SelectField('Item Needed', choices = [('tp', 'toilet paper'), ('pt', 'paper towels'), ('aspirin', 'aspirin'), ('milk', 'milk')], validators=[DataRequired()])
-	dateNeeded = DateField('Date Needed', default=date.today, validators=[DataRequired(), DateRange(min=date.today())])
+	item1 = StringField('Item Needed', validators=[DataRequired(), Length(min=2, max=30)])
+	qty1 = IntegerField('Quantity', validators=[DataRequired(), NumberRange(min=1, max=5)])
+	item2 = StringField('Additional Item Needed (if any)', validators=[Optional(), Length(min=2, max=30)])
+	qty2 = IntegerField('Quantity', validators=[Optional(), NumberRange(min=1, max=5)])
+	item3 = StringField('Additional Item Needed (if any)', validators=[Optional(), Length(min=2, max=30)])
+	qty3 = IntegerField('Quantity', validators=[Optional(), NumberRange(min=1, max=5)])
+	dateNeeded = DateField('Request Needed By', default=date.today, validators=[DateRange(min=date.today())])
 	submit = SubmitField('Submit')

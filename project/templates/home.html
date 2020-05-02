@@ -1,13 +1,16 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="col-md-12">
-  <div class="content-section">
-  	<h3>Sample Homepage Query</h3>
-    <p class='text'>These are the registered users currently stored in the Users table:</p>
-    	{% for row in data %}
-		<p class='text'>userID: {{ row[0] }}, userName: {{ row[1] }}, userEmail: "{{ row[2] }}""</p>
-	{% endfor %}
+<h3>The following neighbors need help now:</h3>
+<br>
+{% for row in data %}
+  <div class="row">
+    <div class="col-md-8">
+	    <button type="button" class="btn btn-success">Help this Neighbor</button>
+      <div class="content-section">
+			  <p class='text'><strong>{{ row.city }} ({{ row.zip }})</strong>: {{ row.userName }} needs <kbd>{{ row.item1 }}</kbd>  (qty: {{ row.qty1 }}) by {{ row.needByDate }}.</p>
+			  <p class ='text'><em>Special instructions:</em> {{ row.specialInstructions }}
+	    </div>
+	  </div>
   </div>
- </div>
-
+{% endfor %}
 {% endblock content %}

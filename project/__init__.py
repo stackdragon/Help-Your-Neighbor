@@ -24,6 +24,8 @@ login_manager = LoginManager(app)
 login_manager.login_message_category = 'info'
 login_manager.login_view = 'login'
 
+
+
 # this is a CSRF token for security (required for WTForms)
 app.config['SECRET_KEY'] = 'ba8ed3f480b55b599b397e000da63ccf'
 
