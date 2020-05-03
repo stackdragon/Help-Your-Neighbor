@@ -22,6 +22,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 # dummy data for project submission step 3
 requests = [
     {
+        'requestID': 1,
         'city': 'San Francisco',
         'zip': '94016',
         'userName': 'Bob437',
@@ -32,6 +33,7 @@ requests = [
     },
 
     {
+        'requestID': 2,
         'city': 'San Francisco',
         'zip': '94118',
         'userName': 'catlady',
@@ -41,6 +43,7 @@ requests = [
         'specialInstructions': 'Precious only eats Fancy Feast.'
     },
     {
+        'requestID': 3,
         'city': 'Oakland',
         'zip': '94604',
         'userName': 'PlantLuvr',

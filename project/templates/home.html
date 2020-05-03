@@ -3,14 +3,31 @@
 <h3>The following neighbors need help now:</h3>
 <br>
 {% block content %}
-
 <div class="container">
 	<div class="row">
 
 		<div class="col-md-8">
 			{% for row in data %}
 			<div class="col-md-12">
-				<button type="button" class="btn btn-outline-info">Help this Neighbor</button>
+				<button type="button" id="{{ row.requestID }}" class="btn btn-outline-info">Help this Neighbor</button>
+
+				<!-- use jQuery to change button label to add / remove from cart -->
+				<script>
+					$(document).ready(function () {
+						$('#{{ row.requestID }}').on('click', function(event) {
+							var buttonText = $(this).text();
+							if (buttonText == 'Help this Neighbor') {
+								$('#{{ row.requestID }}').text('In Cart');
+								$('#{{ row.requestID }}').removeClass("btn-outline-info").addClass("btn-success");
+							}
+							else {
+								$('#{{ row.requestID }}').text('Help this Neighbor');
+								$('#{{ row.requestID }}').removeClass("btn-success").addClass("btn-outline-info");
+							}
+						});
+					});
+				</script>
+
 				<div class="content-section">
 					<p class='text'>
 						<strong>{{ row.city }} ({{ row.zip }})</strong>: {{ row.userName }} needs <kbd>{{ row.item1 }}</kbd>  
@@ -27,7 +44,7 @@
 
 				{{ form.hidden_tag() }} <!-- This function inserts the CSRF security token. Required by WTForms -->
 				<div class="form-group">
-										{{ form.searchZip.label(class="form-control-label") }}
+					{{ form.searchZip.label(class="form-control-label") }}
 
 					<div class="row">
 						<div class="col-md-8">
@@ -53,10 +70,9 @@
 						</div>
 					</div>
 				</div>
-
-
 			</form>
 		</div>
 	</div>
 </div>
+
 {% endblock content %}
