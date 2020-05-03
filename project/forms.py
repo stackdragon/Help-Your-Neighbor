@@ -2,7 +2,7 @@
 
 from flask_wtf import FlaskForm
 from datetime import date, datetime
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, HiddenField
 from wtforms.fields.html5 import DateField, DateTimeField, IntegerField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, NumberRange, Optional	
 from wtforms_components import DateRange
@@ -85,3 +85,11 @@ class UpdateForm(FlaskForm):
 	confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
 	submit = SubmitField('Update')
 	#HOW TO WE ALLOW CURRENT EMAIL TO PERSIST BUT ALSO VERIFY NOT ALREADY IN SYSTEM FOR SOMEONE ELSE?
+
+class DeleteRequestForm(FlaskForm):
+	requestID = HiddenField('Request ID')
+	submit = SubmitField('Delete Request')
+
+class DeleteFulfillmentForm(FlaskForm):
+	fulfillmentID = HiddenField('Fulfillment ID')
+	submit = SubmitField('Delete Fulfillment')

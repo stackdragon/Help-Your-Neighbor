@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block content %}
+<h4 class="h4">Your Fulfillment # {{fulfillmentData.fulfillmentID}}</h4>
+<h5 class="h5"> Fulfilled on: {{fulfillmentData.fulfillDate}}</h5>
+<a href="{{url_for('account')}}" class="btn btn-info" role="button">Return To Your Account</a>
+<form method=post name="deleteFulfillment"	action="{{url_for('displayFulfillment')}}">
+	{{ form.hidden_tag() }}
+    {{ form.fulfillmentID(value='{{fulfillmentData.fulfillmentID}}') }}
+    <input type=submit value="Delete Fulfillment" class="btn btn-danger">
+</form>
+
+<div class="col-md-8">
+	<div class="content-section">
+		{% for request in requestData %}
+		<table class="table table-striped table-sm table-responsive-sm">
+		  <thead>
+		    <tr>
+		      <th scope="col">Requester</th>
+		      <th scope="col">Address</th>
+		      <th scope="col">Phone</th>
+		      <th scope="col">Email</th>
+		      <th scope="col">Number of Items</th>
+		      <th scope="col">Need By</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+			  	<tr>
+			      	<td>{{request.firstName}} {{request.lastName}}</td>
+			      	<td>{{request.userStreet}}, {{request.userCity}}, {{request.userState}} {{request.userZip}}</td>
+			      	<td>{{request.userPhone}}</td>
+					<td>{{request.userEmail}}</td>
+					<td>{{request.count}}</td>
+					<td>{{request.needByDate}}</td>
+			    </tr>			    
+		  </tbody>
+		</table>
+		<div></div>
+		<table class="table table-striped table-sm table-responsive-sm">
+		  <thead>
+		    <tr>
+		      <th scope="col">Item Name</th>
+		      <th scope="col">Description</th>
+		      <th scope="col">Quantity</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  		{% for item in request.items %}
+			  	<tr>
+					<!--<th>{{item.itemName}}</th>
+					<td>{{item.itemDescription}}</td>
+					<td>{{item.quantity}}</td> -->
+			    </tr>
+			    {% endfor %}			    
+		  </tbody>
+		</table>
+		{% endfor %}
+	</div>
+</div>
+
+{% endblock content %}

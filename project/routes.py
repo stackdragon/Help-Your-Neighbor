@@ -2,7 +2,7 @@
 from flask import render_template, url_for, flash, redirect, request
 
 # import wtForm classes for registration and login forms
-from project.forms import RegistrationForm, LoginForm, AddForm, UpdateForm
+from project.forms import RegistrationForm, LoginForm, AddForm, UpdateForm, DeleteRequestForm, DeleteFulfillmentForm
 
 # import User model needed for session validation
 from project.models import User
@@ -213,37 +213,6 @@ def account():
         flash(f'You are not yet logged in: Please log in to access the Account page', 'danger')
         return redirect(url_for('login'))
 
-    # create registration form object
-    form = UpdateForm()
-
-    # if registration form has been validly submitted
-    if form.validate_on_submit():
-
-        # hash the password that the user ended
-        hashed_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-
-        db = get_db()
-
-        # set up db cursor
-        mycursor = db.cursor()
-
-        # run the query to add the user to the database
-        #PUT UPDATE QUERY HERE!
-
-        #query = f"INSERT INTO Users (userName, userEmail, userPW) VALUES ('{form.username.data}', '{form.email.data}', '{hashed_pw}');"
-        #mycursor.execute(query)
-
-        # commit the query
-        #db.commit()
-
-        mycursor.close()
-
-        # display success message if user successfully registered
-        flash(f'Your account has been updated', 'success')
-
-        # render homepage
-        return redirect(url_for('account'))
-
     #get acct info from server
     #sham data as a placeholder
     userInfo = {'username': 'enigMAN', 'firstName': 'Alan', 'lastName': 'Turing', 'userStreet': 'Hampton Road', 'userCity': 'Teddington', 'userState': 'EN', 'userZip': 'TW110', 'userPhone': '360-555-5555', 'userEmail': 'aturing@oregonstate.edu'}
@@ -268,11 +237,16 @@ def account():
         {'fulfillmentID': 8, 'fulfillDate': 'February 25, 2020'}
         ]
 
-    return render_template('account.html', form=form, title='Account', userInfo=userInfo, requests=requests, fulfillments=fulfillments)
+    return render_template('account.html', title='Account', userInfo=userInfo, requests=requests, fulfillments=fulfillments)
 
-#registration page route
+#update user information page route
 @app.route('/updateUser', methods=['GET', 'POST'])
 def updateUser():
+
+    # if user is not already logged in, send them to the login page
+    if not current_user.is_authenticated:
+        flash(f'You are not yet logged in: Please log in to update your information', 'danger')
+        return redirect(url_for('login'))
 
     # create registration form object
     form = UpdateForm()
@@ -306,3 +280,60 @@ def updateUser():
 
     # if no data has been submitted, display the registration page
     return render_template('updateUser.html', title='Update User Information', form = form)
+
+#Request display page route
+@app.route('/displayRequest', methods=['GET', 'POST'])
+def displayRequest():
+    #requestID = request.args.get('requestID')
+    form = DeleteRequestForm()
+    if form.validate_on_submit():
+        ##put sql query here to delete request by requestID
+        flash(f'Request Deleted', 'success')
+        return redirect(url_for('account'))
+
+    ##USE REQUEST ID TO MAKE QUERY
+    ##query DB here to get all item names, item descriptions, and item quantities assoc with that req
+    #second query that seomy returns the info assoc with request, like need by date and request date,
+    #instructions, and fulfilled boolean
+    ##faux data here for proof of concept for front end:
+    items = [
+    {'itemID': 35, 'itemName': 'Toilet Paper', 'itemDescription': 'Recycled Sources pack of 12', 'quantity': 2},
+    {'itemID': 45, 'itemName': 'Paper Towels', 'itemDescription': 'Extra Strength 6 pack', 'quantity': 1},
+    {'itemID': 122, 'itemName': 'Rice', 'itemDescription': '1 lb bag', 'quantity': 4},
+    {'itemID': 98, 'itemName': 'Face Mask', 'itemDescription': 'cloth with filter pocket', 'quantity': 1}
+    ]
+
+    requestData = {'requestID': 12, 'needByDate': 'April 19, 2020', 'requestDate': 'April 17, 2020', 'fulfilled': False, 'instructions': 'Please leave on the front porch and ring the doorbell.'}
+
+    # if no data has been submitted, display the registration page
+    return render_template('displayRequest.html', title='Your Request', items=items, requestData=requestData, form=form)
+
+#Fulfillment display page route
+@app.route('/displayFulfillment', methods=['GET', 'POST'])
+def displayFulfillment():
+
+    #fulfillmentID = request.args.get('fulfillmentID')
+
+    form = DeleteFulfillmentForm()
+    if form.validate_on_submit():
+        ##put sql query here to delete request by fulfillmentID
+        flash(f'Fulfillment Deleted', 'success')
+        return redirect(url_for('account'))
+
+    ##USE FULFILLMENT ID TO MAKE QUERY
+    ##query DB here to get all fulfillment data
+    ##second query that gives all request and assoc user info for each request fulfilled on that fulfillment
+    ##faux data here for proof of concept for front end:
+
+    fulfillmentData = {'fulfillmentID': 25, 'fulfillDate': 'April 19, 2020'}
+
+    requestData = [
+    {'requestID': 12, 'needByDate': 'April 19, 2020', 'requestDate': 'April 17, 2020', 'instructions': 'Please leave on the front porch and ring the doorbell.', 'username': 'enigMAN', 'firstName': 'Alan', 'lastName': 'Turing', 'userStreet': 'Hampton Road', 'userCity': 'Teddington', 'userState': 'EN', 'userZip': 'TW110', 'userPhone': '360-555-5555', 'userEmail': 'aturing@oregonstate.edu', 'count': 4,
+    'items':[{'itemID': 35, 'itemName': 'Toilet Paper', 'itemDescription': 'Recycled Sources pack of 12', 'quantity': 2}, {'itemID': 45, 'itemName': 'Paper Towels', 'itemDescription': 'Extra Strength 6 pack', 'quantity': 1}, {'itemID': 122, 'itemName': 'Rice', 'itemDescription': '1 lb bag', 'quantity': 4}, {'itemID': 98, 'itemName': 'Face Mask', 'itemDescription': 'cloth with filter pocket', 'quantity': 1}]
+    },
+    {'requestID': 3, 'needByDate': 'March 8, 2020', 'requestDate': 'March 1, 2020', 'instructions': 'I am a vegan, so anything animal-free is great', 'username': 'bigBrain', 'firstName': 'Albert', 'lastName': 'Einstein', 'userStreet': 'Hampton Road', 'userCity': 'Teddington', 'userState': 'EN', 'userZip': 'TW110', 'userPhone': '415-555-5555', 'userEmail': 'headhoncho@oregonstate.edu', 'count': 3,
+    'items':[{'itemID': 35, 'itemName': 'Toilet Paper', 'itemDescription': 'Recycled Sources pack of 12', 'quantity': 2}, {'itemID': 135, 'itemName': 'Chalk', 'itemDescription': 'White Box 12ct', 'quantity': 2}, {'itemID': 67, 'itemName': 'Hair Spray', 'itemDescription': 'Extra Strength', 'quantity': 1}]
+    }
+    ]
+    # if no data has been submitted, display the registration page
+    return render_template('displayFulfillment.html', title='Your Request', fulfillmentData=fulfillmentData, requestData=requestData, form=form)

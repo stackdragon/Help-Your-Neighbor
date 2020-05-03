@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% block content %}
+<h3 class="h3">Your Request # {{requestData.requestID}}</h3>
+<a href="{{url_for('account')}}" class="btn btn-info" role="button">Return To Your Account</a>
+<form method=post name="deleteRequest"	action="{{url_for('displayRequest')}}">
+	{{ form.hidden_tag() }}
+    {{ form.requestID(value='{{requestData.requestID}}') }}
+    <input type=submit value="Delete Request" class="btn btn-danger">
+</form>
+
+<div class="row">
+	<div class="col-md-4">
+		.<div class="content-section">
+			<h5>Request Logistics</h5>
+			<table class="table table-striped table-sm table-responsive-sm">
+			  <tbody>
+				  	<tr>
+				      <th scope="row">Request ID:</th>
+				      <td>{{requestData.requestID}}</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">Requested On:</th>
+				      <td>{{requestData.requestDate}}</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">Needed By:</th>
+				      <td>{{requestData.needByDate}}</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">Instructions:</th>
+				      <td>{{requestData.instructions}}</td>
+				    </tr>				    
+			  </tbody>
+			</table>
+		</div>
+	</div>
+	<div class="col-md-8">
+	  	<div class="container">
+				<div class="row">
+					{% for item in items %}
+				<div class="col col-sm-6 col-md-4">
+	  				<div class="content-section">
+	  					<h5>Item:</h5>
+	  					<h5>{{ item.itemName }}</h5>
+	  					<h5>Quantity: {{ item.quantity }}</h5>
+	  					<p>Description: {{ item.itemDescription }}</p>
+	  				</div>
+				</div>
+				{% endfor %}
+				</div>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}

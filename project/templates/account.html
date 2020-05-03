@@ -2,6 +2,7 @@
 {% block content %}
 <h3 class="h3">Account Page for user: {{ userInfo.username }}</h3>
   <div class="row">
+
     <div class="col-md-4">
     	.<div class="content-section">
     		<h3>Account Info</h3>
@@ -57,8 +58,7 @@
 							      <th scope="col">Need By</th>
 							      <th scope="col">Request Date</th>
 							      <th scope="col">Number of Items</th>
-							      <th scope="col">Fulfilled?</th>
-							      <th scope="col"></th>
+							      <th scope="col">Details</th>
 							    </tr>
 							  </thead>
 							  <tbody>
@@ -68,10 +68,12 @@
 								      <td>{{request.needByDate}}</td>
 								      <td>{{request.requestDate}}</td>
 								      <td>{{request.count}}</td>
-								      <td>{{request.fulfilled}}</td>
 								      <td>
 								      	{% if request.fulfilled == False %}
-								      		<button type="button" class="btn btn-sm btn-danger">Delete</button>
+								      		<form action="{{url_for('displayRequest')}}" method="get">
+											  	<input type="hidden" name="requestID" value="{{ request.requestID }}">
+											  	<input type="submit" value="View" class="btn btn-sm btn-info">
+											</form>
 								      	{% else %}
 								      		<button type="button" class="btn btn-sm btn-secondary" disabled>Already Fulfilled</button>
 								      	{% endif %}
@@ -99,7 +101,10 @@
 								      <th scope="row">{{fulfillment.fulfillmentID}}</th>
 								      <td>{{fulfillment.fulfillDate}}</td>
 								      <td>
-								      	<button type="button" class="btn btn-sm btn-primary">Click for Info</button>
+								      	<form action="{{url_for('displayFulfillment')}}" method="get">
+											  	<input type="hidden" name="fulfillmentID" value="{{ fulfillments.fulfillmentID }}">
+											  	<input type="submit" value="View" class="btn btn-sm btn-info">
+											</form>
 								      </td>
 								    </tr>
 							  	{% endfor %}			    
