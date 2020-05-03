@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+<h3>These are the items in your cart:</h3>
+<br>
+<div class="col-md-8">
+	{% for row in data %}
+	<div class="content-section">
+
+		<p class='text'>
+			<strong>{{ row.city }} ({{ row.zip }})</strong>: {{ row.userName }} needs <kbd>{{ row.item1 }}</kbd>  
+		(qty: {{ row.qty1 }}) by {{ row.needByDate }}.</p>
+		<p class ='text'><em>Special instructions:</em> {{ row.specialInstructions }} </p>
+	</div>
+	{% endfor %}
+
+	<form method="POST" action ="">
+		{{ form.hidden_tag() }} <!-- This function inserts the CSRF security token. Required by WTForms -->
+		<div class="form-group">
+			{{ form.submit(class="btn btn-outline-info")}}
+		</div>
+	</form>
+
+</div>
+{% endblock content %}

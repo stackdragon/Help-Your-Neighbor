@@ -97,3 +97,6 @@ class DeleteFulfillmentForm(FlaskForm):
 class SearchForm(FlaskForm):
 	searchZip = StringField('Find Requests by Zip Code', validators=[DataRequired()])
 	submit = SubmitField('Search')
+
+class cartForm(FlaskForm):
+	submit = SubmitField('Checkout')
