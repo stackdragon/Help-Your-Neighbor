@@ -51,7 +51,7 @@
 
 							<!-- display error messages if address is zip code incorrectly -->
 							{% if form.searchZip.errors %}
-							{{ form.seachZip(class="form-control form-control-md is-invalid") }}
+							{{ form.searchZip(class="form-control form-control-md is-invalid") }}
 							<div class="invalid-feedback">
 								{% for error in form.searchZip.errors %}
 								<span> {{ error }} </span>
