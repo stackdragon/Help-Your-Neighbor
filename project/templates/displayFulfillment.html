@@ -1,17 +1,26 @@
 {% extends "layout.html" %}
 {% block content %}
-<h4 class="h4">Your Fulfillment # {{fulfillmentData.fulfillmentID}}</h4>
-<h5 class="h5"> Fulfilled on: {{fulfillmentData.fulfillDate}}</h5>
-<a href="{{url_for('account')}}" class="btn btn-info" role="button">Return To Your Account</a>
-<form method=post name="deleteFulfillment"	action="{{url_for('displayFulfillment')}}">
-	{{ form.hidden_tag() }}
-    {{ form.fulfillmentID(value='{{fulfillmentData.fulfillmentID}}') }}
-    <input type=submit value="Delete Fulfillment" class="btn btn-danger">
-</form>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      	<h4 class="h4">Your Fulfillment # {{fulfillmentData.fulfillmentID}}</h4>
+     	<h5 class="h5 d-inline"> Fulfilled on: {{fulfillmentData.fulfillDate}}</h5>
+    </div>
+    <div class="col">
+		<form class="float-right" method=post name="deleteFulfillment"	action="{{url_for('displayFulfillment')}}">
+			{{ form.hidden_tag() }}
+    		{{ form.fulfillmentID(value='{{fulfillmentData.fulfillmentID}}') }}
+    		<input type=submit value="Delete Fulfillment" class="btn btn-danger m-2">
+		</form>
+		<a href="{{url_for('account')}}" class="btn btn-info m-2  float-right" role="button">Return To Your Account</a>
+    </div>
+  </div>
+ </div>
 
-<div class="col-md-8">
+
+{% for request in requestData %}
+<div class="col pb-4">
 	<div class="content-section">
-		{% for request in requestData %}
 		<table class="table table-striped table-sm table-responsive-sm">
 		  <thead>
 		    <tr>
@@ -19,19 +28,22 @@
 		      <th scope="col">Address</th>
 		      <th scope="col">Phone</th>
 		      <th scope="col">Email</th>
-		      <th scope="col">Number of Items</th>
 		      <th scope="col">Need By</th>
 		    </tr>
 		  </thead>
 		  <tbody>
+		  	{% for item in request[0] %}
 			  	<tr>
-			      	<td>{{request.firstName}} {{request.lastName}}</td>
-			      	<td>{{request.userStreet}}, {{request.userCity}}, {{request.userState}} {{request.userZip}}</td>
-			      	<td>{{request.userPhone}}</td>
-					<td>{{request.userEmail}}</td>
-					<td>{{request.count}}</td>
-					<td>{{request.needByDate}}</td>
-			    </tr>			    
+					<td>{{item.firstName}} {{item.lastName}}</td>
+			      	<td> 
+			      		<p>{{item.userStreet}}</p>
+			      		<p>{{item.userCity}}, {{item.userState}} {{item.userZip}}</p>
+			      	</td>
+			      	<td>{{item.userPhone}}</td>
+					<td>{{item.userEmail}}</td>
+					<td>{{item.needByDate}}</td>
+			    </tr>
+			{% endfor %}			    
 		  </tbody>
 		</table>
 		<div></div>
@@ -44,17 +56,17 @@
 		    </tr>
 		  </thead>
 		  <tbody>
-		  		{% for item in request.items %}
+		  	{% for item in request[1] %}
 			  	<tr>
-					<!--<th>{{item.itemName}}</th>
+					<th>{{item.itemName}}</th>
 					<td>{{item.itemDescription}}</td>
-					<td>{{item.quantity}}</td> -->
+					<td>{{item.quantity}}</td>
 			    </tr>
-			    {% endfor %}			    
+			{% endfor %}			    
 		  </tbody>
 		</table>
-		{% endfor %}
 	</div>
 </div>
+{% endfor %}
 
 {% endblock content %}

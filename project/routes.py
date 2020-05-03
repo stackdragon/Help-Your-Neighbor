@@ -327,13 +327,9 @@ def displayFulfillment():
 
     fulfillmentData = {'fulfillmentID': 25, 'fulfillDate': 'April 19, 2020'}
 
-    requestData = [
-    {'requestID': 12, 'needByDate': 'April 19, 2020', 'requestDate': 'April 17, 2020', 'instructions': 'Please leave on the front porch and ring the doorbell.', 'username': 'enigMAN', 'firstName': 'Alan', 'lastName': 'Turing', 'userStreet': 'Hampton Road', 'userCity': 'Teddington', 'userState': 'EN', 'userZip': 'TW110', 'userPhone': '360-555-5555', 'userEmail': 'aturing@oregonstate.edu', 'count': 4,
-    'items':[{'itemID': 35, 'itemName': 'Toilet Paper', 'itemDescription': 'Recycled Sources pack of 12', 'quantity': 2}, {'itemID': 45, 'itemName': 'Paper Towels', 'itemDescription': 'Extra Strength 6 pack', 'quantity': 1}, {'itemID': 122, 'itemName': 'Rice', 'itemDescription': '1 lb bag', 'quantity': 4}, {'itemID': 98, 'itemName': 'Face Mask', 'itemDescription': 'cloth with filter pocket', 'quantity': 1}]
-    },
-    {'requestID': 3, 'needByDate': 'March 8, 2020', 'requestDate': 'March 1, 2020', 'instructions': 'I am a vegan, so anything animal-free is great', 'username': 'bigBrain', 'firstName': 'Albert', 'lastName': 'Einstein', 'userStreet': 'Hampton Road', 'userCity': 'Teddington', 'userState': 'EN', 'userZip': 'TW110', 'userPhone': '415-555-5555', 'userEmail': 'headhoncho@oregonstate.edu', 'count': 3,
-    'items':[{'itemID': 35, 'itemName': 'Toilet Paper', 'itemDescription': 'Recycled Sources pack of 12', 'quantity': 2}, {'itemID': 135, 'itemName': 'Chalk', 'itemDescription': 'White Box 12ct', 'quantity': 2}, {'itemID': 67, 'itemName': 'Hair Spray', 'itemDescription': 'Extra Strength', 'quantity': 1}]
-    }
-    ]
+    requestData = [ [[{'requestID': 12, 'needByDate': 'April 19, 2020', 'requestDate': 'April 17, 2020', 'instructions': 'Please leave on the front porch and ring the doorbell.', 'username': 'enigMAN', 'firstName': 'Alan', 'lastName': 'Turing', 'userStreet': 'Hampton Road', 'userCity': 'Teddington', 'userState': 'EN', 'userZip': 'TW110', 'userPhone': '360-555-5555', 'userEmail': 'aturing@oregonstate.edu', 'count': 4}], 
+[{'itemID': 35, 'itemName': 'Toilet Paper', 'itemDescription': 'Recycled Sources pack of 12', 'quantity': 2}, {'itemID': 45, 'itemName': 'Paper Towels', 'itemDescription': 'Extra Strength 6 pack', 'quantity': 1}, {'itemID': 122, 'itemName': 'Rice', 'itemDescription': '1 lb bag', 'quantity': 4}, {'itemID': 98, 'itemName': 'Face Mask', 'itemDescription': 'cloth with filter pocket', 'quantity': 1}]], 
+[[{'requestID': 3, 'needByDate': 'March 8, 2020', 'requestDate': 'March 1, 2020', 'instructions': 'I am a vegan, so anything animal-free is great', 'username': 'bigBrain', 'firstName': 'Albert', 'lastName': 'Einstein', 'userStreet': 'Hampton Road', 'userCity': 'Teddington', 'userState': 'EN', 'userZip': 'TW110', 'userPhone': '415-555-5555', 'userEmail': 'headhoncho@oregonstate.edu', 'count': 3}], [{'itemID': 35, 'itemName': 'Toilet Paper', 'itemDescription': 'Recycled Sources pack of 12', 'quantity': 2}, {'itemID': 135, 'itemName': 'Chalk', 'itemDescription': 'White Box 12ct', 'quantity': 2}, {'itemID': 67, 'itemName': 'Hair Spray', 'itemDescription': 'Extra Strength', 'quantity': 1}]] ]
+
     # if no data has been submitted, display the registration page
     return render_template('displayFulfillment.html', title='Your Request', fulfillmentData=fulfillmentData, requestData=requestData, form=form)
