@@ -4,7 +4,7 @@ from flask_wtf import FlaskForm
 from datetime import date, datetime
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, HiddenField
 from wtforms.fields.html5 import DateField, DateTimeField, IntegerField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, NumberRange, Optional	
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, NumberRange, Optional
 from wtforms_components import DateRange
 from project import get_db
 import mysql.connector
@@ -93,3 +93,7 @@ class DeleteRequestForm(FlaskForm):
 class DeleteFulfillmentForm(FlaskForm):
 	fulfillmentID = HiddenField('Fulfillment ID')
 	submit = SubmitField('Delete Fulfillment')
+
+class SearchForm(FlaskForm):
+	searchZip = StringField('Find Requests by Zip Code', validators=[DataRequired()])
+	submit = SubmitField('Search')

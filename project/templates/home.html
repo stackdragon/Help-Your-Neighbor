@@ -1,16 +1,62 @@
 {% extends "layout.html" %}
-{% block content %}
+
 <h3>The following neighbors need help now:</h3>
 <br>
-{% for row in data %}
-  <div class="row">
-    <div class="col-md-8">
-	    <button type="button" class="btn btn-success">Help this Neighbor</button>
-      <div class="content-section">
-			  <p class='text'><strong>{{ row.city }} ({{ row.zip }})</strong>: {{ row.userName }} needs <kbd>{{ row.item1 }}</kbd>  (qty: {{ row.qty1 }}) by {{ row.needByDate }}.</p>
-			  <p class ='text'><em>Special instructions:</em> {{ row.specialInstructions }}
-	    </div>
-	  </div>
-  </div>
-{% endfor %}
+{% block content %}
+
+<div class="container">
+	<div class="row">
+
+		<div class="col-md-8">
+			{% for row in data %}
+			<div class="col-md-12">
+				<button type="button" class="btn btn-outline-info">Help this Neighbor</button>
+				<div class="content-section">
+					<p class='text'>
+						<strong>{{ row.city }} ({{ row.zip }})</strong>: {{ row.userName }} needs <kbd>{{ row.item1 }}</kbd>  
+					(qty: {{ row.qty1 }}) by {{ row.needByDate }}.</p>
+					<p class ='text'><em>Special instructions:</em> {{ row.specialInstructions }} </p>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+
+		<div class="col-md-4">
+
+			<form method="POST" action ="">
+
+				{{ form.hidden_tag() }} <!-- This function inserts the CSRF security token. Required by WTForms -->
+				<div class="form-group">
+										{{ form.searchZip.label(class="form-control-label") }}
+
+					<div class="row">
+						<div class="col-md-8">
+
+							<!-- display error messages if address is zip code incorrectly -->
+							{% if form.searchZip.errors %}
+							{{ form.seachZip(class="form-control form-control-md is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.searchZip.errors %}
+								<span> {{ error }} </span>
+								{% endfor %}
+							</div>
+							<!-- otherwise, display email entry input field -->
+							{% else %}
+							{{ form.searchZip(class="form-control form-control-md") }}
+							{% endif %}
+						</div>
+						
+						<div class="form-group">
+							<div class="col-md-4">
+								{{ form.submit(class="btn btn-outline-info")}}
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</form>
+		</div>
+	</div>
+</div>
 {% endblock content %}

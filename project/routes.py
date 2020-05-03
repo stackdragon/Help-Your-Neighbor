@@ -2,7 +2,7 @@
 from flask import render_template, url_for, flash, redirect, request
 
 # import wtForm classes for registration and login forms
-from project.forms import RegistrationForm, LoginForm, AddForm, UpdateForm, DeleteRequestForm, DeleteFulfillmentForm
+from project.forms import RegistrationForm, LoginForm, AddForm, UpdateForm, DeleteRequestForm, DeleteFulfillmentForm, SearchForm
 
 # import User model needed for session validation
 from project.models import User
@@ -52,10 +52,21 @@ requests = [
     ]
 
 #home page route
-@app.route('/')
-@app.route('/home')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/home', methods=['GET', 'POST'])
 def home():
-    
+
+    # set up search bar form object
+    form = SearchForm()
+
+    # if zip code form is validly submitted
+    if form.validate_on_submit():
+
+        # query db for requests matching that zip code here
+
+        # display success message (this is temporary just to show the form works)
+        flash(f'In the final version of the app, this will query the Requests table and display requests that match zip code { form.searchZip.data }', 'success')
+
     db = get_db()
 
     # set up db cursor
@@ -68,7 +79,7 @@ def home():
     mycursor.close()
 	
     # render the homepage template, passing data to display
-    return render_template('home.html', data = requests)
+    return render_template('home.html', data = requests, form = form)
 
 #about page route
 @app.route('/about')
