@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="container">
+<div class="container pb-4">
   <div class="row">
     <div class="col">
       	<h4 class="h4">Your Fulfillment # {{fulfillmentData.fulfillmentID}}</h4>
@@ -19,52 +19,59 @@
 
 
 {% for request in requestData %}
-<div class="col pb-4">
-	<div class="content-section">
-		<table class="table table-striped table-sm table-responsive-sm">
-		  <thead>
-		    <tr>
-		      <th scope="col">Requester</th>
-		      <th scope="col">Address</th>
-		      <th scope="col">Phone</th>
-		      <th scope="col">Email</th>
-		      <th scope="col">Need By</th>
-		    </tr>
-		  </thead>
-		  <tbody>
-		  	{% for item in request[0] %}
-			  	<tr>
-					<td>{{item.firstName}} {{item.lastName}}</td>
-			      	<td> 
-			      		<p>{{item.userStreet}}</p>
-			      		<p>{{item.userCity}}, {{item.userState}} {{item.userZip}}</p>
-			      	</td>
-			      	<td>{{item.userPhone}}</td>
-					<td>{{item.userEmail}}</td>
-					<td>{{item.needByDate}}</td>
+<div class="container pb-4">
+	<div class="content-section row">
+		<div class="col-8">
+			<table class="table table-striped table-sm table-responsive-sm">
+			  <h3>Requester Information</h3>
+			  <tbody>
+			  	{% for item in request[0] %}
+				  	<tr>
+				  		<th scope="col">Requester</th>
+						<td>{{item.firstName}} {{item.lastName}}</td>
+					</tr>
+					<tr>
+						<th scope="col">Address</th>
+						<td> 
+				      		<p>{{item.userStreet}}</p>
+				      		<p>{{item.userCity}}, {{item.userState}} {{item.userZip}}</p>
+				      	</td>
+					</tr>
+					<tr>
+						<th scope="col">Phone</th>
+						<td>{{item.userPhone}}</td>
+					</tr>
+					<tr>
+						<th scope="col">Email</th>
+						<td>{{item.userEmail}}</td>
+					</tr>
+					<tr>
+						<th scope="col">Need By</th>
+						<td>{{item.needByDate}}</td>
+					</tr>
+				{% endfor %}			    
+			  </tbody>
+			</table>
+		</div>
+		
+		<div class="col-4">
+			<table class="table table-striped table-sm table-responsive-sm">
+			  <thead>
+			    <tr>
+			      <th scope="col">Item Name</th>
+			      <th scope="col">Quantity</th>
 			    </tr>
-			{% endfor %}			    
-		  </tbody>
-		</table>
-		<div></div>
-		<table class="table table-striped table-sm table-responsive-sm">
-		  <thead>
-		    <tr>
-		      <th scope="col">Item Name</th>
-		      <th scope="col">Description</th>
-		      <th scope="col">Quantity</th>
-		    </tr>
-		  </thead>
-		  <tbody>
-		  	{% for item in request[1] %}
-			  	<tr>
-					<th>{{item.itemName}}</th>
-					<td>{{item.itemDescription}}</td>
-					<td>{{item.quantity}}</td>
-			    </tr>
-			{% endfor %}			    
-		  </tbody>
-		</table>
+			  </thead>
+			  <tbody>
+			  	{% for item in request[1] %}
+				  	<tr>
+						<th>{{item.itemName}}</th>
+						<td>{{item.quantity}}</td>
+				    </tr>
+				{% endfor %}			    
+			  </tbody>
+			</table>
+		</div>
 	</div>
 </div>
 {% endfor %}
