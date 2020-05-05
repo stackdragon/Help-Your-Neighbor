@@ -9,30 +9,42 @@
 		<div class="col-md-8">
 			{% for row in data %}
 			<div class="col-md-12">
-				<button type="button" id="{{ row.requestID }}" class="btn btn-outline-info">Help this Neighbor</button>
-
-				<!-- use jQuery to change button label to add / remove from cart -->
-				<script>
-					$(document).ready(function () {
-						$('#{{ row.requestID }}').on('click', function(event) {
-							var buttonText = $(this).text();
-							if (buttonText == 'Help this Neighbor') {
-								$('#{{ row.requestID }}').text('In Cart');
-								$('#{{ row.requestID }}').removeClass("btn-outline-info").addClass("btn-success");
-							}
-							else {
-								$('#{{ row.requestID }}').text('Help this Neighbor');
-								$('#{{ row.requestID }}').removeClass("btn-success").addClass("btn-outline-info");
-							}
-						});
-					});
-				</script>
-
+				
 				<div class="content-section">
-					<p class='text'>
-						<strong>{{ row.city }} ({{ row.zip }})</strong>: {{ row.userName }} needs <kbd>{{ row.item1 }}</kbd>  
-					(qty: {{ row.qty1 }}) by {{ row.needByDate }}.</p>
-					<p class ='text'><em>Special instructions:</em> {{ row.specialInstructions }} </p>
+
+					<button type="button" id="{{ row[8] }}" class="btn btn-outline-info">Help this Neighbor</button>
+
+					<!-- use jQuery to change button label to add / remove from cart -->
+					<script>
+						$(document).ready(function () {
+							$('#{{ row[8] }}').on('click', function(event) {
+								var buttonText = $(this).text();
+								if (buttonText == 'Help this Neighbor') {
+									$('#{{ row[8] }}').text('In Cart');
+									$('#{{ row[8] }}').removeClass("btn-outline-info").addClass("btn-success");
+								}
+								else {
+									$('#{{ row[8] }}').text('Help this Neighbor');
+									$('#{{ row[8] }}').removeClass("btn-success").addClass("btn-outline-info");
+								}
+							});
+						});
+					</script>
+
+					<!-- Display open request -->
+					<table class="table table-sm table-responsive-sm">
+						<thead class="thead-light">
+							<tr>
+								<th><strong> {{ row[0] }}</strong></th> <th>{{ row[8] }}, {{ row[9] }} {{ row[1] }}</th> <th class="text-right"> Deliver by: {{ row[3] }}</th><br><br>
+							</tr>
+						</thead>
+					</table>
+
+					<ul class="list-group">
+						<li class="list-group-item">{{ row[6] }}</li>
+					</ul>
+
+
 				</div>
 			</div>
 			{% endfor %}

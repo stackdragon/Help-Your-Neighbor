@@ -19,28 +19,10 @@ from project import bcrypt
 # import flask-login
 from flask_login import login_user, logout_user, current_user, login_required
 
-
-
 #home page route
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
 def home():
-
-    # queue db for open requests
-    # dummy data for now
-    requests = [
-    {
-        'requestID': 1,'city': 'San Francisco','zip': '94016','userName': 'Bob437','item1': 'Toilet paper',
-        'qty1': 4,'needByDate': 'May 9, 2020','specialInstructions': 'Please leave on back porch steps.'
-    },
-
-    {
-        'requestID': 2,'city': 'San Francisco','zip': '94118','userName': 'catlady','item1': 'Cat food','qty1': 1,'needByDate': 'May 8, 2020','specialInstructions': 'Precious only eats Fancy Feast.'
-    },
-    {
-        'requestID': 3,'city': 'Oakland','zip': '94604','userName': 'PlantLuvr','item1': 'Tofu','qty1': 5,'needByDate': 'May 12, 2020','specialInstructions': 'Organic please.'
-    }
-    ]
 
     # set up search bar form object
     form = SearchForm()
@@ -58,9 +40,18 @@ def home():
     # set up db cursor
     mycursor = db.cursor()
 
-    # the query to get and display all of the open requests needs to go here
-    # mycursor.execute("""SELECT userID, userName, userEmail FROM Users;""")
-    # requests = mycursor.fetchall()
+    #the query to get and display all of the open requests needs to go here
+    query = """SELECT u.userName, u.userZip, r.requestDate, r.needByDate, r.specialInstructions, ri.quantity, i.itemname, r.requestID, u.userCity, u.userState, i.itemID
+               FROM users u
+               INNER JOIN requests r ON u.userID = r.uID
+               INNER JOIN requestedItems ri ON r.requestID = ri.iID
+               INNER JOIN items i ON ri.iID = i.itemID
+               WHERE r.fID IS NULL
+               ORDER BY r.requestID ASC;"""
+
+    # parse db server-side here
+    mycursor.execute(query)
+    requests = mycursor.fetchall()
 
     mycursor.close()
 	
