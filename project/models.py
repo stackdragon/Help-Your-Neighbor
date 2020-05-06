@@ -39,11 +39,14 @@ def load_user(user_id):
 
 
 
-# class will retrieve all requests from MySQL db and has handy methods for working with requests data
+# class will retrieve all unfilfilled requests 
 class Requests():
 
 	# on initialization, get all open requests
-	def __init__(self):
+	def __init__(self, searchZip):
+
+		# grab the zip code that was passed as an argument
+		self.searchZip = searchZip
 
 		# create a new dictionary to store all of the open requests
 		self.openRequestsDict = {};
@@ -58,7 +61,7 @@ class Requests():
 								INNER JOIN requests r ON u.userID = r.uID
 								INNER JOIN requestedItems ri ON r.requestID = ri.rID
 								INNER JOIN items i ON ri.iID = i.itemID
-								WHERE r.fID IS NULL
+								WHERE r.fID IS NULL { self.searchZip }
 								ORDER BY r.requestID ASC;"""
 
 		mycursor.execute(query)

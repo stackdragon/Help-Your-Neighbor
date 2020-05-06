@@ -15,20 +15,20 @@
 				
 				<div class="content-section">
 
-					<button type="button" id="{{ row[8] }}" class="btn btn-outline-info">Help this Neighbor</button>
+					<button type="button" id="{{ row }}" class="btn btn-outline-info">Help this Neighbor</button>
 
 					<!-- use jQuery to change button label to add / remove from cart -->
 					<script>
 						$(document).ready(function () {
-							$('#{{ row[8] }}').on('click', function(event) {
+							$('#{{ row }}').on('click', function(event) {
 								var buttonText = $(this).text();
 								if (buttonText == 'Help this Neighbor') {
-									$('#{{ row[8] }}').text('In Cart');
-									$('#{{ row[8] }}').removeClass("btn-outline-info").addClass("btn-success");
+									$('#{{ row }}').text('In Cart');
+									$('#{{ row }}').removeClass("btn-outline-info").addClass("btn-success");
 								}
 								else {
-									$('#{{ row[8] }}').text('Help this Neighbor');
-									$('#{{ row[8] }}').removeClass("btn-success").addClass("btn-outline-info");
+									$('#{{ row }}').text('Help this Neighbor');
+									$('#{{ row }}').removeClass("btn-success").addClass("btn-outline-info");
 								}
 							});
 						});
@@ -44,7 +44,7 @@
 					</table>
 
 					<!-- iterate over list of items for this user -->
-					<ul class="list-group">
+					<ul class="list-group list-group-flush">
 						{% for i in data[row]['items']  %}
 						<li class="list-group-item"> {{ i['itemName'] }} (qty: {{ i['quantity'] }})</li>
 						{% endfor %}

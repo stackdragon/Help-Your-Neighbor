@@ -33,12 +33,17 @@ def home():
     # if zip code form is validly submitted
     if form.validate_on_submit():
 
-        # query db for requests matching that zip code here
+        # grab the zip code that was entered
+        searchZip = f"AND u.userZip = '{form.searchZip.data}'"
 
-        # display success message (this is temporary just to show the form works)
-        flash(f'In the final version of the app, this will query the Requests table and display requests that match zip code { form.searchZip.data }', 'success')
+        # display success message if user successfully registered
+        flash(f'Returning results for zip code {form.searchZip.data}', 'success')
 
-    openRequestsObj = Requests()
+    # otherwise return any zip code
+    else:
+        searchZip = ''
+
+    openRequestsObj = Requests(searchZip)
 
     requests = openRequestsObj.get_open_requests()
 
