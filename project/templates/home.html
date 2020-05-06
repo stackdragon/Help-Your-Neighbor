@@ -7,7 +7,10 @@
 	<div class="row">
 
 		<div class="col-md-8">
-			{% for row in data %}
+			{% for row in data.keys() %}
+			<script>
+				console.log("hi");
+			</script>
 			<div class="col-md-12">
 				
 				<div class="content-section">
@@ -35,16 +38,18 @@
 					<table class="table table-sm table-responsive-sm">
 						<thead class="thead-light">
 							<tr>
-								<th><strong> {{ row[0] }}</strong></th> <th>{{ row[8] }}, {{ row[9] }} {{ row[1] }}</th> <th class="text-right"> Deliver by: {{ row[3] }}</th><br><br>
+								<th><strong>{{ data[row]['userName'] }}</strong></th> <th>{{ data[row]['userCity'] }}, {{ data[row]['userState'] }} {{ data[row]['userZip'] }} </th> <th class="text-right"> Deliver by: {{ data[row]['needByDate'] }}</th><br><br>
 							</tr>
 						</thead>
 					</table>
 
+					<!-- iterate over list of items for this user -->
 					<ul class="list-group">
-						<li class="list-group-item">{{ row[6] }}</li>
+						{% for i in data[row]['items']  %}
+						<li class="list-group-item"> {{ i['itemName'] }} (qty: {{ i['quantity'] }})</li>
+						{% endfor %}
+						<li class="list-group-item"><strong>Instructions: </strong> {{ data[row]['specialInstructions']}}</li>
 					</ul>
-
-
 				</div>
 			</div>
 			{% endfor %}

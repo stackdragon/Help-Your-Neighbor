@@ -5,7 +5,7 @@ from flask import render_template, url_for, flash, redirect, request
 from project.forms import RegistrationForm, LoginForm, AddForm, UpdateForm, DeleteRequestForm, DeleteFulfillmentForm, SearchForm, cartForm
 
 # import User model needed for session validation
-from project.models import User
+from project.models import User, Requests
 
 # import app
 from project import app
@@ -18,6 +18,9 @@ from project import bcrypt
 
 # import flask-login
 from flask_login import login_user, logout_user, current_user, login_required
+
+# allows printing to console (for debugging)
+import sys
 
 #home page route
 @app.route('/', methods=['GET', 'POST'])
@@ -35,26 +38,10 @@ def home():
         # display success message (this is temporary just to show the form works)
         flash(f'In the final version of the app, this will query the Requests table and display requests that match zip code { form.searchZip.data }', 'success')
 
-    db = get_db()
+    openRequestsObj = Requests()
 
-    # set up db cursor
-    mycursor = db.cursor()
+    requests = openRequestsObj.get_open_requests()
 
-    #the query to get and display all of the open requests needs to go here
-    query = """SELECT u.userName, u.userZip, r.requestDate, r.needByDate, r.specialInstructions, ri.quantity, i.itemname, r.requestID, u.userCity, u.userState, i.itemID
-               FROM users u
-               INNER JOIN requests r ON u.userID = r.uID
-               INNER JOIN requestedItems ri ON r.requestID = ri.iID
-               INNER JOIN items i ON ri.iID = i.itemID
-               WHERE r.fID IS NULL
-               ORDER BY r.requestID ASC;"""
-
-    # parse db server-side here
-    mycursor.execute(query)
-    requests = mycursor.fetchall()
-
-    mycursor.close()
-	
     # render the homepage template, passing data to display
     return render_template('home.html', data = requests, form = form)
 
