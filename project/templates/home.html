@@ -35,21 +35,23 @@
 					</script>
 
 					<!-- Display open request -->
-					<table class="table table-sm table-responsive-sm">
+					<table class="table table-sm table-responsive-sm table-bordered">
 						<thead class="thead-light">
 							<tr>
-								<th><strong>{{ data[row]['userName'] }}</strong></th> <th>{{ data[row]['userCity'] }}, {{ data[row]['userState'] }} {{ data[row]['userZip'] }} </th> <th class="text-right"> Deliver by: {{ data[row]['needByDate'] }}</th><br><br>
+								<th><strong>{{ data[row]['userName'] }}</strong>  ({{ data[row]['userCity'] }}, {{ data[row]['userState'] }} {{ data[row]['userZip'] }})</th> <th class="text-right"> Deliver by: {{ data[row]['needByDate'] }}</th><br><br>
 							</tr>
 						</thead>
+						<tbody>
+							<tr class="table-primary">
+								<td>Item needed</td><td>Quantity needed</td>
+							</tr>
+							{% for i in data[row]['items']  %}
+							<tr>
+								<td>{{ i['itemName'] }}</td><td>{{ i['quantity'] }}</td>
+							</tr>
+							{% endfor %}
+						</tbody>
 					</table>
-
-					<!-- iterate over list of items for this user -->
-					<ul class="list-group list-group-flush">
-						{% for i in data[row]['items']  %}
-						<li class="list-group-item"> {{ i['itemName'] }} (qty: {{ i['quantity'] }})</li>
-						{% endfor %}
-						<li class="list-group-item"><strong>Instructions: </strong> {{ data[row]['specialInstructions']}}</li>
-					</ul>
 				</div>
 			</div>
 			{% endfor %}
