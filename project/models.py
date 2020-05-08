@@ -3,41 +3,14 @@
 from project import login_manager, get_db
 from flask_login import UserMixin
 
-# this is the User class required by Flask-login
-class User(UserMixin):
-	def __init__(self, id, email, password):
-		self.id = id
-		self.email = email
-		self.password = password
-
-# required per Flask-login
-@login_manager.user_loader
-def load_user(user_id):
-
-	# set up db cursor
-	db = get_db()
-	mycursor = db.cursor()
-
-	# see if the user email exists in the db. grab email address and password
-	query = f"SELECT userID, userEmail, userPW from Users WHERE userID='{user_id}';"
-	mycursor.execute(query)
-	user = mycursor.fetchone()
-	mycursor.close()
-
-	if user: 
-		# grab the email address and password from the query
-		id = user[0]
-		email = user[1]
-		password = user[2]
-
-		# create new user object
-		userObj = User(id, email, password)
-		return userObj
-
-	# if user is not found, return none
-	return user
-
-# class will retrieve all rows in the Items table (used for the autocomplete in add.html)
+############################################################################################
+# custom class for working with Items data                                                 #
+# Methods:																																								 #
+#   getItems(): returns a list of all items in the Items table                             #
+#   is_in_items(itemname): returns True if item name is included in Items table,           #
+#                          False if not                                                    #
+#   addItem(itemName): adds ann item with the passed name to the Items table               #
+############################################################################################
 class Items():
 		# on initialization, get all open requests
 	def __init__(self):
@@ -46,7 +19,7 @@ class Items():
 		db = get_db()
 		mycursor = db.cursor()
 
-		# see if the user email exists in the db. grab email address and password
+		# grab all items in the db
 		query = f"""SELECT itemName FROM items;"""
 
 		mycursor.execute(query)
@@ -61,8 +34,45 @@ class Items():
 		# return a list of all items
 		return self.itemsData
 
+	def is_in_items(self, itemName):
 
-# class will retrieve all unfilfilled requests 
+		# check to see if a given item is in the Items table
+		db = get_db()
+		mycursor = db.cursor()
+
+		query = f"""select itemName from Items where itemName='{itemName}';"""
+		mycursor.execute(query)
+		self.result = mycursor.fetchall()
+		mycursor.close()
+
+		# if query result is not null, item is in the table
+		if self.result:
+			return True
+
+		else:
+			return False
+
+	def addItem(self, itemName):
+
+		# check to see if a given item is in the Items table
+		db = get_db()
+		mycursor = db.cursor()
+
+		query = f"""INSERT INTO Items (itemName) VALUES ('{itemName}');"""
+		mycursor.execute(query)
+
+		# commit the query
+		db.commit()
+		mycursor.close()
+
+
+############################################################################################
+# class for working with requests                                                          #
+# Methods:																																								 #
+#   getOpenRequests(): returns a dictionary of all open requests                           #
+#   add_request(items, quantities, userID, requestDate, needByDate, specialInstructions):  #
+#       adds a request to the db                                                           #
+############################################################################################
 class Requests():
 
 	# on initialization, get all open requests
@@ -130,3 +140,80 @@ class Requests():
 
 		# return the dictionary of all open requests
 		return self.openRequestsDict
+
+	def add_request(self, items, quantities, userID, requestDate, needByDate, specialInstructions):
+
+		db = get_db()
+		mycursor = db.cursor()
+
+		# build queries to add request to database tables
+		query = f"INSERT INTO Requests(requestDate, needByDate, specialInstructions, uID) VALUES ('{ requestDate.pop() }', '{ needByDate.pop() }', '{ specialInstructions.pop() }', { userID });"""
+		mycursor.execute(query)
+		db.commit()
+		mycursor.close()
+
+		# get id for request that was just added
+		mycursor = db.cursor()
+		query = f"""SELECT LAST_INSERT_ID();"""
+		mycursor.execute(query)
+		requestID = mycursor.fetchone()
+		mycursor.close()
+
+		# iterate over items list
+		itemListLength = len(items)
+
+		for i in range(itemListLength):
+
+			#grab item id
+			mycursor = db.cursor()
+			query = f"""SELECT itemID from Items WHERE itemName = '{ items[i] }';"""
+			mycursor.execute(query)
+			itemID = mycursor.fetchone()
+			mycursor.close()
+
+			#insert item id, requestid, and quantity into requestedItems table
+			mycursor = db.cursor()
+			query = f"""INSERT INTO requestedItems (iID, rID, quantity) VALUES ({ itemID[0] }, { requestID[0] }, { quantities[i] });"""
+			mycursor.execute(query)
+			db.commit()
+			mycursor.close()
+
+
+############################################################################################
+# this is the User class required by Flask-login                                           #
+############################################################################################
+class User(UserMixin):
+	def __init__(self, id, email, password):
+		self.id = id
+		self.email = email
+		self.password = password
+
+############################################################################################
+# this is the login manager class required by Flask-login                                  #
+############################################################################################
+# required per Flask-login
+@login_manager.user_loader
+def load_user(user_id):
+
+	# set up db cursor
+	db = get_db()
+	mycursor = db.cursor()
+
+	# see if the user email exists in the db. grab email address and password
+	query = f"SELECT userID, userEmail, userPW from Users WHERE userID='{user_id}';"
+	mycursor.execute(query)
+	user = mycursor.fetchone()
+	mycursor.close()
+
+	if user: 
+		# grab the email address and password from the query
+		id = user[0]
+		email = user[1]
+		password = user[2]
+
+		# create new user object
+		userObj = User(id, email, password)
+		return userObj
+
+	# if user is not found, return none
+	return user

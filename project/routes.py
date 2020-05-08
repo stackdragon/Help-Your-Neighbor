@@ -109,10 +109,38 @@ def add():
     # create add item form object
     form = AddForm()
 
-    # if add itme form is validly submitted
+    # if add item form is validly submitted
     if form.validate_on_submit():
 
-        # query db and add request here
+        # grab the items and quantities that were added to the request
+        requestItems = {form.itemsAdded.data}
+        requestQuantities = {form.quantitiesAdded.data}
+
+        # convert form result to a comma separated list for processing
+        for line in requestItems:
+            requestItemsList = line.split (",")
+
+        for line in requestQuantities:
+            requestQuantitiesList = line.split (",")
+
+        # create items object
+        itemsObj = Items()
+
+        # iterate over the items in the request and verify if they are in the Items table
+        for item in requestItemsList:
+            inItems = itemsObj.is_in_items(item)
+            
+            # if item is not in the Items table, add it
+            if inItems != True:
+                itemsObj.addItem(item)
+
+        # create a new requests object
+        requests = Requests('')
+
+        specialInstructions = form.specialInstructions.data
+
+        # add request to Requests table
+        requests.add_request(requestItemsList, requestQuantitiesList, current_user.id, {form.dateRequested.data}, {form.dateNeeded.data}, {specialInstructions})
 
         # display success message (this is temporary just to show the form works)
         flash(f'You created a new request!', 'success')

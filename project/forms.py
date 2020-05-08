@@ -61,10 +61,13 @@ class LoginForm(FlaskForm):
 	submit = SubmitField('Login')
 
 class AddForm(FlaskForm):
-	autocomp = StringField('Item', id='item_autocomplete', validators=[DataRequired(), Length(min=2, max=30)])
-	qty = IntegerField('Quantity', id='qty', validators=[DataRequired(), NumberRange(min=1, max=5)])
+	autocomp = StringField('Item', id='item_autocomplete')
+	qty = IntegerField('Quantity', id='qty')
 	dateNeeded = DateField('Request Needed By', default=date.today, validators=[DateRange(min=date.today())])
+	dateRequested = HiddenField(default=date.today)
 	specialInstructions = StringField('Special Instructions (if any)', validators=[Optional(), Length(min=2, max=200)])
+	itemsAdded = HiddenField('itemsAdded', default="", id="hiddenItems", validators=[DataRequired(message="A request needs to include at least 1 item")]) # used for validating whether any items have been added to the request
+	quantitiesAdded = HiddenField('quantitiesAdded', default="", id="hiddenQuantities")
 	submit = SubmitField('Submit Request')
 
 class UpdateForm(FlaskForm):
