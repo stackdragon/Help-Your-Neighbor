@@ -37,6 +37,29 @@ def load_user(user_id):
 	# if user is not found, return none
 	return user
 
+# class will retrieve all rows in the Items table (used for the autocomplete in add.html)
+class Items():
+		# on initialization, get all open requests
+	def __init__(self):
+
+		# set up db cursor
+		db = get_db()
+		mycursor = db.cursor()
+
+		# see if the user email exists in the db. grab email address and password
+		query = f"""SELECT itemName FROM items;"""
+
+		mycursor.execute(query)
+
+		# convert mysql result (which is in tuple) to be in a standard list
+		# because jquery autocomplete requires data to be in list format
+		self.itemsData = [item[0] for item in mycursor.fetchall()]
+		mycursor.close()
+
+	def get_items(self):
+
+		# return a list of all items
+		return self.itemsData
 
 
 # class will retrieve all unfilfilled requests 

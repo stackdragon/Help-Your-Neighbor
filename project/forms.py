@@ -61,15 +61,11 @@ class LoginForm(FlaskForm):
 	submit = SubmitField('Login')
 
 class AddForm(FlaskForm):
-	item1 = StringField('Item Needed', validators=[DataRequired(), Length(min=2, max=30)])
-	qty1 = IntegerField('Quantity', validators=[DataRequired(), NumberRange(min=1, max=5)])
-	item2 = StringField('Additional Item Needed (if any)', validators=[Optional(), Length(min=2, max=30)])
-	qty2 = IntegerField('Quantity', validators=[Optional(), NumberRange(min=1, max=5)])
-	item3 = StringField('Additional Item Needed (if any)', validators=[Optional(), Length(min=2, max=30)])
-	qty3 = IntegerField('Quantity', validators=[Optional(), NumberRange(min=1, max=5)])
+	autocomp = StringField('Item', id='item_autocomplete', validators=[DataRequired(), Length(min=2, max=30)])
+	qty = IntegerField('Quantity', id='qty', validators=[DataRequired(), NumberRange(min=1, max=5)])
 	dateNeeded = DateField('Request Needed By', default=date.today, validators=[DateRange(min=date.today())])
 	specialInstructions = StringField('Special Instructions (if any)', validators=[Optional(), Length(min=2, max=200)])
-	submit = SubmitField('Submit')
+	submit = SubmitField('Submit Request')
 
 class UpdateForm(FlaskForm):
 	firstName = StringField('First Name', validators=[DataRequired(), Length(min=2, max=20)])

@@ -1,190 +1,171 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="col-md-12">
-	<h3>Make a request</h3>
-	<p class="text-justify">On this page you can request help from your neighbors. Just enter the items needed, the quantities you need, and the date your request is needed by. Your request will then be posted for fulfillment by other Help Your Neighbor users.</p>
-</div>
-<div class="col-md-8">
-	<div class="content-section">
-		<form method="POST" action ="">
-			{{ form.hidden_tag() }} <!-- This function inserts the CSRF security token. Required by WTForms -->
-			<fieldset class = "form group">
-				
-				<div class="form-group">
-					<div class ="form-row">
-						<div class="col-md-10">
-							<!-- display item entry label -->	
-							{{ form.item1.label(class="form-control-label") }}
+	<div class="col-md-10">
+		<h3>Make a Request</h3>
+		Build your request by adding up to five different items and the quantities that you need. <br><br>
+		<p class="text-justify"><strong>Note to grader:</strong> We query the Items table using a SELECT query to populate the autocomplete suggestions in the item entry field. Items not found in the Items table are added using INSERT. This is done in order to fulfill the project specification which requires that we have an INSERT for each table.</p><br>
+	</div>
 
+	<!-- this is the item entry part of the page -->
+	<div class="col-md-10">
+		<div class="content-section">
+			<form class="form-horizontal">
+				<div class ="form-group">
+					<div class="row">
+						<div class="col-md-1">
+							<center>
+								{{ form.autocomp.label(class="form-control-label") }}
+							</center>
+						</div>
+						<div class="col-md-6">
 							<!-- display error message if item is entered incorrectly -->
-							{% if form.item1.errors %}
-							{{ form.item1(class="form-control form-control-sm is-invalid") }}
+							{% if form.autocomp.errors %}
+							{{ form.autocomp(class="form-control form-control-md is-invalid") }}
 							<div class="invalid-feedback">
-								{% for error in form.item1.errors %}
+								{% for error in form.autocomp.errors %}
 								<span> {{ error }} </span>
 								{% endfor %}
 							</div>
 
 							<!-- otherwise, display item entry input field -->
 							{% else %}
-							{{ form.item1(class="form-control form-control-sm") }}
+							{{ form.autocomp(class="form-control form-control-sm") }}
 							{% endif %}
+							<!-- autocomplete script adapted from https://github.com/LukasSliacky/Flask-Autocomplete/-->
+							<script>
+								$(function() {
+									$.ajax({
+										url: '{{ url_for("autocomplete") }}'
+									}).done(function (data){
+										$('#item_autocomplete').autocomplete({
+											source: data,
+											minLength: 1,
+											select: function(event, ui) { 
+												$("#item_autocomplete").submit(); }
+											});
+									});
+								});
+							</script>
 						</div>
-						<div class="col-md-2">	
-							<!-- display quantity entry label -->	
-							{{ form.qty1.label(class="form-control-label") }}
 
-							<!-- display error message if qty is entered incorrectly -->
-							{% if form.qty1.errors %}
-							{{ form.qty1(class="form-control form-control-sm is-invalid") }}
-							<div class="invalid-feedback">
-								{% for error in form.qty1.errors %}
-								<span> {{ error }} </span>
-								{% endfor %}
-							</div>
-
-							<!-- otherwise, display qty entry input field -->
-							{% else %}
-							{{ form.qty1(class="form-control form-control-sm") }}
-							{% endif %}
+						<div class="col-md-1">
+							<center>
+								{{ form.qty.label(class="form-control-label") }}
+							</center>
 						</div>
-					</div>
-				</div>
 
-				<div class="form-group">
-					<div class ="form-row">
-						<div class="col-md-10">
-							<!-- display item entry label -->	
-							{{ form.item2.label(class="form-control-label") }}
-
-							<!-- display error message if item is entered incorrectly -->
-							{% if form.item2.errors %}
-							{{ form.item2(class="form-control form-control-sm is-invalid") }}
+						<div class="col-md-2">
+							<!-- display error message if quantity is entered incorrectly -->
+							{% if form.qty.errors %}
+							{{ form.qty(class="form-control form-control-sm is-invalid") }}
 							<div class="invalid-feedback">
-								{% for error in form.item2.errors %}
-								<span> {{ error }} </span>
-								{% endfor %}
-							</div>
-
-							<!-- otherwise, display item entry input field -->
-							{% else %}
-							{{ form.item2(class="form-control form-control-sm") }}
-							{% endif %}
-						</div>
-						<div class="col-md-2">	
-							<!-- display quantity entry label -->	
-							{{ form.qty2.label(class="form-control-label") }}
-
-							<!-- display error message if qty is entered incorrectly -->
-							{% if form.qty2.errors %}
-							{{ form.qty2(class="form-control form-control-sm is-invalid") }}
-							<div class="invalid-feedback">
-								{% for error in form.qty2.errors %}
-								<span> {{ error }} </span>
-								{% endfor %}
-							</div>
-
-							<!-- otherwise, display qty entry input field -->
-							{% else %}
-							{{ form.qty2(class="form-control form-control-sm") }}
-							{% endif %}
-						</div>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<div class ="form-row">
-						<div class="col-md-10">
-							<!-- display item entry label -->	
-							{{ form.item2.label(class="form-control-label") }}
-
-							<!-- display error message if item is entered incorrectly -->
-							{% if form.item2.errors %}
-							{{ form.item2(class="form-control form-control-sm is-invalid") }}
-							<div class="invalid-feedback">
-								{% for error in form.item2.errors %}
+								{% for error in form.qty.errors %}
 								<span> {{ error }} </span>
 								{% endfor %}
 							</div>
 
 							<!-- otherwise, display item entry input field -->
 							{% else %}
-							{{ form.item2(class="form-control form-control-sm") }}
+							{{ form.qty(class="form-control form-control-sm") }}
 							{% endif %}
-						</div>
-						<div class="col-md-2">	
-							<!-- display quantity entry label -->	
-							{{ form.qty2.label(class="form-control-label") }}
 
-							<!-- display error message if qty is entered incorrectly -->
-							{% if form.qty2.errors %}
-							{{ form.qty2(class="form-control form-control-sm is-invalid") }}
-							<div class="invalid-feedback">
-								{% for error in form.qty2.errors %}
-								<span> {{ error }} </span>
-								{% endfor %}
-							</div>
-
-							<!-- otherwise, display qty entry input field -->
-							{% else %}
-							{{ form.qty2(class="form-control form-control-sm") }}
-							{% endif %}
 						</div>
+
+						<div class="col-md-2">
+							<center>
+								<button type="button" id="addButton" class="btn btn-outline-info btn-sm">Add Item</button>
+							</center>
+						</div>
+
 					</div>
 				</div>
 
-			<div class="form-group">
-					<div class ="form-row">
-						<div class="col-md-10">
-							<!-- display item entry label -->	
-							{{ form.specialInstructions.label(class="form-control-label") }}
-
-							<!-- display error message if item is entered incorrectly -->
-							{% if form.specialInstructions.errors %}
-							{{ form.specialInstructions(class="form-control form-control-sm is-invalid") }}
-							<div class="invalid-feedback">
-								{% for error in form.specialInstructions.errors %}
-								<span> {{ error }} </span>
-								{% endfor %}
-							</div>
-
-							<!-- otherwise, display item entry input field -->
-							{% else %}
-							{{ form.specialInstructions(class="form-control form-control-sm") }}
-							{% endif %}
-						</div>
-					</div>
-				</div>
-
-						<div class="form-group">
-					<div class ="form-row">
-						<div class="col-md-10">
-							<!-- display item entry label -->	
-							{{ form.dateNeeded.label(class="form-control-label") }}
-
-							<!-- display error message if item is entered incorrectly -->
-							{% if form.dateNeeded.errors %}
-							{{ form.dateNeeded(class="form-control form-control-sm is-invalid") }}
-							<div class="invalid-feedback">
-								{% for error in form.dateNeeded.errors %}
-								<span> {{ error }} </span>
-								{% endfor %}
-							</div>
-
-							<!-- otherwise, display item entry input field -->
-							{% else %}
-							{{ form.dateNeeded(class="form-control form-control-sm") }}
-							{% endif %}
-						</div>
-					</div>
-				</div>
-
-			</fieldset>
-			<div class="form-group">
-				{{ form.submit(class="btn btn-outline-info")}}
-			</div>
-				</form>
+			</form>
 		</div>
+	</div>
 
+	<!-- This is the request contents part of the page -->
+
+	<div class="col-md-10">
+		<div class="content-section">
+			<div class="col-md-10">
+				<table class="table" id="items">
+					<thead>
+						<th scope="col">Requested Item Name</th>
+						<th scope="col">Quantity</th>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+
+
+			<script>
+				$(document).ready(function(){
+					$("#addButton").click(function(){
+						var item = $("#item_autocomplete").val();
+						var qty = $("#qty").val()
+						$("#items > tbody:last-child").append("<tr><td>" + item + "</td><td>" + qty + "</td></tr>");
+
+					});
+				});
+			</script>
+
+			<br>
+			<div class="form-group">
+
+				<!-- display special instructions label -->	
+				{{ form.specialInstructions.label(class="form-control-label") }}
+
+				<!-- display error message if item is entered incorrectly -->
+				{% if form.specialInstructions.errors %}
+				{{ form.specialInstructions(class="form-control form-control-sm is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.specialInstructions.errors %}
+					<span> {{ error }} </span>
+					{% endfor %}
+				</div>
+
+				<!-- otherwise, display item entry input field -->
+				{% else %}
+				{{ form.specialInstructions(class="form-control form-control-sm") }}
+				{% endif %}
+
+			</div>
+
+			<div class="form-group">
+
+				<!-- display item entry label -->	
+				{{ form.dateNeeded.label(class="form-control-label") }}
+
+				<!-- display error message if item is entered incorrectly -->
+				{% if form.dateNeeded.errors %}
+				{{ form.dateNeeded(class="form-control form-control-sm is-invalid") }}
+				<div class="invalid-feedback">
+					{% for error in form.dateNeeded.errors %}
+					<span> {{ error }} </span>
+					{% endfor %}
+				</div>
+
+				<!-- otherwise, display item entry input field -->
+				{% else %}
+				{{ form.dateNeeded(class="form-control form-control-sm") }}
+				{% endif %}
+			</div>
+
+
+			<div class="form-group">
+				<center>
+					{{ form.submit(class="btn btn-outline-info btn-lg")}}
+				</center>
+			</div>
+		</div>
+	</div>
 </div>
+
+<form method="POST" action ="">
+	{{ form.hidden_tag() }} <!-- This function inserts the CSRF security token. Required by WTForms -->
+</form>
+
 {% endblock content %}

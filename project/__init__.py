@@ -1,6 +1,9 @@
 # import mysql connector module
 import mysql.connector
 
+#import json python module
+import json
+
 # import bcrypt for password hashing
 from flask_bcrypt import Bcrypt
 

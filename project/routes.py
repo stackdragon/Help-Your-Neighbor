@@ -1,11 +1,11 @@
 # import modules for rendering templates, message display, and url generation
-from flask import render_template, url_for, flash, redirect, request
+from flask import render_template, url_for, flash, redirect, request, Response
 
 # import wtForm classes for registration and login forms
 from project.forms import RegistrationForm, LoginForm, AddForm, UpdateForm, DeleteRequestForm, DeleteFulfillmentForm, SearchForm, cartForm
 
 # import User model needed for session validation
-from project.models import User, Requests
+from project.models import User, Requests, Items
 
 # import app
 from project import app
@@ -15,6 +15,9 @@ from project import get_db
 
 # import bcrypt
 from project import bcrypt
+
+# import json
+from project import json
 
 # import flask-login
 from flask_login import login_user, logout_user, current_user, login_required
@@ -99,6 +102,10 @@ def register():
 @app.route('/add', methods=['GET', 'POST'])
 def add():
 
+    if not current_user.is_authenticated:
+        flash(f'You are not yet logged in: Please log in to access the Account page', 'danger')
+        return redirect(url_for('login'))
+
     # create add item form object
     form = AddForm()
 
@@ -174,6 +181,10 @@ def login():
 @app.route('/cart', methods=['GET', 'POST'])
 def cart():
 
+    if not current_user.is_authenticated:
+        flash(f'You are not yet logged in: Please log in to access this page.', 'danger')
+        return redirect(url_for('login'))
+
     # set up checkout form (just a checkout button for now)
     form = cartForm()
 
@@ -228,13 +239,24 @@ def logout():
     # send the user back to the homepage
     return redirect(url_for('home'))
 
+# this route is only used by the autocomplete search bar on the add.html page
+@app.route('/_autocomplete', methods=['GET'])
+def autocomplete():
+
+    # create an Items object and get a list of all the items
+    itemsObj = Items()
+    items = itemsObj.get_items()
+
+    # convert list to json format (required per Bootstrap Autocomplete) and respond to request
+    return Response(json.dumps(items), mimetype='application/json')
+
 # user account info
 @app.route('/account', methods=['GET', 'POST'])
 def account():
 
     # if user is not already logged in, send them to the registration page
     if not current_user.is_authenticated:
-        flash(f'You are not yet logged in: Please log in to access the Account page', 'danger')
+        flash(f'You are not yet logged in: Please log in to access this page.', 'danger')
         return redirect(url_for('login'))
 
     #get acct info from server
