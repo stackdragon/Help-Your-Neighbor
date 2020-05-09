@@ -69,14 +69,13 @@ class Items():
 ############################################################################################
 # class for working with requests                                                          #
 # Methods:																																								 #
-#   getOpenRequests(): returns a dictionary of all open requests                           #
+#   getOpenRequests(): returns a dictionary of all open requests by zip code               #
 #   add_request(items, quantities, userID, requestDate, needByDate, specialInstructions):  #
 #       adds a request to the db                                                           #
 ############################################################################################
 class Requests():
 
-	# on initialization, get all open requests
-	def __init__(self, searchZip):
+	def get_open_requests(self, searchZip):
 
 		# grab the zip code that was passed as an argument
 		self.searchZip = searchZip
@@ -88,7 +87,7 @@ class Requests():
 		db = get_db()
 		mycursor = db.cursor()
 
-		# see if the user email exists in the db. grab email address and password
+		# run query to grab open requets
 		query = f"""SELECT r.requestID, u.userName, u.userCity, u.userState, u.userZip, r.needByDate, r.specialInstructions, i.itemID, i.itemname, ri.quantity
 								FROM users u
 								INNER JOIN requests r ON u.userID = r.uID
@@ -101,9 +100,10 @@ class Requests():
 		requestsData = mycursor.fetchall()
 		mycursor.close()
 
-		# if any requests exist
+		# if any open requests are returned from the query
 		if requestsData:
 
+			# iterate over the open requets
 			for row in requestsData:
 
 				# if the requestID already exists in openrRequestsDict
@@ -112,7 +112,7 @@ class Requests():
 					# create a new dictionary to store information about the additional item in the request
 					invDict = {'itemID': row[7], 'itemName': row[8], 'quantity': row[9]}
 
-					# append the new dictionary to the list of items associated with that requestID
+					# append the new dictionary to the list of items already associated with that requestID
 					self.openRequestsDict[row[0]]['items'].append(invDict)
 
 				# if the requestID doesn't already exist in openRequestsDict 
@@ -136,8 +136,6 @@ class Requests():
 					# add rowDict to the requests dictionary using requestsID as the key
 					self.openRequestsDict[row[0]] = rowDict
 
-	def get_open_requests(self):
-
 		# return the dictionary of all open requests
 		return self.openRequestsDict
 
@@ -146,25 +144,24 @@ class Requests():
 		db = get_db()
 		mycursor = db.cursor()
 
-		# build queries to add request to database tables
+		# add request to the Request table
 		query = f"INSERT INTO Requests(requestDate, needByDate, specialInstructions, uID) VALUES ('{ requestDate.pop() }', '{ needByDate.pop() }', '{ specialInstructions.pop() }', { userID });"""
 		mycursor.execute(query)
 		db.commit()
 		mycursor.close()
 
-		# get id for request that was just added
+		# get id for request that was just added, since this is needed as a foreign key
 		mycursor = db.cursor()
 		query = f"""SELECT LAST_INSERT_ID();"""
 		mycursor.execute(query)
 		requestID = mycursor.fetchone()
 		mycursor.close()
 
-		# iterate over items list
+		# iterate over list of item names that was passed as an argument
 		itemListLength = len(items)
-
 		for i in range(itemListLength):
 
-			#grab item id
+			#grab itemID associated with that item name from the Items table
 			mycursor = db.cursor()
 			query = f"""SELECT itemID from Items WHERE itemName = '{ items[i] }';"""
 			mycursor.execute(query)
@@ -191,7 +188,6 @@ class User(UserMixin):
 ############################################################################################
 # this is the login manager class required by Flask-login                                  #
 ############################################################################################
-# required per Flask-login
 @login_manager.user_loader
 def load_user(user_id):
 

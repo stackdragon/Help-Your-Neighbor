@@ -25,7 +25,10 @@ from flask_login import login_user, logout_user, current_user, login_required
 # allows printing to console (for debugging)
 import sys
 
-#home page route
+############################################################################################
+# This is the home page route. It displays the open requests and has search bar            #
+# functionality to display open requests by zip code                                       #
+############################################################################################
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
 def home():
@@ -46,9 +49,9 @@ def home():
     else:
         searchZip = ''
 
-    openRequestsObj = Requests(searchZip)
+    openRequestsObj = Requests()
 
-    requests = openRequestsObj.get_open_requests()
+    requests = openRequestsObj.get_open_requests(searchZip)
 
     # render the homepage template, passing data to display
     return render_template('home.html', data = requests, form = form)
@@ -58,7 +61,10 @@ def home():
 def about():
     return render_template('about.html')
 
-#registration page route
+############################################################################################
+# This is the registration page route. Users can register a new account, after which they  #
+# are sent to the home page                                                                #
+############################################################################################
 @app.route('/register', methods=['GET', 'POST'])
 def register():
 
@@ -98,7 +104,9 @@ def register():
     # if no data has been submitted, display the registration page
     return render_template('register.html', title='Register', form = form)
 
-#add page route
+############################################################################################
+# This is the page for creating new requests.                                              #
+############################################################################################
 @app.route('/add', methods=['GET', 'POST'])
 def add():
 
@@ -135,12 +143,10 @@ def add():
                 itemsObj.addItem(item)
 
         # create a new requests object
-        requests = Requests('')
-
-        specialInstructions = form.specialInstructions.data
+        requests = Requests()
 
         # add request to Requests table
-        requests.add_request(requestItemsList, requestQuantitiesList, current_user.id, {form.dateRequested.data}, {form.dateNeeded.data}, {specialInstructions})
+        requests.add_request(requestItemsList, requestQuantitiesList, current_user.id, {form.dateRequested.data}, {form.dateNeeded.data}, {form.specialInstructions.data})
 
         # display success message (this is temporary just to show the form works)
         flash(f'You created a new request!', 'success')
@@ -151,7 +157,9 @@ def add():
     # if no data has been submitted, display the add item page
     return render_template('add.html', title='Make Your Request', form = form)
 
-# login page route
+############################################################################################
+# This is the page for logging useres in, after which they are sent to the home page       #
+############################################################################################
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 
@@ -206,6 +214,9 @@ def login():
 
     return render_template('login.html', title='Login', form = form)
 
+############################################################################################
+# This is the page for the shopping cart (where fulfillments are initiated)                #
+############################################################################################
 @app.route('/cart', methods=['GET', 'POST'])
 def cart():
 
