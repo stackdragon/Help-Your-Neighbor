@@ -33,6 +33,13 @@ import sys
 @app.route('/home', methods=['GET', 'POST'])
 def home():
 
+    # render the homepage template, passing data to display
+    return render_template('home.html')
+
+#requests page route
+@app.route('/requests', methods=['GET', 'POST'])
+def requests():
+
     # set up search bar form object
     form = SearchForm()
 
@@ -54,7 +61,7 @@ def home():
     requests = openRequestsObj.get_open_requests(searchZip)
 
     # render the homepage template, passing data to display
-    return render_template('home.html', data = requests, form = form)
+    return render_template('requests.html', data = requests, form = form)
 
 #about page route
 @app.route('/about')

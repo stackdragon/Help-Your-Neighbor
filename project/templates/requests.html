@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+
+<h3>The following neighbors need help now:</h3>
+<br>
+{% block content %}
+<div class="container">
+	<div class="row">
+
+		<div class="col-md-8">
+			{% for row in data.keys() %}
+			<script>
+				console.log("hi");
+			</script>
+			<div class="col-md-12">
+				
+				<div class="content-section border-dark">
+
+					<button type="button" id="{{ row }}" class="btn btn-outline-info">Help this Neighbor</button>
+
+					<!-- use jQuery to change button label to add / remove from cart -->
+					<script>
+						$(document).ready(function () {
+							$('#{{ row }}').on('click', function(event) {
+								var buttonText = $(this).text();
+								if (buttonText == 'Help this Neighbor') {
+									$('#{{ row }}').text('In Cart');
+									$('#{{ row }}').removeClass("btn-outline-info").addClass("btn-success");
+								}
+								else {
+									$('#{{ row }}').text('Help this Neighbor');
+									$('#{{ row }}').removeClass("btn-success").addClass("btn-outline-info");
+								}
+							});
+						});
+					</script>
+
+					<!-- Display open request -->
+					<table class="table table-sm table-responsive-sm table-bordered">
+						<thead class="thead-light">
+							<tr>
+								<th><strong>{{ data[row]['userName'] }}</strong>  ({{ data[row]['userCity'] }}, {{ data[row]['userState'] }} {{ data[row]['userZip'] }})</th> <th class="text-right"> Deliver by: {{ data[row]['needByDate'] }}</th><br><br>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="table-primary">
+								<td>Item needed</td><td>Quantity needed</td>
+							</tr>
+							{% for i in data[row]['items']  %}
+							<tr>
+								<td>{{ i['itemName'] }}</td><td>{{ i['quantity'] }}</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					<strong>Special Instructions:</strong>  {{data[row]['specialInstructions']}}</td>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+
+		<div class="col-md-4">
+
+			<form method="POST" action ="">
+
+				{{ form.hidden_tag() }} <!-- This function inserts the CSRF security token. Required by WTForms -->
+				<div class="form-group">
+					{{ form.searchZip.label(class="form-control-label") }}
+
+					<div class="row">
+						<div class="col-md-8">
+
+							<!-- display error messages if address is zip code incorrectly -->
+							{% if form.searchZip.errors %}
+							{{ form.searchZip(class="form-control form-control-md is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.searchZip.errors %}
+								<span> {{ error }} </span>
+								{% endfor %}
+							</div>
+							<!-- otherwise, display email entry input field -->
+							{% else %}
+							{{ form.searchZip(class="form-control form-control-md") }}
+							{% endif %}
+						</div>
+						
+						<div class="form-group">
+							<div class="col-md-4">
+								{{ form.submit(class="btn btn-outline-info")}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}

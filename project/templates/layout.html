@@ -31,6 +31,7 @@
           <div class="navbar-nav mr-auto">
           </div>
           <div class="navbar-nav">
+            <a class="nav-item nav-link" href="{{ url_for('requests') }}">View Requests</a>
             <a class="nav-item nav-link" href="{{ url_for('about') }}">About</a>
             <!-- only display this if a user is n logged in -->
             {% if current_user.is_authenticated %}

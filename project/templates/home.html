@@ -1,98 +1,78 @@
 {% extends "layout.html" %}
-
-<h3>The following neighbors need help now:</h3>
-<br>
 {% block content %}
-<div class="container">
-	<div class="row">
-
-		<div class="col-md-8">
-			{% for row in data.keys() %}
-			<script>
-				console.log("hi");
-			</script>
-			<div class="col-md-12">
-				
-				<div class="content-section border-dark">
-
-					<button type="button" id="{{ row }}" class="btn btn-outline-info">Help this Neighbor</button>
-
-					<!-- use jQuery to change button label to add / remove from cart -->
-					<script>
-						$(document).ready(function () {
-							$('#{{ row }}').on('click', function(event) {
-								var buttonText = $(this).text();
-								if (buttonText == 'Help this Neighbor') {
-									$('#{{ row }}').text('In Cart');
-									$('#{{ row }}').removeClass("btn-outline-info").addClass("btn-success");
-								}
-								else {
-									$('#{{ row }}').text('Help this Neighbor');
-									$('#{{ row }}').removeClass("btn-success").addClass("btn-outline-info");
-								}
-							});
-						});
-					</script>
-
-					<!-- Display open request -->
-					<table class="table table-sm table-responsive-sm table-bordered">
-						<thead class="thead-light">
-							<tr>
-								<th><strong>{{ data[row]['userName'] }}</strong>  ({{ data[row]['userCity'] }}, {{ data[row]['userState'] }} {{ data[row]['userZip'] }})</th> <th class="text-right"> Deliver by: {{ data[row]['needByDate'] }}</th><br><br>
-							</tr>
-						</thead>
-						<tbody>
-							<tr class="table-primary">
-								<td>Item needed</td><td>Quantity needed</td>
-							</tr>
-							{% for i in data[row]['items']  %}
-							<tr>
-								<td>{{ i['itemName'] }}</td><td>{{ i['quantity'] }}</td>
-							</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-					<strong>Special Instructions:</strong>  {{data[row]['specialInstructions']}}</td>
-				</div>
-			</div>
-			{% endfor %}
+<div id="homePageCarousel" class="carousel slide" data-ride="carousel">
+  <div class="carousel-inner">
+  	<div class="carousel-item active" data-interval="3000">
+	  	<div class="container">
+		  <div class="row">
+		    <div class="col-md-3 bg-primary d-flex align-items-center">
+		      <h3 class="text-white">Request</h3>
+		    </div>
+		    <div class="col-md-9">
+		      	<img src="./static/request.jpg" class="d-block w-100" alt="Request">
+		    </div>
+		  </div>
 		</div>
-
-		<div class="col-md-4">
-
-			<form method="POST" action ="">
-
-				{{ form.hidden_tag() }} <!-- This function inserts the CSRF security token. Required by WTForms -->
-				<div class="form-group">
-					{{ form.searchZip.label(class="form-control-label") }}
-
-					<div class="row">
-						<div class="col-md-8">
-
-							<!-- display error messages if address is zip code incorrectly -->
-							{% if form.searchZip.errors %}
-							{{ form.searchZip(class="form-control form-control-md is-invalid") }}
-							<div class="invalid-feedback">
-								{% for error in form.searchZip.errors %}
-								<span> {{ error }} </span>
-								{% endfor %}
-							</div>
-							<!-- otherwise, display email entry input field -->
-							{% else %}
-							{{ form.searchZip(class="form-control form-control-md") }}
-							{% endif %}
-						</div>
-						
-						<div class="form-group">
-							<div class="col-md-4">
-								{{ form.submit(class="btn btn-outline-info")}}
-							</div>
-						</div>
-					</div>
-				</div>
-			</form>
+    </div>
+    <div class="carousel-item" data-interval="3000">
+	  	<div class="container">
+		  <div class="row">
+		    <div class="col-md-3 bg-primary d-flex align-items-center">
+		      <h3 class="text-white">Fulfill</h3>
+		    </div>
+		    <div class="col-md-9">
+		      <img src="./static/fulfill.jpg" class="d-block w-100" alt="Fulfill">
+		    </div>
+		  </div>
 		</div>
-	</div>
+    </div>
+    <div class="carousel-item" data-interval="3000">
+	  	<div class="container">
+		  <div class="row">
+		    <div class="col-md-3 bg-primary d-flex align-items-center">
+		      <h3 class="text-white">Connect</h3>
+		    </div>
+		    <div class="col-md-9">
+		      <img src="./static/connect.jpg" class="d-block w-100" alt="Connect">
+		    </div>
+		  </div>
+		</div>
+    </div>
+    <div class="carousel-item" data-interval="3000">
+	  	<div class="container">
+		  <div class="row">
+		    <div class="col-md-3 bg-primary d-flex align-items-center">
+		      <h3 class="text-white">Welcome</h3>
+		    </div>
+		    <div class="col-md-9">
+		      <img src="./static/welcome.jpg" class="d-block w-100" alt="Welcome">
+		    </div>
+		  </div>
+		</div>
+    </div>
+  </div>
 </div>
 
+<div class="container">
+	<div class="row">
+		<div class="col 12 mb-4 mt-4">
+			<h3 class="text-center">Help Your Neighbor</h3>
+			<p class="text-center text-muted">An interface to facilitate neighborhood acts of kindness by connecting recipients of aid to those who are able to provide it</p>
+		</div>
+	</div>
+	<div class="row">
+    	<div class="col-sm-5 mt-3 mb-3 bg-secondary">
+    		<h4 class="text-white mt-2">Get Started</h4>
+    		<p class="text-white">You are one step away from building connections with your neighbors.  Register now to start creating and fulfilling requests.</p>
+    		<a href="{{url_for('register')}}" class="btn btn-light m-2" role="button">Click to Register</a>
+    	</div>
+    	<div class="col-sm-2">
+    	</div>
+    	<div class="col-sm-5 mt-3 mb-3 bg-secondary">
+    		<h4 class="text-white mt-2">Already a Participant?</h4>
+    		<p class="text-white">Login to view your account dashboard and continue connecting with your community.</p>
+    		<a href="{{url_for('login')}}" class="btn btn-light m-2" role="button">Click to Log In</a>
+    	</div>
+    </div>
+</div>
 {% endblock content %}
