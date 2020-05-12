@@ -26,8 +26,8 @@ from flask_login import login_user, logout_user, current_user, login_required
 import sys
 
 ############################################################################################
-# This is the home page route. It displays the open requests and has search bar            #
-# functionality to display open requests by zip code                                       #
+# This is the home page route. It displays the landing page and allows users to            #
+# register or login                                                                        #
 ############################################################################################
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
@@ -38,7 +38,10 @@ def home():
     # render the homepage template, passing data to display
     return render_template('home.html')
 
-#requests page route
+############################################################################################
+# This is the requests page route. It displays the open requests and has search bar            #
+# functionality to display open requests by zip code                                       #
+############################################################################################
 @app.route('/requests', methods=['GET', 'POST'])
 def requests():
 
@@ -224,7 +227,7 @@ def login():
     return render_template('login.html', title='Login', form = form)
 
 ############################################################################################
-# This is the page for the shopping cart (where fulfillments are initiated)                #
+# This is the route for the shopping cart (where fulfillments are initiated)               #
 ############################################################################################
 @app.route('/cart', methods=['GET', 'POST'])
 def cart():
@@ -236,19 +239,7 @@ def cart():
     # set up checkout form (just a checkout button for now)
     form = cartForm()
 
-    # get requests added to checkout from cart object
-    # sham data for now
-    data = [
-    {
-        'requestID': 1,'city': 'San Francisco','zip': '94016','userName': 'Bob437','item1': 'Toilet paper',
-        'qty1': 4,'needByDate': 'May 9, 2020','specialInstructions': 'Please leave on back porch steps.'
-    },
-
-    {
-        'requestID': 2,'city': 'San Francisco','zip': '94118','userName': 'catlady','item1': 'Cat food','qty1': 1,'needByDate': 'May 8, 2020','specialInstructions': 'Precious only eats Fancy Feast.'
-    }]
-
-    # if zip code form is validly submitted
+    # if form is validly submitted
     if form.validate_on_submit():
 
         # query db for requests matching that zip code here
@@ -256,23 +247,65 @@ def cart():
         # display success message (this is temporary just to show the form works)
         flash(f'You have checked out.', 'success')
 
-     # redirect to the home page
-        return redirect(url_for('home'))
-
-    db = get_db()
-
-    # set up db cursor
-    mycursor = db.cursor()
-
-    # the query to get and display all of the open requests needs to go here
-    # mycursor.execute("""SELECT userID, userName, userEmail FROM Users;""")
-    # requests = mycursor.fetchall()
-
-    mycursor.close()
+        # redirect to the home page
+        return redirect(url_for('requests'))
+    
+    # get requests in the user's cart
+    cartRequestsObj = Requests()
+    requests = cartRequestsObj.get_cart_requests(current_user.id)
     
     # render the carttemplate, passing data to display
-    return render_template('cart.html', form = form, data=data)
+    return render_template('cart.html', form = form, data=requests)
 
+############################################################################################
+# This is the route for adding a new request to the cart                                   #
+############################################################################################
+@app.route('/addToCart', methods=['GET', 'POST'])
+def addToCart():
+
+    if request.method == 'POST':
+
+        # grab the requestID that was posted
+        requestID = request.form['requestID']
+
+        # update the cartID field in the request
+        db = get_db()
+        mycursor = db.cursor()
+        query = f"UPDATE requests SET cartID = {current_user.id} WHERE requestID = {requestID};"
+        mycursor.execute(query)
+        db.commit()
+        mycursor.close()
+
+        # display successmessage to user
+        flash(f'The request was added to your cart.', 'success')
+
+    # send the user back to the requests page
+    return redirect(url_for('requests'))
+
+############################################################################################
+# This is the route for removing a request from a cart                                     #
+############################################################################################
+@app.route('/removeFromCart', methods=['GET', 'POST'])
+def removeFromCart():
+
+    if request.method == 'POST':
+
+        # grab the requestID that was posted
+        requestID = request.form['requestID']
+
+        # update the cartID field in the request
+        db = get_db()
+        mycursor = db.cursor()
+        query = f"UPDATE requests SET cartID = NULL WHERE requestID = {requestID};"
+        mycursor.execute(query)
+        db.commit()
+        mycursor.close()
+
+        # display successmessage to user
+        flash(f'The request was removed from your cart.', 'success')
+
+    # send the user back to the requests page
+    return redirect(url_for('cart'))
 
 # logout page route
 @app.route('/logout')

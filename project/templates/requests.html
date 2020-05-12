@@ -8,14 +8,15 @@
 
 		<div class="col-md-8">
 			{% for row in data.keys() %}
-			<script>
-				console.log("hi");
-			</script>
 			<div class="col-md-12">
-				
 				<div class="content-section border-dark">
 
-					<button type="button" id="{{ row }}" class="btn btn-outline-info">Help this Neighbor</button>
+					<!-- each button needs to be a separate form so it can send a post request to /addToCart -->
+					<form action = '/addToCart', method="post">
+						<button type="submit" id="{{ row }}" name="requestID" value="{{ row }}" class="btn btn-outline-info">Help this Neighbor</button>
+					</form>
+
+					<!-- if request is already included in the user's cart, modify the text of the button -->
 
 					<!-- use jQuery to change button label to add / remove from cart -->
 					<script>
@@ -23,7 +24,7 @@
 							$('#{{ row }}').on('click', function(event) {
 								var buttonText = $(this).text();
 								if (buttonText == 'Help this Neighbor') {
-									$('#{{ row }}').text('In Cart');
+									$('#{{ row }}').text('Adding to Cart');
 									$('#{{ row }}').removeClass("btn-outline-info").addClass("btn-success");
 								}
 								else {
@@ -38,7 +39,7 @@
 					<table class="table table-sm table-responsive-sm table-bordered">
 						<thead class="thead-light">
 							<tr>
-								<th><strong>{{ data[row]['userName'] }}</strong>  ({{ data[row]['userCity'] }}, {{ data[row]['userState'] }} {{ data[row]['userZip'] }})</th> <th class="text-right"> Deliver by: {{ data[row]['needByDate'] }}</th><br><br>
+								<th><strong>{{ data[row]['userName'] }}</strong>  ({{ data[row]['userCity'] }}, {{ data[row]['userState'] }} {{ data[row]['userZip'] }})</th> <th class="text-right"> Deliver by: {{ data[row]['needByDate'] }}</th><br>
 							</tr>
 						</thead>
 						<tbody>

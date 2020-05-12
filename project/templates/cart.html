@@ -2,23 +2,71 @@
 {% block content %}
 <h3>These are the items in your cart:</h3>
 <br>
-<div class="col-md-8">
-	{% for row in data %}
-	<div class="content-section">
+<div class="container">
+	<div class="row">
+		<div class="col-md-8">
+			{% for row in data.keys() %}
+			<div class="col-md-12">
+				<div class="content-section border-dark">
+					<!-- each button needs to be a separate form so it can send a post request to /addToCart -->
+					<form action = '/removeFromCart', method="post">
+						<button type="submit" id="{{ row }}" name="requestID" value="{{ row }}" class="btn btn-outline-info">Remove Request From Cart</button>
+					</form>
 
-		<p class='text'>
-			<strong>{{ row.city }} ({{ row.zip }})</strong>: {{ row.userName }} needs <kbd>{{ row.item1 }}</kbd>  
-		(qty: {{ row.qty1 }}) by {{ row.needByDate }}.</p>
-		<p class ='text'><em>Special instructions:</em> {{ row.specialInstructions }} </p>
-	</div>
-	{% endfor %}
+					<!-- if request is already included in the user's cart, modify the text of the button -->
 
-	<form method="POST" action ="">
-		{{ form.hidden_tag() }} <!-- This function inserts the CSRF security token. Required by WTForms -->
-		<div class="form-group">
-			{{ form.submit(class="btn btn-outline-info")}}
+					<!-- use jQuery to change button label to add / remove from cart -->
+					<script>
+						$(document).ready(function () {
+							$('#{{ row }}').on('click', function(event) {
+								var buttonText = $(this).text();
+								if (buttonText == 'Remove') {
+									$('#{{ row }}').text('Adding to Cart');
+									$('#{{ row }}').removeClass("btn-outline-info").addClass("btn-success");
+								}
+								else {
+									$('#{{ row }}').text('Removing Request');
+									$('#{{ row }}').removeClass("btn-success").addClass("btn-outline-info");
+								}
+							});
+						});
+					</script>
+
+					<!-- Display cartrequest -->
+					<table class="table table-sm table-responsive-sm table-bordered">
+						<thead class="thead-light">
+							<tr>
+								<th><strong>{{ data[row]['userName'] }}</strong>  ({{ data[row]['userCity'] }}, {{ data[row]['userState'] }} {{ data[row]['userZip'] }})</th> <th class="text-right"> Deliver by: {{ data[row]['needByDate'] }}</th><br>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="table-primary">
+								<td>Item needed</td><td>Quantity needed</td>
+							</tr>
+							{% for i in data[row]['items']  %}
+							<tr>
+								<td>{{ i['itemName'] }}</td><td>{{ i['quantity'] }}</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					<strong>Special Instructions:</strong>  {{data[row]['specialInstructions']}}</td>
+				</div>
+			</div>
+			{% endfor %}
 		</div>
-	</form>
+	</div>
+
+	{% if row in data.keys() %}
+	<div class="col-md-8">
+		<form method="POST" action ="">
+			{{ form.hidden_tag() }} <!-- This function inserts the CSRF security token. Required by WTForms -->
+			<div class="form-group text-center">
+				{{ form.submit(class="btn btn-primary btn-lg")}}
+			</div>
+		</form>
+		{% endif %}
+	</div>
 
 </div>
 {% endblock content %}

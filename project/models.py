@@ -72,6 +72,8 @@ class Items():
 #   getOpenRequests(): returns a dictionary of all open requests by zip code               #
 #   add_request(items, quantities, userID, requestDate, needByDate, specialInstructions):  #
 #       adds a request to the db                                                           #
+#   add_to_cart(userID, requestID): adds a request to the user's cart     								 #     
+#		get_cart_requests(userID): get requests in a cart for a specific user                  #
 ############################################################################################
 class Requests():
 
@@ -88,12 +90,12 @@ class Requests():
 		mycursor = db.cursor()
 
 		# run query to grab open requets
-		query = f"""SELECT r.requestID, u.userName, u.userCity, u.userState, u.userZip, r.needByDate, r.specialInstructions, i.itemID, i.itemname, ri.quantity
+		query = f"""SELECT r.requestID, u.userName, u.userCity, u.userState, u.userZip, r.needByDate, r.specialInstructions, i.itemID, i.itemname, ri.quantity, r.cartID
 								FROM users u
 								INNER JOIN requests r ON u.userID = r.uID
 								INNER JOIN requestedItems ri ON r.requestID = ri.rID
 								INNER JOIN items i ON ri.iID = i.itemID
-								WHERE r.fID IS NULL { self.searchZip }
+								WHERE r.fID IS NULL { self.searchZip } AND r.cartID IS NULL
 								ORDER BY r.requestID ASC;"""
 
 		mycursor.execute(query)
@@ -139,6 +141,70 @@ class Requests():
 		# return the dictionary of all open requests
 		return self.openRequestsDict
 
+	def get_cart_requests(self, userID):
+
+		# grab the zip code that was passed as an argument
+		self.userID = userID
+
+		# create a new dictionary to store all of the open requests
+		self.cartRequestsDict = {};
+
+		# set up db cursor
+		db = get_db()
+		mycursor = db.cursor()
+
+		# run query to grab open requets
+		query = f"""SELECT r.requestID, u.userName, u.userCity, u.userState, u.userZip, r.needByDate, r.specialInstructions, i.itemID, i.itemname, ri.quantity, r.cartID
+								FROM users u
+								INNER JOIN requests r ON u.userID = r.uID
+								INNER JOIN requestedItems ri ON r.requestID = ri.rID
+								INNER JOIN items i ON ri.iID = i.itemID
+								WHERE r.fID IS NULL AND r.cartID = {self.userID}
+								ORDER BY r.requestID ASC;"""
+
+		mycursor.execute(query)
+		requestsData = mycursor.fetchall()
+		mycursor.close()
+
+		# if any open requests are returned from the query
+		if requestsData:
+
+			# iterate over the open requets
+			for row in requestsData:
+
+				# if the requestID already exists in openrRequestsDict
+				if row[0] in self.cartRequestsDict.keys(): 
+
+					# create a new dictionary to store information about the additional item in the request
+					invDict = {'itemID': row[7], 'itemName': row[8], 'quantity': row[9]}
+
+					# append the new dictionary to the list of items already associated with that requestID
+					self.cartRequestsDict[row[0]]['items'].append(invDict)
+
+				# if the requestID doesn't already exist in openRequestsDict 
+				else:
+
+					# this list will hold all of the items associated with the request
+					items = []
+
+					# create a new dictionary to store each element of this requestID
+					rowDict = {'userName': row[1], 'userCity': row[2], 'userState': row[3], 'userZip': row[4], 'needByDate': row[5], 'specialInstructions': row[6], 'items': items}
+
+					# create a new dictionary to store information about the first item associated with this requestID
+					invDict = {'itemID': row[7], 'itemName': row[8], 'quantity': row[9]}
+
+					# append the dictionary of items to the items list in rowDict
+					items.append(invDict);
+
+					# associate the items list with rowDict
+					rowDict.update({'items': items})
+
+					# add rowDict to the requests dictionary using requestsID as the key
+					self.cartRequestsDict[row[0]] = rowDict
+
+		# return the dictionary of all open requests
+		return self.cartRequestsDict
+
 	def add_request(self, items, quantities, userID, requestDate, needByDate, specialInstructions):
 
 		db = get_db()
@@ -174,7 +240,6 @@ class Requests():
 			mycursor.execute(query)
 			db.commit()
 			mycursor.close()
-
 
 ############################################################################################
 # this is the User class required by Flask-login                                           #
