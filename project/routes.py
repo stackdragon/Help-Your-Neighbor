@@ -32,6 +32,8 @@ import sys
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
 def home():
+    if current_user.is_authenticated:
+        return redirect(url_for('requests'))
 
     # render the homepage template, passing data to display
     return render_template('home.html')
