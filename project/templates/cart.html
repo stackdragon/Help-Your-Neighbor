@@ -13,8 +13,6 @@
 						<button type="submit" id="{{ row }}" name="requestID" value="{{ row }}" class="btn btn-outline-info">Remove Request From Cart</button>
 					</form>
 
-					<!-- if request is already included in the user's cart, modify the text of the button -->
-
 					<!-- use jQuery to change button label to add / remove from cart -->
 					<script>
 						$(document).ready(function () {
@@ -57,7 +55,7 @@
 		</div>
 	</div>
 
-	{% if row in data.keys() %}
+	{% if data %}
 	<div class="col-md-8">
 		<form method="POST" action ="">
 			{{ form.hidden_tag() }} <!-- This function inserts the CSRF security token. Required by WTForms -->

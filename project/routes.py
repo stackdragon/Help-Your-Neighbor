@@ -5,7 +5,7 @@ from flask import render_template, url_for, flash, redirect, request, Response
 from project.forms import RegistrationForm, LoginForm, AddForm, UpdateForm, DeleteRequestForm, DeleteFulfillmentForm, SearchForm, cartForm
 
 # import User model needed for session validation
-from project.models import User, Requests, Items
+from project.models import User, Requests, Items, Fulfillments
 
 # import app
 from project import app
@@ -39,7 +39,7 @@ def home():
     return render_template('home.html')
 
 ############################################################################################
-# This is the requests page route. It displays the open requests and has search bar            #
+# This is the requests page route. It displays the open requests and has search bar        #
 # functionality to display open requests by zip code                                       #
 ############################################################################################
 @app.route('/requests', methods=['GET', 'POST'])
@@ -232,6 +232,10 @@ def login():
 @app.route('/cart', methods=['GET', 'POST'])
 def cart():
 
+    # get requests in the user's cart
+    cartRequestsObj = Requests()
+    requests = cartRequestsObj.get_cart_requests(current_user.id)
+    
     if not current_user.is_authenticated:
         flash(f'You are not yet logged in: Please log in to access this page.', 'danger')
         return redirect(url_for('login'))
@@ -242,17 +246,15 @@ def cart():
     # if form is validly submitted
     if form.validate_on_submit():
 
-        # query db for requests matching that zip code here
+        # create fulfillment for the requests in the cart
+        cartFulfillment = Fulfillments()
+        cartFulfillment.create_Fulfillment(current_user.id, requests)
 
-        # display success message (this is temporary just to show the form works)
+        # display success message 
         flash(f'You have checked out.', 'success')
 
         # redirect to the home page
         return redirect(url_for('requests'))
-    
-    # get requests in the user's cart
-    cartRequestsObj = Requests()
-    requests = cartRequestsObj.get_cart_requests(current_user.id)
     
     # render the carttemplate, passing data to display
     return render_template('cart.html', form = form, data=requests)
@@ -307,7 +309,9 @@ def removeFromCart():
     # send the user back to the requests page
     return redirect(url_for('cart'))
 
-# logout page route
+############################################################################################
+# This is the route for logging out of the app                                             #
+############################################################################################
 @app.route('/logout')
 def logout():
 

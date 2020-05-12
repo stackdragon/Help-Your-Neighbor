@@ -1,7 +1,52 @@
 #this file contains the info needed for user authentication and other db helper functions
 
 from project import login_manager, get_db
+from project.forms import date, datetime
+import time
 from flask_login import UserMixin
+
+############################################################################################
+# custom class for working with Fulfillments data                                          #
+# Methods:																																								 #
+#   create_Fulfillment(userID, requests): Generates a fulfillment for the requests in the  #
+#                       									user's cart 																		 #
+############################################################################################
+class Fulfillments():
+
+	def create_Fulfillment(self, userID, requests):
+
+		self.userID = userID
+		self.requests = requests
+
+		db = get_db()
+		mycursor = db.cursor()
+		query = f"""INSERT INTO Fulfillments (uid, transactionDate, transactionTime) VALUES ('{ userID }', CURDATE(), CURTIME());"""
+		mycursor.execute(query)
+		db.commit()
+		mycursor.close()
+
+		# get id for fulfillment that was just added, since this is needed as a foreign key
+		mycursor = db.cursor()
+		query = f"""SELECT LAST_INSERT_ID();"""
+		mycursor.execute(query)
+		fulfillmentID = mycursor.fetchone()
+		mycursor.close()
+
+		# update the fulfillmentID for all of the requests
+		for request in requests:
+			# add the foreign key to the Requests table
+			mycursor = db.cursor()
+			query = f"""UPDATE requests SET fID = { fulfillmentID[0] } WHERE requestID = {request};"""
+			mycursor.execute(query)
+			db.commit()
+			mycursor.close()
+
+			# remove the request from the user's cart
+			mycursor = db.cursor()
+			query = f"""UPDATE requests SET cartID = NULL WHERE requestID = {request};"""
+			mycursor.execute(query)
+			db.commit()
+			mycursor.close()
 
 ############################################################################################
 # custom class for working with Items data                                                 #
@@ -40,7 +85,7 @@ class Items():
 		db = get_db()
 		mycursor = db.cursor()
 
-		query = f"""select itemName from Items where itemName='{itemName}';"""
+		query = f"""SELECT itemName FROM Items WHERE itemName='{itemName}';"""
 		mycursor.execute(query)
 		self.result = mycursor.fetchall()
 		mycursor.close()
@@ -207,10 +252,9 @@ class Requests():
 
 	def add_request(self, items, quantities, userID, requestDate, needByDate, specialInstructions):
 
+		# add request to the Request table
 		db = get_db()
 		mycursor = db.cursor()
-
-		# add request to the Request table
 		query = f"INSERT INTO Requests(requestDate, needByDate, specialInstructions, uID) VALUES ('{ requestDate.pop() }', '{ needByDate.pop() }', '{ specialInstructions.pop() }', { userID });"""
 		mycursor.execute(query)
 		db.commit()
