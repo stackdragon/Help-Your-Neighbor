@@ -63,7 +63,7 @@
 						</div>
 					</fieldset>
 					<div class="form group">
-						<button type="button" id="addButton" class="btn btn-outline-info btn-sm">Add Item</button>
+						<button type="button" id="addButton" class="btn btn-outline-info btn-sm">Add Item to Request</button>
 					</div>
 				</form>
 			</div>
@@ -121,7 +121,13 @@
 								$('#item_autocomplete').val('');
 								$('#qty').val('');
 							}
+
+							else {
+								alert("Enter a valid item and quantity.")
+							}
 						});
+
+
 
 						// add event listener for remove button
 						$(document).on('click', '.removeBtn', function(){
@@ -155,7 +161,7 @@
 			</div>
 		</div>
 
-		<div class="col-md-12">
+		<div class="col-md-4">
 			<div class="content-section">
 
 				<form method="POST" action ="">
