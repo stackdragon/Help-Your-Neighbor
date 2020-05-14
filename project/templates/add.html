@@ -127,15 +127,8 @@
 						$(document).on('click', '.removeBtn', function(){
 							
 							// remove item from the items and quantities arrays
-
-							if (items.length == 1) {
-								items.pop();
-							}
-
-							else {
-								items.splice(this.id, 1);
-								quantities.splice(this.id, 1);
-							}
+							items.splice(this.id, 1);
+							quantities.splice(this.id, 1);
 
 							// update the hidden form fields so the updated data gets posted
 							$("#hiddenItems").val(items);
@@ -146,7 +139,7 @@
 
 							// re-display the table
 							for (i=0, len = items.length; i < len; i++) { 
-								$("#items > tbody:last-child").append("<tr><td>" + items[i] + "</td><td>" + quantities[i] + "</td><td><button type='button' class='removeBtn' id='" + length + "'>Remove</button></td></tr>");
+								$("#items > tbody:last-child").append("<tr><td>" + items[i] + "</td><td>" + quantities[i] + "</td><td><button type='button' class='removeBtn' id='" + i + "'>Remove</button></td></tr>");
 							}
 
 							// if no requests in the cart, reset the wtform field so an empty checkout won't process
