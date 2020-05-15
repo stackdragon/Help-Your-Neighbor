@@ -20,8 +20,8 @@ class Fulfillments():
 
 		db = get_db()
 		mycursor = db.cursor()
-		query = f"""INSERT INTO Fulfillments (uid, transactionDate, transactionTime) VALUES ('{ userID }', CURDATE(), CURTIME());"""
-		mycursor.execute(query)
+		query = """INSERT INTO Fulfillments (uid, transactionDate, transactionTime) VALUES (%s, CURDATE(), CURTIME())"""
+		mycursor.execute(query, (userID,))
 		db.commit()
 		mycursor.close()
 
@@ -36,15 +36,15 @@ class Fulfillments():
 		for request in requests:
 			# add the foreign key to the Requests table
 			mycursor = db.cursor()
-			query = f"""UPDATE requests SET fID = { fulfillmentID[0] } WHERE requestID = {request};"""
-			mycursor.execute(query)
+			query = """UPDATE requests SET fID = %s WHERE requestID = %s"""
+			mycursor.execute(query, (fulfillmentID[0], request))
 			db.commit()
 			mycursor.close()
 
 			# remove the request from the user's cart
 			mycursor = db.cursor()
-			query = f"""UPDATE requests SET cartID = NULL WHERE requestID = {request};"""
-			mycursor.execute(query)
+			query = """UPDATE requests SET cartID = NULL WHERE requestID = %s"""
+			mycursor.execute(query, (request,))
 			db.commit()
 			mycursor.close()
 
@@ -85,8 +85,8 @@ class Items():
 		db = get_db()
 		mycursor = db.cursor()
 
-		query = f"""SELECT itemName FROM Items WHERE itemName='{itemName}';"""
-		mycursor.execute(query)
+		query = """SELECT itemName FROM Items WHERE itemName= %s"""
+		mycursor.execute(query, (itemName,))
 		self.result = mycursor.fetchall()
 		mycursor.close()
 
@@ -103,8 +103,8 @@ class Items():
 		db = get_db()
 		mycursor = db.cursor()
 
-		query = f"""INSERT INTO Items (itemName) VALUES ('{itemName}');"""
-		mycursor.execute(query)
+		query = """INSERT INTO Items (itemName) VALUES (%s)"""
+		mycursor.execute(query, (itemName,))
 
 		# commit the query
 		db.commit()
@@ -255,8 +255,8 @@ class Requests():
 		# add request to the Request table
 		db = get_db()
 		mycursor = db.cursor()
-		query = f"INSERT INTO Requests(requestDate, needByDate, specialInstructions, uID) VALUES ('{ requestDate.pop() }', '{ needByDate.pop() }', '{ specialInstructions.pop() }', { userID });"""
-		mycursor.execute(query)
+		query = """INSERT INTO Requests(requestDate, needByDate, specialInstructions, uID) VALUES (%s, %s, %s, %s)""" 
+		mycursor.execute(query, (requestDate.pop(), needByDate.pop(), specialInstructions.pop(), userID ))
 		db.commit()
 		mycursor.close()
 
@@ -273,15 +273,15 @@ class Requests():
 
 			#grab itemID associated with that item name from the Items table
 			mycursor = db.cursor()
-			query = f"""SELECT itemID from Items WHERE itemName = '{ items[i] }';"""
-			mycursor.execute(query)
+			query = """SELECT itemID FROM Items WHERE itemName = %s"""
+			mycursor.execute(query, (items[i],))
 			itemID = mycursor.fetchone()
 			mycursor.close()
 
 			#insert item id, requestid, and quantity into requestedItems table
 			mycursor = db.cursor()
-			query = f"""INSERT INTO requestedItems (iID, rID, quantity) VALUES ({ itemID[0] }, { requestID[0] }, { quantities[i] });"""
-			mycursor.execute(query)
+			query = """INSERT INTO requestedItems (iID, rID, quantity) VALUES (%s, %s, %s)"""
+			mycursor.execute(query, (itemID[0], requestID[0], quantities[i]))
 			db.commit()
 			mycursor.close()
 
