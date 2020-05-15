@@ -73,12 +73,13 @@
 
 		<div class="col-md-8">
 			<div class="content-section">
-				<div class="col-md-10">
+				<div class="col-md-12">
 					<table class="table" id="items">
 						<thead>
 							<tr>
-								<th scope="col">Requested Item Name</th>
+								<th scope="col">Item Name</th>
 								<th scope="col">Quantity</th>
+								<th scope="col"><button style="visibility:hidden">Remove</button></th>
 								<th></th>
 							</tr>
 						</thead>
@@ -126,8 +127,6 @@
 								alert("Enter a valid item and quantity.")
 							}
 						});
-
-
 
 						// add event listener for remove button
 						$(document).on('click', '.removeBtn', function(){
