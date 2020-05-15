@@ -1,10 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
-<h3>These are the items in your cart:</h3>
+<h3>These are the requests in your cart:</h3>
 <br>
 <div class="container">
 	<div class="row">
 		<div class="col-md-8">
+			{% if data.keys()%}
 			{% for row in data.keys() %}
 			<div class="col-md-12">
 				<div class="content-section border-dark">
@@ -52,6 +53,10 @@
 				</div>
 			</div>
 			{% endfor %}
+			{% else %}
+			<h5>Your cart is empty </h5>
+			{% endif %}
+
 		</div>
 	</div>
 
