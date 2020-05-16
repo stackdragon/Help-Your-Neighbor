@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-<h3 class="h3">Account Page for user: {{ userInfo.username }}</h3>
+<h3 class="h3">Account Page for user: {{ userInfo.userName }}</h3>
   <div class="row">
 
     <div class="col-md-4">
@@ -10,15 +10,15 @@
 			  <tbody>
 				  	<tr>
 				      <th scope="row">First Name:</th>
-				      <td>{{userInfo.firstName}}</td>
+				      <td>{{userInfo.userFirstName}}</td>
 				    </tr>
 				    <tr>
 				      <th scope="row">Last Name:</th>
-				      <td>{{userInfo.lastName}}</td>
+				      <td>{{userInfo.userLastName}}</td>
 				    </tr>
 				    <tr>
 				      <th scope="row">Street Address:</th>
-				      <td>{{userInfo.userStreet}}</td>
+				      <td>{{userInfo.userStreetAddress}}</td>
 				    </tr>
 				    <tr>
 				      <th scope="row">City:</th>
@@ -34,7 +34,7 @@
 				    </tr>
 				    <tr>
 				      <th scope="row">Phone Number:</th>
-				      <td>{{userInfo.userPhone}}</td>
+				      <td>{{userInfo.userPhoneNumber}}</td>
 				    </tr>	
 				    <tr>
 				      <th scope="row">Email Address:</th>

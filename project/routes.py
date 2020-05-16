@@ -99,7 +99,7 @@ def register():
         mycursor = db.cursor()
 
         # run the query to add the user to the database
-        query = f"INSERT INTO Users (userName, userEmail, userPW) VALUES ('{form.username.data}', '{form.email.data}', '{hashed_pw}');"
+        query = f"INSERT INTO Users (userName, userFirstName, userLastName, userStreetAddress, userCity, userState, userZip, userPhoneNumber, userEmail, userPW) VALUES ('{form.username.data}', '{form.firstName.data}', '{form.lastName.data}', '{form.userStreet.data}', '{form.userCity.data}', '{form.userState.data}', '{form.userZip.data}', '{form.userPhone.data}', '{form.email.data}', '{hashed_pw}');"
         mycursor.execute(query)
 
         # commit the query
@@ -345,19 +345,60 @@ def account():
         return redirect(url_for('login'))
 
     #get acct info from server
-    #sham data as a placeholder
-    userInfo = {'username': 'enigMAN', 'firstName': 'Alan', 'lastName': 'Turing', 'userStreet': 'Hampton Road', 'userCity': 'Teddington', 'userState': 'EN', 'userZip': 'TW110', 'userPhone': '360-555-5555', 'userEmail': 'aturing@oregonstate.edu'}
+    db = get_db()
+
+    # set up db cursor
+    mycursor = db.cursor()
+
+    # run the query to add the user to the database
+    query = f"SELECT userName, userFirstName, userLastName, userStreetAddress, userCity, userState, userZip, userPhoneNumber, userEmail FROM Users WHERE userId = '{current_user.id}';"
+    mycursor.execute(query)
+    userTuple = mycursor.fetchall()
+    for u in userTuple:
+        print(u, file=sys.stderr)
+        userInfo = {'userName': u[0], 'userFirstName': u[1], 'userLastName': u[2], 'userStreetAddress': u[3], 'userCity': u[4], 'userState': u[5], 'userZip': u[6], 'userPhoneNumber': u[7], 'userEmail': u[8]}
+    mycursor.close()
+    
+    #how data should look after query
+    #userInfo = {'username': 'enigMAN', 'firstName': 'Alan', 'lastName': 'Turing', 'userStreet': 'Hampton Road', 'userCity': 'Teddington', 'userState': 'EN', 'userZip': 'TW110', 'userPhone': '360-555-5555', 'userEmail': 'aturing@oregonstate.edu'}
     
     # get data from server for requests by userId of logged in user
     #get requestID, needByDate, requestDate, fulfilled, count
     #with count = number of items associated with request
     #sorted by fulfilled no to fulfilled yes and then date requested newest to oldest (OR MAYBE NEED BY OLDEST TO NEWEST?)
     #sham data as a placeholder for now
-    requests = [
-        {'requestID': 12, 'needByDate': 'April 19, 2020', 'requestDate': 'April 17, 2020', 'fulfilled': False, 'count': 2},
-        {'requestID': 15, 'needByDate': 'April 29, 2020', 'requestDate': 'April 23, 2020', 'fulfilled': False, 'count': 5},
-        {'requestID': 11, 'needByDate': 'April 2, 2020', 'requestDate': 'March 25, 2020', 'fulfilled': True, 'count': 1}
-        ]
+    #get acct info from server
+    db = get_db()
+    # set up db cursor
+    mycursor = db.cursor()
+    query = f"SELECT requestID, requestDate, needByDate, fID FROM Requests WHERE uID = '{current_user.id}';"
+    mycursor.execute(query)
+    requestTuple = mycursor.fetchall()
+    requests = []
+    for r in requestTuple:
+        if r[3] == None:
+            fulfilled = False
+        else:
+            fulfilled = True
+
+
+
+
+    #NEED COUNT OF ITEMS!!!!!
+
+
+
+
+
+
+        requests.append({'requestID': r[0], 'requestDate': r[1], 'needByDate': r[2], 'count': 2, 'fulfilled': fulfilled})
+    mycursor.close()
+
+    #requests = [
+    #    {'requestID': 12, 'needByDate': 'April 19, 2020', 'requestDate': 'April 17, 2020', 'fulfilled': False, 'count': 2},
+    #    {'requestID': 15, 'needByDate': 'April 29, 2020', 'requestDate': 'April 23, 2020', 'fulfilled': False, 'count': 5},
+    #    {'requestID': 11, 'needByDate': 'April 2, 2020', 'requestDate': 'March 25, 2020', 'fulfilled': True, 'count': 1}
+    #    ]
 
     # get data from server for requests fulfilled by userId of logged in user
     #select RequestID, user first name, user last name, user phone, needByDate, fulfillmentDate
