@@ -574,10 +574,9 @@ def displayFulfillment():
         mycursor.execute(query)
         requestDetailsTuple = mycursor.fetchall()
         mycursor.close()
-        details = []
-        itemDeets = []
-        combined = []
         for d in requestDetailsTuple:
+            details = []
+            itemDeets = []
             combined = []
             details.append({'requestID': d[0], 'firstName': d[1], 'lastName': d[2], 'userStreet': d[3], 'userState': d[4], 'userZip': d[5], 'userPhone': d[6], 'userEmail': d[7], 'needByDate': d[8], 'specialInstructions': d[9]});
             mycursor = db.cursor()
