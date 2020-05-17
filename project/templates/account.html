@@ -99,7 +99,7 @@
 							  	{% for fulfillment in fulfillments %}
 								  	<tr>
 								      <th scope="row">{{fulfillment.fulfillmentID}}</th>
-								      <td>{{fulfillment.fulfillDate}}</td>
+								      <td>{{fulfillment.transactionDate}}</td>
 								      <td>
 								      	<form action="{{url_for('displayFulfillment')}}" method="get">
 											  	<input type="hidden" name="fulfillmentID" value="{{ fulfillments.fulfillmentID }}">

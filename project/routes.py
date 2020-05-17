@@ -371,27 +371,17 @@ def account():
     db = get_db()
     # set up db cursor
     mycursor = db.cursor()
-    query = f"SELECT requestID, requestDate, needByDate, fID FROM Requests WHERE uID = '{current_user.id}';"
+    query = f"SELECT requestID, requestDate, needByDate, COUNT(*), fID FROM Requests JOIN requestedItems ON Requests.requestID = RequestedItems.rID WHERE uID ='{current_user.id}' GROUP BY requestID;"
     mycursor.execute(query)
     requestTuple = mycursor.fetchall()
     requests = []
     for r in requestTuple:
-        if r[3] == None:
+        if r[4] == None:
             fulfilled = False
         else:
             fulfilled = True
 
-
-
-
-    #NEED COUNT OF ITEMS!!!!!
-
-
-
-
-
-
-        requests.append({'requestID': r[0], 'requestDate': r[1], 'needByDate': r[2], 'count': 2, 'fulfilled': fulfilled})
+        requests.append({'requestID': r[0], 'requestDate': r[1], 'needByDate': r[2], 'count': r[3], 'fulfilled': fulfilled})
     mycursor.close()
 
     #requests = [
@@ -404,10 +394,24 @@ def account():
     #select RequestID, user first name, user last name, user phone, needByDate, fulfillmentDate
     #sorted by date fulfilled newest to oldest
     #sham data as a placeholder for now
-    fulfillments = [
-        {'fulfillmentID': 10, 'fulfillDate': 'March 24, 2020'},
-        {'fulfillmentID': 8, 'fulfillDate': 'February 25, 2020'}
-        ]
+    db = get_db()
+    # set up db cursor
+    mycursor = db.cursor()
+
+    query = f"SELECT fulfillmentID, transactionDate FROM Fulfillments WHERE uID ='{current_user.id}';"
+    mycursor.execute(query)
+    fulfillTuple = mycursor.fetchall()
+    fulfillments = []
+
+    for f in fulfillTuple:
+        fulfillments.append({'fulfillmentID': f[0], 'transactionDate': f[1]})
+   
+    mycursor.close()
+
+    #fulfillments = [
+    #    {'fulfillmentID': 10, 'fulfillDate': 'March 24, 2020'},
+    #    {'fulfillmentID': 8, 'fulfillDate': 'February 25, 2020'}
+    #    ]
 
     return render_template('account.html', title='Account', userInfo=userInfo, requests=requests, fulfillments=fulfillments)
 
