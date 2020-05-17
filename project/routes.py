@@ -578,7 +578,7 @@ def displayFulfillment():
             details = []
             itemDeets = []
             combined = []
-            details.append({'requestID': d[0], 'firstName': d[1], 'lastName': d[2], 'userStreet': d[3], 'userState': d[4], 'userZip': d[5], 'userPhone': d[6], 'userEmail': d[7], 'needByDate': d[8], 'specialInstructions': d[9]});
+            details.append({'requestID': d[0], 'firstName': d[1], 'lastName': d[2], 'userStreet': d[3], 'userCity': d[4], 'userState': d[5], 'userZip': d[6], 'userPhone': d[7], 'userEmail': d[8], 'needByDate': d[9], 'specialInstructions': d[10]});
             mycursor = db.cursor()
             query = f"SELECT Items.itemName, RequestedItems.quantity FROM Requests JOIN RequestedItems ON Requests.requestID = RequestedItems.rID JOIN Items ON RequestedItems.iID = Items.itemID WHERE Requests.requestID = '{d[0]}';"
             mycursor.execute(query)
