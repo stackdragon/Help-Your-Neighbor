@@ -102,7 +102,7 @@
 								      <td>{{fulfillment.transactionDate}}</td>
 								      <td>
 								      	<form action="{{url_for('displayFulfillment')}}" method="get">
-											  	<input type="hidden" name="fulfillmentID" value="{{ fulfillments.fulfillmentID }}">
+											  	<input type="hidden" name="fulfillmentID" value="{{ fulfillment.fulfillmentID }}">
 											  	<input type="submit" value="View" class="btn btn-sm btn-info">
 											</form>
 								      </td>

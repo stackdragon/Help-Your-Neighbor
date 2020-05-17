@@ -7,8 +7,7 @@
     </div>
     <div class="col mb-4">
 		<form class="float-right" method=post name="deleteRequest"	action="{{url_for('displayRequest')}}">
-			{{ form.hidden_tag() }}
-		    {{ form.requestID(value='{{requestData.requestID}}') }}
+			<input id="requestID" name="requestID" type="hidden" value="{{requestData.requestID}}">
 		    <input type=submit value="Delete Request" class="btn btn-danger m-2">
 		</form>
 		<a href="{{url_for('account')}}" class="btn btn-info m-2 float-right" role="button">Return To Your Account</a>
