@@ -359,9 +359,6 @@ def account():
         userInfo = {'userName': u[0], 'userFirstName': u[1], 'userLastName': u[2], 'userStreetAddress': u[3], 'userCity': u[4], 'userState': u[5], 'userZip': u[6], 'userPhoneNumber': u[7], 'userEmail': u[8]}
     mycursor.close()
     
-    #how data should look after query
-    #userInfo = {'username': 'enigMAN', 'firstName': 'Alan', 'lastName': 'Turing', 'userStreet': 'Hampton Road', 'userCity': 'Teddington', 'userState': 'EN', 'userZip': 'TW110', 'userPhone': '360-555-5555', 'userEmail': 'aturing@oregonstate.edu'}
-    
     # get data from server for requests by userId of logged in user
     #get requestID, needByDate, requestDate, fulfilled, count
     #with count = number of items associated with request
@@ -384,8 +381,6 @@ def account():
 
     # get data from server for requests fulfilled by userId of logged in user
     #select RequestID, user first name, user last name, user phone, needByDate, fulfillmentDate
-    #sorted by date fulfilled newest to oldest
-    #sham data as a placeholder for now
     db = get_db()
     # set up db cursor
     mycursor = db.cursor()
@@ -444,16 +439,14 @@ def updateUser():
 #Request display page route
 @app.route('/displayRequest', methods=['GET', 'POST'])
 def displayRequest():
-    #requestID = request.args.get('requestID')
     if request.method == 'POST':
         ##SQL for deleting request
-
         db = get_db()
 
         # set up db cursor
         mycursor = db.cursor()
 
-        # run the query to update the info in the database
+        # run the query to delete the info in the database
         query = f"DELETE FROM RequestedItems WHERE rID = '{request.form.get('requestID')}';"
         mycursor.execute(query)
         db.commit()
@@ -464,7 +457,7 @@ def displayRequest():
         # set up db cursor
         mycursor = db.cursor()
 
-        # run the query to update the info in the database
+        # run the query to delete the info in the database
         query = f"DELETE FROM Requests WHERE requestID = '{request.form.get('requestID')}';"
         mycursor.execute(query)
         db.commit()
@@ -478,7 +471,7 @@ def displayRequest():
     db = get_db()
     # set up db cursor
     mycursor = db.cursor()
-    query = f"SELECT Items.itemName, RequestedItems.quantity FROM Requests JOIN RequestedItems ON Requests.requestID = RequestedItems.rID JOIN Items ON RequestedItems.iID = Items.itemID WHERE Requests.requestID ='{request.args.get('requestID')}';"
+    query = f"SELECT Items.itemName, RequestedItems.quantity FROM RequestedItems JOIN Items ON RequestedItems.iID = Items.itemID WHERE RequestedItems.rID = '{request.args.get('requestID')}';"
     mycursor.execute(query)
     itemTuple = mycursor.fetchall()
     items = []
@@ -505,11 +498,8 @@ def displayRequest():
 @app.route('/displayFulfillment', methods=['GET', 'POST'])
 def displayFulfillment():
 
-    #fulfillmentID = request.args.get('fulfillmentID')
-
     if request.method == 'POST':
         ##SQL for deleting request
-
         db = get_db()
 
         # set up db cursor
@@ -526,7 +516,7 @@ def displayFulfillment():
         # set up db cursor
         mycursor = db.cursor()
 
-        # run the query to update the info in the database
+        # run the query to delete the info in the database
         query = f"DELETE FROM Fulfillments WHERE fulfillmentID = '{request.form.get('fulfillmentID')}';"
         mycursor.execute(query)
         db.commit()
@@ -537,7 +527,6 @@ def displayFulfillment():
 
     ##USE FULFILLMENT ID TO MAKE QUERY
     ##query DB here to get all fulfillment data
-    ##second query that gives all request and assoc user info for each request fulfilled on that fulfillment
     db = get_db()
     # set up db cursor
     mycursor = db.cursor()
@@ -552,50 +541,34 @@ def displayFulfillment():
    
     mycursor.close()
 
-    #fulfillmentData = {'fulfillmentID': 25, 'fulfillDate': 'April 19, 2020'}
-
+    #second query that gives all request and assoc user info for each request fulfilled on that fulfillment
     db = get_db()
     # set up db cursor
     mycursor = db.cursor()
 
-    query = f"SELECT requestID FROM Requests WHERE fID ='{request.args.get('fulfillmentID')}';"
-    mycursor.execute(query)
-    requestTuple = mycursor.fetchall()
-    mycursor.close()
-
     requestData = []
-
-    for r in requestTuple:
+    #query for request info with associated user data for  the user who made that request
+    query = f"SELECT Requests.requestID, Users.userFirstName, Users.userLastName, Users.userStreetAddress, Users.userCity, Users.userState, Users.userZip, Users.userPhoneNumber, Users.userEmail, Requests.needByDate, Requests.specialInstructions FROM Requests JOIN Users ON Requests.uID = Users.userID WHERE Requests.fID ='{request.args.get('fulfillmentID')}';"
+    mycursor.execute(query)
+    requestDetailsTuple = mycursor.fetchall()
+    mycursor.close()
+    for d in requestDetailsTuple:
+        details = []
+        itemDeets = []
+        combined = []
+        details.append({'requestID': d[0], 'firstName': d[1], 'lastName': d[2], 'userStreet': d[3], 'userCity': d[4], 'userState': d[5], 'userZip': d[6], 'userPhone': d[7], 'userEmail': d[8], 'needByDate': d[9], 'specialInstructions': d[10]});
         db = get_db()
-        # set up db cursor
         mycursor = db.cursor()
-
-        query = f"SELECT Requests.requestID, Users.userFirstName, Users.userLastName, Users.userStreetAddress, Users.userCity, Users.userState, Users.userZip, Users.userPhoneNumber, Users.userEmail, Requests.needByDate, Requests.specialInstructions FROM Requests JOIN Users ON Requests.uID = Users.userID WHERE Requests.fID ='{request.args.get('fulfillmentID')}';"
+        #for each request, query for item info on all items within that request
+        query = f"SELECT Items.itemName, RequestedItems.quantity FROM RequestedItems JOIN Items ON RequestedItems.iID = Items.itemID WHERE RequestedItems.rID = '{d[0]}';"
         mycursor.execute(query)
-        requestDetailsTuple = mycursor.fetchall()
+        itemDetailsTuple = mycursor.fetchall()
         mycursor.close()
-        for d in requestDetailsTuple:
-            details = []
-            itemDeets = []
-            combined = []
-            details.append({'requestID': d[0], 'firstName': d[1], 'lastName': d[2], 'userStreet': d[3], 'userCity': d[4], 'userState': d[5], 'userZip': d[6], 'userPhone': d[7], 'userEmail': d[8], 'needByDate': d[9], 'specialInstructions': d[10]});
-            mycursor = db.cursor()
-            query = f"SELECT Items.itemName, RequestedItems.quantity FROM Requests JOIN RequestedItems ON Requests.requestID = RequestedItems.rID JOIN Items ON RequestedItems.iID = Items.itemID WHERE Requests.requestID = '{d[0]}';"
-            mycursor.execute(query)
-            itemDetailsTuple = mycursor.fetchall()
-            mycursor.close()
-            for i in itemDetailsTuple:
-                itemDeets.append({'itemName': i[0], 'quantity': i[1]})
+        for i in itemDetailsTuple:
+            itemDeets.append({'itemName': i[0], 'quantity': i[1]})
 
-            combined.append(details)
-            combined.append(itemDeets)
-            requestData.append(combined)
+        combined.append(details)
+        combined.append(itemDeets)
+        requestData.append(combined)
    
-    
-
-    #requestData = [ [[{'requestID': 12, 'needByDate': 'April 19, 2020', 'requestDate': 'April 17, 2020', 'instructions': 'Please leave on the front porch and ring the doorbell.', 'username': 'enigMAN', 'firstName': 'Alan', 'lastName': 'Turing', 'userStreet': 'Hampton Road', 'userCity': 'Teddington', 'userState': 'EN', 'userZip': 'TW110', 'userPhone': '360-555-5555', 'userEmail': 'aturing@oregonstate.edu', 'count': 4}], 
-    #[{'itemID': 35, 'itemName': 'Toilet Paper', 'itemDescription': 'Recycled Sources pack of 12', 'quantity': 2}, {'itemID': 45, 'itemName': 'Paper Towels', 'itemDescription': 'Extra Strength 6 pack', 'quantity': 1}, {'itemID': 122, 'itemName': 'Rice', 'itemDescription': '1 lb bag', 'quantity': 4}, {'itemID': 98, 'itemName': 'Face Mask', 'itemDescription': 'cloth with filter pocket', 'quantity': 1}]], 
-    #[[{'requestID': 3, 'needByDate': 'March 8, 2020', 'requestDate': 'March 1, 2020', 'instructions': 'I am a vegan, so anything animal-free is great', 'username': 'bigBrain', 'firstName': 'Albert', 'lastName': 'Einstein', 'userStreet': '1691 SW Campus Pkwy', 'userCity': 'Corvallis', 'userState': 'OR', 'userZip': '97331', 'userPhone': '415-555-5555', 'userEmail': 'headhoncho@oregonstate.edu', 'count': 3}], [{'itemID': 35, 'itemName': 'Toilet Paper', 'itemDescription': 'Recycled Sources pack of 12', 'quantity': 2}, {'itemID': 135, 'itemName': 'Chalk', 'itemDescription': 'White Box 12ct', 'quantity': 2}, {'itemID': 67, 'itemName': 'Hair Spray', 'itemDescription': 'Extra Strength', 'quantity': 1}]] ]
-
-    # if no data has been submitted, display the registration page
     return render_template('displayFulfillment.html', title='Your Request', fulfillmentData=fulfillmentData, requestData=requestData)
