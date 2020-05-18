@@ -83,14 +83,6 @@ class UpdateForm(FlaskForm):
 	submit = SubmitField('Update')
 	#HOW TO WE ALLOW CURRENT EMAIL TO PERSIST BUT ALSO VERIFY NOT ALREADY IN SYSTEM FOR SOMEONE ELSE?
 
-class DeleteRequestForm(FlaskForm):
-	requestID = HiddenField('Request ID')
-	submit = SubmitField('Delete Request')
-
-class DeleteFulfillmentForm(FlaskForm):
-	fulfillmentID = HiddenField('Fulfillment ID')
-	submit = SubmitField('Delete Fulfillment')
-
 class SearchForm(FlaskForm):
 	searchZip = StringField('Find Requests by Zip Code', validators=[DataRequired()])
 	submit = SubmitField('Search')
