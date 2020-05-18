@@ -2,7 +2,7 @@
 from flask import render_template, url_for, flash, redirect, request, Response
 
 # import wtForm classes for registration and login forms
-from project.forms import RegistrationForm, LoginForm, AddForm, UpdateForm, DeleteRequestForm, DeleteFulfillmentForm, SearchForm, cartForm
+from project.forms import RegistrationForm, LoginForm, AddForm, UpdateForm, SearchForm, cartForm
 
 # import User model needed for session validation
 from project.models import User, Requests, Items, Fulfillments
@@ -355,7 +355,6 @@ def account():
     mycursor.execute(query)
     userTuple = mycursor.fetchall()
     for u in userTuple:
-        print(u, file=sys.stderr)
         userInfo = {'userName': u[0], 'userFirstName': u[1], 'userLastName': u[2], 'userStreetAddress': u[3], 'userCity': u[4], 'userState': u[5], 'userZip': u[6], 'userPhoneNumber': u[7], 'userEmail': u[8]}
     mycursor.close()
     
