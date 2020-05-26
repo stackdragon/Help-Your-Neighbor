@@ -66,7 +66,7 @@ class AddForm(FlaskForm):
 	dateNeeded = DateField('Request Needed By', default=date.today, validators=[DateRange(min=date.today())])
 	dateRequested = HiddenField(default=date.today)
 	specialInstructions = StringField('Special Instructions (if any)', validators=[Optional(), Length(min=2, max=200)])
-	itemsAdded = HiddenField('itemsAdded', default="", id="hiddenItems", validators=[DataRequired(message="A request needs to include at least 1 item")]) # used for validating whether any items have been added to the request
+	itemsAdded = HiddenField('itemsAdded', default="", id="hiddenItems", validators=[DataRequired(message="A request needs to include item(s) that are between 2 and 20 characters in length."), Length(min=2, max=20)]) # used for validating whether any items have been added to the request
 	quantitiesAdded = HiddenField('quantitiesAdded', default="", id="hiddenQuantities")
 	submit = SubmitField('Submit Request')
 
