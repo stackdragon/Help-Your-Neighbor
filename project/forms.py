@@ -84,7 +84,7 @@ class UpdateForm(FlaskForm):
 	#HOW TO WE ALLOW CURRENT EMAIL TO PERSIST BUT ALSO VERIFY NOT ALREADY IN SYSTEM FOR SOMEONE ELSE?
 
 class SearchForm(FlaskForm):
-	searchZip = StringField('Find Requests by Zip Code', validators=[DataRequired()])
+	searchZip = StringField('Find Requests by Zip Code', validators=[DataRequired(), Length(min=5, max=5, message="A valid zip code is required.")])
 	submit = SubmitField('Search')
 
 class cartForm(FlaskForm):
