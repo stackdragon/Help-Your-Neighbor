@@ -212,7 +212,7 @@
 							}
 
 							// check to make sure that quantity is a number and item field is not empty
-							if ($.isNumeric(qty) && (qty > 0) && (item != '') && (length < 5)) {
+							if ($.isNumeric(qty) && (qty > 0) && (item != '') && (item.length <= 30) && (length < 5)) {
 								$("#items > tbody:last-child").append("<tr><td>" + item + "</td><td>" + qty + "</td><td><button type='button' class='removeBtn' id='" + length + "'>Remove</button></td></tr>");
 
 								// add item and quantity to the list of items and then add it to the hidden field so
@@ -227,7 +227,11 @@
 								$('#qty').val('');
 							}
 
-							else if (length < 5){
+							else if (item.length > 30) {
+								alert("Item name must be no greater than 30 characters.")
+							}
+
+							else if (length < 5) {
 								alert("Enter a valid item and quantity.")
 							}
 						});
