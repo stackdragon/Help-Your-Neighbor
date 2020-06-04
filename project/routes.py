@@ -432,6 +432,23 @@ def updateUser():
         # render account page
         return redirect(url_for('account'))
 
+    # get current logged in user info to prepopulate form on update page
+    db = get_db()
+    mycursor = db.cursor()
+    query = f"SELECT userFirstName, userLastName, userStreetAddress, userCity, userState, userZip, userPhoneNumber FROM Users WHERE userID = '{current_user.id}'"
+    mycursor.execute(query)
+    userDataTuple = mycursor.fetchall()
+    #place data from tuple into form
+    for d in userDataTuple:
+        form.firstName.data = d[0]
+        form.lastName.data = d[1]
+        form.userStreet.data = d[2]
+        form.userCity.data = d[3]
+        form.userState.data = d[4]
+        form.userZip.data = d[5]
+        form.userPhone.data = d[6]
+
+
     # if no data has been submitted, display the registration page
     return render_template('updateUser.html', title='Update User Information', form = form)
 
