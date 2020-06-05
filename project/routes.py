@@ -214,7 +214,7 @@ def login():
                 next_page = request.args.get('next')
 
                 # now that the user has logged in, send her to either the next page or the account page
-                return redirect(next_page) if next_page else redirect(url_for('account'))
+                return redirect(next_page) if next_page else redirect(url_for('requests'))
 
             # if email address is found but password doesn't match, display error message
             else:
@@ -430,7 +430,7 @@ def updateUser():
         flash(f'Thank you for updating your information!', 'success')
 
         # render account page
-        return redirect(url_for('account'))
+        return redirect(url_for('requests'))
 
     # get current logged in user info to prepopulate form on update page
     db = get_db()
