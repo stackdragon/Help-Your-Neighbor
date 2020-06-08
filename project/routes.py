@@ -435,7 +435,7 @@ def updateUser():
     # get current logged in user info to prepopulate form on update page
     db = get_db()
     mycursor = db.cursor()
-    query = f"SELECT userFirstName, userLastName, userStreetAddress, userCity, userState, userZip, userPhoneNumber FROM Users WHERE userID = '{current_user.id}'"
+    query = f"SELECT userFirstName, userLastName, userStreetAddress, userCity, userState, userZip, userPhoneNumber FROM Users WHERE userID = '{current_user.id}';"
     mycursor.execute(query)
     userDataTuple = mycursor.fetchall()
     #place data from tuple into form
