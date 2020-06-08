@@ -305,8 +305,8 @@ def load_user(user_id):
 	mycursor = db.cursor()
 
 	# see if the user email exists in the db. grab email address and password
-	query = f"SELECT userID, userEmail, userPW from Users WHERE userID='{user_id}';"
-	mycursor.execute(query)
+	query = f"SELECT userID, userEmail, userPW from Users WHERE userID=%s;"
+	mycursor.execute(query,(user_id,))
 	user = mycursor.fetchone()
 	mycursor.close()
 

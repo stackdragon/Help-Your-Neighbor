@@ -99,8 +99,8 @@ def register():
         mycursor = db.cursor()
 
         # run the query to add the user to the database
-        query = f"INSERT INTO Users (userName, userFirstName, userLastName, userStreetAddress, userCity, userState, userZip, userPhoneNumber, userEmail, userPW) VALUES ('{form.username.data}', '{form.firstName.data}', '{form.lastName.data}', '{form.userStreet.data}', '{form.userCity.data}', '{form.userState.data}', '{form.userZip.data}', '{form.userPhone.data}', '{form.email.data}', '{hashed_pw}');"
-        mycursor.execute(query)
+        query = """INSERT INTO Users (userName, userFirstName, userLastName, userStreetAddress, userCity, userState, userZip, userPhoneNumber, userEmail, userPW) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+        mycursor.execute(query,(form.username.data, form.firstName.data, form.lastName.data, form.userStreet.data, form.userCity.data, form.userState.data, form.userZip.data, form.userPhone.data, form.email.data, hashed_pw))
 
         # commit the query
         db.commit()
@@ -190,8 +190,8 @@ def login():
         mycursor = db.cursor()
 
         # query the Users mySQL table for the userID, email address and password
-        query = f"SELECT userID, userEmail, userPW from Users WHERE userEmail='{form.email.data}';"
-        mycursor.execute(query)
+        query = """SELECT userID, userEmail, userPW from Users WHERE userEmail=%s"""
+        mycursor.execute(query, (form.email.data,))
         user = mycursor.fetchone()
         mycursor.close()
 
@@ -273,8 +273,8 @@ def addToCart():
         # update the cartID field in the request
         db = get_db()
         mycursor = db.cursor()
-        query = f"UPDATE requests SET cartID = {current_user.id} WHERE requestID = {requestID};"
-        mycursor.execute(query)
+        query = """UPDATE requests SET cartID = %s WHERE requestID = %s"""
+        mycursor.execute(query, (current_user.id, requestID))
         db.commit()
         mycursor.close()
 
@@ -298,8 +298,8 @@ def removeFromCart():
         # update the cartID field in the request
         db = get_db()
         mycursor = db.cursor()
-        query = f"UPDATE requests SET cartID = NULL WHERE requestID = {requestID};"
-        mycursor.execute(query)
+        query = """UPDATE requests SET cartID = NULL WHERE requestID = %s"""
+        mycursor.execute(query, (requestID,))
         db.commit()
         mycursor.close()
 
