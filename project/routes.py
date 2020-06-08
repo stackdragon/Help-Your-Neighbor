@@ -52,7 +52,7 @@ def requests():
     if form.validate_on_submit():
 
         # grab the zip code that was entered
-        searchZip = f"AND u.userZip = '{form.searchZip.data}'"
+        searchZip = form.searchZip.data
 
         # display success message if user successfully registered
         flash(f'Returning results for zip code {form.searchZip.data}', 'success')

@@ -134,18 +134,34 @@ class Requests():
 		db = get_db()
 		mycursor = db.cursor()
 
-		# run query to grab open requets
-		query = f"""SELECT r.requestID, u.userName, u.userCity, u.userState, u.userZip, r.needByDate, r.specialInstructions, i.itemID, i.itemname, ri.quantity, r.cartID
+		if (self.searchZip == ''):
+			# run query to grab open requets (if zip code search is empty)
+			query = """SELECT r.requestID, u.userName, u.userCity, u.userState, u.userZip, r.needByDate, r.specialInstructions, i.itemID, i.itemname, ri.quantity, r.cartID
 								FROM users u
 								INNER JOIN requests r ON u.userID = r.uID
 								INNER JOIN requestedItems ri ON r.requestID = ri.rID
 								INNER JOIN items i ON ri.iID = i.itemID
-								WHERE r.fID IS NULL { self.searchZip } AND r.cartID IS NULL
-								ORDER BY r.requestID ASC;"""
+								WHERE r.fID IS NULL AND r.cartID IS NULL
+								ORDER BY r.requestID ASC"""
 
-		mycursor.execute(query)
-		requestsData = mycursor.fetchall()
-		mycursor.close()
+			mycursor.execute(query)
+			requestsData = mycursor.fetchall()
+			mycursor.close()
+
+		else: 
+			# run query to grab open requets (if a zip code has been entered)
+			query = """SELECT r.requestID, u.userName, u.userCity, u.userState, u.userZip, r.needByDate, r.specialInstructions, i.itemID, i.itemname, ri.quantity, r.cartID
+								FROM users u
+								INNER JOIN requests r ON u.userID = r.uID
+								INNER JOIN requestedItems ri ON r.requestID = ri.rID
+								INNER JOIN items i ON ri.iID = i.itemID
+								WHERE r.fID IS NULL AND u.userZip = %s AND r.cartID IS NULL
+								ORDER BY r.requestID ASC"""
+
+			mycursor.execute(query, (searchZip,))
+			requestsData = mycursor.fetchall()
+			mycursor.close()
+
 
 		# if any open requests are returned from the query
 		if requestsData:
@@ -199,15 +215,15 @@ class Requests():
 		mycursor = db.cursor()
 
 		# run query to grab open requets
-		query = f"""SELECT r.requestID, u.userName, u.userCity, u.userState, u.userZip, r.needByDate, r.specialInstructions, i.itemID, i.itemname, ri.quantity, r.cartID
+		query = """SELECT r.requestID, u.userName, u.userCity, u.userState, u.userZip, r.needByDate, r.specialInstructions, i.itemID, i.itemname, ri.quantity, r.cartID
 								FROM users u
 								INNER JOIN requests r ON u.userID = r.uID
 								INNER JOIN requestedItems ri ON r.requestID = ri.rID
 								INNER JOIN items i ON ri.iID = i.itemID
-								WHERE r.fID IS NULL AND r.cartID = {self.userID}
-								ORDER BY r.requestID ASC;"""
+								WHERE r.fID IS NULL AND r.cartID = %s
+								ORDER BY r.requestID ASC"""
 
-		mycursor.execute(query)
+		mycursor.execute(query,(self.userID,))
 		requestsData = mycursor.fetchall()
 		mycursor.close()
 

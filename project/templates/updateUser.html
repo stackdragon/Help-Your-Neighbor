@@ -15,7 +15,7 @@
 
 					<!-- display error messages if first name is entered incorrectly -->
 					{% if form.firstName.errors %}
-						{{ form.firstName(class="form-control form-control-lg is-invalid") }}
+						{{ form.firstName(class="form-control form-control-sm is-invalid") }}
 						<div class="invalid-feedback">
 							{% for error in form.firstName.errors %}
 								<span> {{ error }} </span>
@@ -24,7 +24,7 @@
 
 					<!-- otherwise, display first name entry input field -->
 					{% else %}
-						{{ form.firstName(class="form-control form-control-lg") }}
+						{{ form.firstName(class="form-control form-control-sm") }}
 					{% endif %}
 				</div>
 
@@ -33,7 +33,7 @@
 
 					<!-- display error messages if last name is entered incorrectly -->
 					{% if form.lastName.errors %}
-						{{ form.lastName(class="form-control form-control-lg is-invalid") }}
+						{{ form.lastName(class="form-control form-control-sm is-invalid") }}
 						<div class="invalid-feedback">
 							{% for error in form.lastName.errors %}
 								<span> {{ error }} </span>
@@ -42,7 +42,7 @@
 
 					<!-- otherwise, display last name entry input field -->
 					{% else %}
-						{{ form.lastName(class="form-control form-control-lg") }}
+						{{ form.lastName(class="form-control form-control-sm") }}
 					{% endif %}
 				</div>
 
@@ -51,7 +51,7 @@
 
 					<!-- display error messages if street address is entered incorrectly -->
 					{% if form.userStreet.errors %}
-						{{ form.userStreet(class="form-control form-control-lg is-invalid") }}
+						{{ form.userStreet(class="form-control form-control-sm is-invalid") }}
 						<div class="invalid-feedback">
 							{% for error in form.userStreet.errors %}
 								<span> {{ error }} </span>
@@ -60,7 +60,7 @@
 
 					<!-- otherwise, display street address entry input field -->
 					{% else %}
-						{{ form.userStreet(class="form-control form-control-lg") }}
+						{{ form.userStreet(class="form-control form-control-sm") }}
 					{% endif %}
 				</div>
 
@@ -69,7 +69,7 @@
 
 					<!-- display error messages if city is entered incorrectly -->
 					{% if form.userCity.errors %}
-						{{ form.userCity(class="form-control form-control-lg is-invalid") }}
+						{{ form.userCity(class="form-control form-control-sm is-invalid") }}
 						<div class="invalid-feedback">
 							{% for error in form.userCity.errors %}
 								<span> {{ error }} </span>
@@ -78,7 +78,7 @@
 
 					<!-- otherwise, display city entry input field -->
 					{% else %}
-						{{ form.userCity(class="form-control form-control-lg") }}
+						{{ form.userCity(class="form-control form-control-sm") }}
 					{% endif %}
 				</div>
 
@@ -87,7 +87,7 @@
 
 					<!-- display error messages if state is entered incorrectly -->
 					{% if form.userState.errors %}
-						{{ form.userState(class="form-control form-control-lg is-invalid") }}
+						{{ form.userState(class="form-control form-control-sm is-invalid") }}
 						<div class="invalid-feedback">
 							{% for error in form.userState.errors %}
 								<span> {{ error }} </span>
@@ -96,7 +96,7 @@
 
 					<!-- otherwise, display state entry input field -->
 					{% else %}
-						{{ form.userState(class="form-control form-control-lg") }}
+						{{ form.userState(class="form-control form-control-sm") }}
 					{% endif %}
 				</div>
 
@@ -105,7 +105,7 @@
 
 					<!-- display error messages if zip is entered incorrectly -->
 					{% if form.userZip.errors %}
-						{{ form.userZip(class="form-control form-control-lg is-invalid") }}
+						{{ form.userZip(class="form-control form-control-sm is-invalid") }}
 						<div class="invalid-feedback">
 							{% for error in form.userZip.errors %}
 								<span> {{ error }} </span>
@@ -114,7 +114,7 @@
 
 					<!-- otherwise, display zip entry input field -->
 					{% else %}
-						{{ form.userZip(class="form-control form-control-lg") }}
+						{{ form.userZip(class="form-control form-control-sm") }}
 					{% endif %}
 				</div>
 
@@ -123,7 +123,7 @@
 
 					<!-- display error messages if phone is entered incorrectly -->
 					{% if form.userPhone.errors %}
-						{{ form.userPhone(class="form-control form-control-lg is-invalid") }}
+						{{ form.userPhone(class="form-control form-control-sm is-invalid") }}
 						<div class="invalid-feedback">
 							{% for error in form.userPhone.errors %}
 								<span> {{ error }} </span>
@@ -132,7 +132,7 @@
 
 					<!-- otherwise, display phone entry input field -->
 					{% else %}
-						{{ form.userPhone(class="form-control form-control-lg") }}
+						{{ form.userPhone(class="form-control form-control-sm") }}
 					{% endif %}
 				</div>
 
@@ -140,14 +140,14 @@
 				<div class="form-group">
 					{{ form.password.label(class="form-control-label") }}
 					{% if form.password.errors %}
-						{{ form.password(class="form-control form-control-lg is-invalid") }}
+						{{ form.password(class="form-control form-control-sm is-invalid") }}
 						<div class="invalid-feedback">
 							{% for error in form.password.errors %}
 								<span> {{ error }} </span>
 							{% endfor %}
 						</div>
 					{% else %}
-						{{ form.password(class="form-control form-control-lg") }}
+						{{ form.password(class="form-control form-control-sm") }}
 					{% endif %}
 				</div>
 
@@ -155,14 +155,14 @@
 				<div class ="form-group">
 					{{ form.confirm_password.label(class="form-control-label") }}
 					{% if form.confirm_password.errors %}
-						{{ form.confirm_password(class="form-control form-control-lg is-invalid") }}
+						{{ form.confirm_password(class="form-control form-control-sm is-invalid") }}
 						<div class="invalid-feedback">
 							{% for error in form.confirm_password.errors %}
 								<span> {{ error }} </span>
 							{% endfor %}
 						</div>
 					{% else %}
-						{{ form.confirm_password(class="form-control form-control-lg") }}
+						{{ form.confirm_password(class="form-control form-control-sm") }}
 					{% endif %}
 				</div>
 			</fieldset>
