@@ -421,8 +421,8 @@ def updateUser():
         mycursor = db.cursor()
 
         # run the query to update the info in the database
-        query = f"UPDATE Users SET userFirstName = '{form.firstName.data}', userLastName = '{form.lastName.data}', userStreetAddress = '{form.userStreet.data}', userCity = '{form.userCity.data}', userState = '{form.userState.data}', userZip = '{form.userZip.data}', userPhoneNumber = '{form.userPhone.data}', userPW = '{hashed_pw}' WHERE userID = '{current_user.id}';"
-        mycursor.execute(query)
+        query = """UPDATE Users SET userFirstName = %s, userLastName = %s, userStreetAddress = %s, userCity = %s, userState = %s, userZip = %s, userPhoneNumber = %s, userPW = %s WHERE userID = %s;"""
+        mycursor.execute(query, (form.firstName.data, form.lastName.data, form.userStreet.data, form.userCity.data, form.userState.data, form.userZip.data, form.userPhone.data, hashed_pw, current_user.id))
         db.commit()
         mycursor.close()
 
@@ -430,7 +430,7 @@ def updateUser():
         flash(f'Thank you for updating your information!', 'success')
 
         # render account page
-        return redirect(url_for('requests'))
+        return redirect(url_for('account'))
 
     # get current logged in user info to prepopulate form on update page
     db = get_db()
