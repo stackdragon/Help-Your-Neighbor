@@ -6,7 +6,7 @@ Recipients can log on to the website to place request posts for needed items. Do
 
 ## Usage
 
-Visit [https://helpyourneighbor.herokuapp.com/](https://helpyourneighbord.herokuapp.com/)
+Visit [https://helpyourneighbor.herokuapp.com/](https://helpyourneighbor.herokuapp.com/)
 
 To login, use the following username and password or register your own:
 username: test@test.com
