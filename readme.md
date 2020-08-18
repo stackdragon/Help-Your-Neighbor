@@ -1,12 +1,28 @@
 # Help Your Neighbor App
 
+![Screenshot of login](/project_images/1-1.png)
+
 It can often be difficult for those who are elderly, disabled, and otherwise homebound to perform tasks such as grocery shopping or picking up medication. This webapp seeks to help address this problem by providing an interface to facilitate neighborhood acts of kindness by connecting recipients of aid to those who are able to provide it.
 
-Recipients can log on to the website to place request posts for needed items and donors can log on and search the requests to assess what they can help with, and then assign themselves to fulfill those requests. This database-driven website records user information, the requests for items that are needed, as well as a record of all matched donor/recipient transactions.
+Recipients can log on to the website to place request posts for needed items. Donors can log on and search the requests to assess what they can help with, and then assign themselves to fulfill those requests. This database-driven website records user information, the requests for items that are needed, as well as a record of all matched donor/recipient transactions.
+
+To login, use the following username and password or register your own:
+username: test@test.com
+password: test
 
 ## Features
 
-Search for requests for needed items globally or within your local zip code.
+Search user requests for needed items globally or within your local zip code.
+
+![Screenshot of requests page](/project_images/3-1.png)
+
+Add your own requests for needed goods.
+
+![Screenshot add items page](/project_images/2-1.png)
+
+See the requests you have been made and fulfilled
+
+![Screenshot add items page](/project_images/4-1.png)
 
 ## Usage
 
