@@ -45,6 +45,10 @@ def home():
 @app.route('/requests', methods=['GET', 'POST'])
 def requests():
 
+    if not current_user.is_authenticated:
+        flash(f'You are not yet logged in: Please log in to access the Account page', 'danger')
+        return redirect(url_for('login'))
+
     # set up search bar form object
     form = SearchForm()
 

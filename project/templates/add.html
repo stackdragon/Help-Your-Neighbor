@@ -1,273 +1,283 @@
-{% extends "layout.html" %}
-{% block content %}
+{% extends "layout.html" %} {% block content %}
 <div class="col-md-12">
-	<div class="col-md-10">
-		<h3>Make a Request</h3>
-		Build your request by adding up to five different items and the quantities that you need. <br><br>
-		<p class="text-justify"><strong>Note to grader:</strong> We query the Items table using a SELECT query to populate the autocomplete suggestions in the item entry field. Items not found in the Items table are added using INSERT once the request is submitted. This is done in order to fulfill the project specification which requires that we have an INSERT for each table.</p>
-	</div>
-	<div class = "row">
-		<!-- this is the item entry part of the page -->
-		<div class="col-md-4">
-			<div class="content-section">
-				<form>
-					<fieldset class ="form-group">
-						<div class ="form-group">
-							{{ form.autocomp.label(class="form-control-label") }}
-							<!-- display error message if item is entered incorrectly -->
-							{% if form.autocomp.errors %}
-							{{ form.autocomp(class="form-control form-control-md is-invalid") }}
-							<div class="invalid-feedback">
-								{% for error in form.autocomp.errors %}
-								<span> {{ error }} </span>
-								{% endfor %}
-							</div>
+  <div class="col-md-10">
+    <h3>Make a Request</h3>
+    Build your request by adding up to five different items and the quantities
+    that you need. <br /><br />
+  </div>
+  <div class="row">
+    <!-- this is the item entry part of the page -->
+    <div class="col-md-4">
+      <div class="content-section">
+        <form>
+          <fieldset class="form-group">
+            <div class="form-group">
+              {{ form.autocomp.label(class="form-control-label") }}
+              <!-- display error message if item is entered incorrectly -->
+              {% if form.autocomp.errors %} {{ form.autocomp(class="form-control
+              form-control-md is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.autocomp.errors %}
+                <span> {{ error }} </span>
+                {% endfor %}
+              </div>
 
-							<!-- otherwise, display item entry input field -->
-							{% else %}
-							{{ form.autocomp(class="form-control form-control-sm") }}
-							{% endif %}
+              <!-- otherwise, display item entry input field -->
+              {% else %} {{ form.autocomp(class="form-control form-control-sm")
+              }} {% endif %}
 
-							<!-- autocomplete script adapted from https://github.com/LukasSliacky/Flask-Autocomplete/-->
-							<script>
-								$(function() {
-									$.ajax({
-										url: '{{ url_for("autocomplete") }}'
-									}).done(function (data){
-										$('#item_autocomplete').autocomplete({
-											source: data,
-											minLength: 1,
-											select: function(event, ui) { 
-												$("#item_autocomplete").submit(); }
-											});
-									});
-								});
-							</script>
-						</div>
-						<div class = "form group">
-							{{ form.qty.label(class="form-control-label") }}
+              <!-- autocomplete script adapted from https://github.com/LukasSliacky/Flask-Autocomplete/-->
+              <script>
+                $(function () {
+                  $.ajax({
+                    url: '{{ url_for("autocomplete") }}',
+                  }).done(function (data) {
+                    $("#item_autocomplete").autocomplete({
+                      source: data,
+                      minLength: 1,
+                      select: function (event, ui) {
+                        $("#item_autocomplete").submit();
+                      },
+                    });
+                  });
+                });
+              </script>
+            </div>
+            <div class="form group">
+              {{ form.qty.label(class="form-control-label") }}
 
-							<!-- display error message if quantity is entered incorrectly -->
-							{% if form.qty.errors %}
-							{{ form.qty(class="form-control form-control-sm is-invalid") }}
-							<div class="invalid-feedback">
-								{% for error in form.qty.errors %}
-								<span> {{ error }} </span>
-								{% endfor %}
-							</div>
+              <!-- display error message if quantity is entered incorrectly -->
+              {% if form.qty.errors %} {{ form.qty(class="form-control
+              form-control-sm is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.qty.errors %}
+                <span> {{ error }} </span>
+                {% endfor %}
+              </div>
 
-							<!-- otherwise, display item entry input field -->
-							{% else %}
-							{{ form.qty(class="form-control form-control-sm") }}
-							{% endif %}
-						</div>
-					</fieldset>
-					<div class="form group">
-						<button type="button" id="addButton" class="btn btn-outline-info btn-sm">Add Item to Request</button>
-					</div>
-				</form>	
-			</div>
+              <!-- otherwise, display item entry input field -->
+              {% else %} {{ form.qty(class="form-control form-control-sm") }} {%
+              endif %}
+            </div>
+          </fieldset>
+          <div class="form group">
+            <button
+              type="button"
+              id="addButton"
+              class="btn btn-outline-info btn-sm"
+            >
+              Add Item to Request
+            </button>
+          </div>
+        </form>
+      </div>
 
+      <div class="content-section">
+        <form method="POST" action="">
+          {{ form.hidden_tag() }}
+          <!-- This function inserts the CSRF security token. Required by WTForms -->
+          <div class="form-group">
+            <!-- display special instructions label -->
+            {{ form.specialInstructions.label(class="form-control-label") }}
 
-<div class="content-section">
+            <!-- display error message if item is entered incorrectly -->
+            {% if form.specialInstructions.errors %} {{
+            form.specialInstructions(class="form-control form-control-sm
+            is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.specialInstructions.errors %}
+              <span> {{ error }} </span>
+              {% endfor %}
+            </div>
 
-				<form method="POST" action ="">
-					{{ form.hidden_tag() }} <!-- This function inserts the CSRF security token. Required by WTForms -->
-					<div class="form-group">
+            <!-- otherwise, display item entry input field -->
+            {% else %} {{ form.specialInstructions(class="form-control
+            form-control-sm") }} {% endif %}
+          </div>
 
-						<!-- display special instructions label -->	
-						{{ form.specialInstructions.label(class="form-control-label") }}
+          <div class="form-group">
+            <!-- display item entry label -->
+            {{ form.dateNeeded.label(class="form-control-label") }}
 
-						<!-- display error message if item is entered incorrectly -->
-						{% if form.specialInstructions.errors %}
-						{{ form.specialInstructions(class="form-control form-control-sm is-invalid") }}
-						<div class="invalid-feedback">
-							{% for error in form.specialInstructions.errors %}
-							<span> {{ error }} </span>
-							{% endfor %}
-						</div>
+            <!-- display error message if item is entered incorrectly -->
+            {% if form.dateNeeded.errors %} {{
+            form.dateNeeded(class="form-control form-control-sm is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.dateNeeded.errors %}
+              <span> {{ error }} </span>
+              {% endfor %}
+            </div>
 
-						<!-- otherwise, display item entry input field -->
-						{% else %}
-						{{ form.specialInstructions(class="form-control form-control-sm") }}
-						{% endif %}
+            <!-- otherwise, display item entry input field -->
+            {% else %} {{ form.dateNeeded(class="form-control form-control-sm")
+            }} {% endif %}
+          </div>
 
-					</div>
-
-					<div class="form-group">
-
-						<!-- display item entry label -->	
-						{{ form.dateNeeded.label(class="form-control-label") }}
-
-						<!-- display error message if item is entered incorrectly -->
-						{% if form.dateNeeded.errors %}
-						{{ form.dateNeeded(class="form-control form-control-sm is-invalid") }}
-						<div class="invalid-feedback">
-							{% for error in form.dateNeeded.errors %}
-							<span> {{ error }} </span>
-							{% endfor %}
-						</div>
-
-						<!-- otherwise, display item entry input field -->
-						{% else %}
-						{{ form.dateNeeded(class="form-control form-control-sm") }}
-						{% endif %}
-					</div>
-
-					<div class="form-group">
-
-				<!-- the form contains a hidden field which prevents the form from being submited
+          <div class="form-group">
+            <!-- the form contains a hidden field which prevents the form from being submited
 					   if no items have been added to the request. It has a datarequired() validator
 					   and an initial value of NULL. This NULL value is changed when items are added
 					   to the request, which allows the field to be validated and the form to submit -->
-					   {% if form.itemsAdded.errors %}
-					   {{ form.itemsAdded(class="form-control form-control-sm is-invalid") }}
-					   <div class="invalid-feedback">
-					   	{% for error in form.itemsAdded.errors %}
-					   	<span> {{ error }} </span>
-					   	{% endfor %}
-					   </div>
-					   {% else %}
-					   {{ form.itemsAdded(class="form-control form-control-sm") }}
-					   {% endif %}
+            {% if form.itemsAdded.errors %} {{
+            form.itemsAdded(class="form-control form-control-sm is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.itemsAdded.errors %}
+              <span> {{ error }} </span>
+              {% endfor %}
+            </div>
+            {% else %} {{ form.itemsAdded(class="form-control form-control-sm")
+            }} {% endif %}
+          </div>
 
-					 </div>
+          <div class="form-group">
+            <!-- this hidden field stores the quantities requested for each item -->
+            {% if form.quantitiesAdded.errors %} {{
+            form.form.quantitiesAdded(class="form-control form-control-sm
+            is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.form.quantitiesAdded.errors %}
+              <span> {{ error }} </span>
+              {% endfor %}
+            </div>
+            {% else %} {{ form.quantitiesAdded(class="form-control
+            form-control-sm") }} {% endif %}
+          </div>
 
-					 <div class="form-group">
-					 	<!-- this hidden field stores the quantities requested for each item -->
-					 	{% if form.quantitiesAdded.errors %}
-					 	{{ form.form.quantitiesAdded(class="form-control form-control-sm is-invalid") }}
-					 	<div class="invalid-feedback">
-					 		{% for error in form.form.quantitiesAdded.errors %}
-					 		<span> {{ error }} </span>
-					 		{% endfor %}
-					 	</div>
-					 	{% else %}
-					 	{{ form.quantitiesAdded(class="form-control form-control-sm") }}
-					 	{% endif %}
-					 </div>
+          <div class="form-group">
+            <!-- this hidden field stores the current date-->
+            {% if form.dateRequested.errors %} {{
+            form.form.dateRequested(class="form-control form-control-sm
+            is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.form.dateRequested.errors %}
+              <span> {{ error }} </span>
+              {% endfor %}
+            </div>
+            {% else %} {{ form.dateRequested(class="form-control
+            form-control-sm") }} {% endif %}
+          </div>
 
-					 <div class="form-group">
-					 	<!-- this hidden field stores the current date-->
-					 	{% if form.dateRequested.errors %}
-					 	{{ form.form.dateRequested(class="form-control form-control-sm is-invalid") }}
-					 	<div class="invalid-feedback">
-					 		{% for error in form.form.dateRequested.errors %}
-					 		<span> {{ error }} </span>
-					 		{% endfor %}
-					 	</div>
-					 	{% else %}
-					 	{{ form.dateRequested(class="form-control form-control-sm") }}
-					 	{% endif %}
-					 </div>
+          <div class="form-group">
+            <center>
+              {{ form.submit(class="btn btn-outline-info btn-lg")}}
+            </center>
+          </div>
+        </form>
+      </div>
+    </div>
 
-					 <div class="form-group">
-					 	<center>
-					 		{{ form.submit(class="btn btn-outline-info btn-lg")}}
-					 	</center>
-					 </div>
-					</form>
-				</div>
+    <!-- This is the request contents part of the page -->
 
+    <div class="col-md-8">
+      <div class="content-section">
+        <div class="col-md-12">
+          <table class="table" id="items">
+            <thead>
+              <tr>
+                <th scope="col">Item Needed</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">
+                  <button style="visibility: hidden;">Remove</button>
+                </th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
 
+        <!-- javascript to move added items down to the request section -->
+        <script>
+          // list is used to hold all items added to request. POSTed when form is submitted
+          items = [];
+          quantities = [];
 
-		</div>
+          $(document).ready(function () {
+            $("#addButton").click(function () {
+              var item = $("#item_autocomplete").val();
+              var qty = $("#qty").val();
 
-		<!-- This is the request contents part of the page -->
+              // get number of elements already in the array (used to assign button id for remove button)
+              var length = items.length;
 
-		<div class="col-md-8">
-			<div class="content-section">
-				<div class="col-md-12">
-					<table class="table" id="items">
-						<thead>
-							<tr>
-								<th scope="col">Item Needed</th>
-								<th scope="col">Quantity</th>
-								<th scope="col"><button style="visibility:hidden">Remove</button></th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
-				</div>
+              if (length == 5) {
+                alert(
+                  "You cannot add more than 5 items to a request. Remove some and try again."
+                );
+              }
 
-				<!-- javascript to move added items down to the request section -->
-				<script>
+              // check to make sure that quantity is a number and item field is not empty
+              if (
+                $.isNumeric(qty) &&
+                qty > 0 &&
+                item != "" &&
+                item.length <= 30 &&
+                length < 5
+              ) {
+                $("#items > tbody:last-child").append(
+                  "<tr><td>" +
+                    item +
+                    "</td><td>" +
+                    qty +
+                    "</td><td><button type='button' class='removeBtn' id='" +
+                    length +
+                    "'>Remove</button></td></tr>"
+                );
 
-					// list is used to hold all items added to request. POSTed when form is submitted 
-					items = [];
-					quantities = [];
+                // add item and quantity to the list of items and then add it to the hidden field so
+                // it can be posted along with the other data
+                items.push(item);
+                quantities.push(qty);
+                $("#hiddenItems").val(items);
+                $("#hiddenQuantities").val(quantities);
 
-					$(document).ready(function(){
-						$("#addButton").click(function(){
-							var item = $("#item_autocomplete").val();
-							var qty = $("#qty").val()
+                // clear input fields
+                $("#item_autocomplete").val("");
+                $("#qty").val("");
+              } else if (item.length > 30) {
+                alert("Item name must be no greater than 30 characters.");
+              } else if (length < 5) {
+                alert("Enter a valid item and quantity.");
+              }
+            });
 
-							// get number of elements already in the array (used to assign button id for remove button)
-							var length = items.length;
+            // add event listener for remove button
+            $(document).on("click", ".removeBtn", function () {
+              // remove item from the items and quantities arrays
+              items.splice(this.id, 1);
+              quantities.splice(this.id, 1);
 
-							if (length == 5) {
-								alert("You cannot add more than 5 items to a request. Remove some and try again.")
-							}
+              // update the hidden form fields so the updated data gets posted
+              $("#hiddenItems").val(items);
+              $("#hiddenQuantities").val(quantities);
 
-							// check to make sure that quantity is a number and item field is not empty
-							if ($.isNumeric(qty) && (qty > 0) && (item != '') && (item.length <= 30) && (length < 5)) {
-								$("#items > tbody:last-child").append("<tr><td>" + item + "</td><td>" + qty + "</td><td><button type='button' class='removeBtn' id='" + length + "'>Remove</button></td></tr>");
+              // erase the table contents
+              $("#items > tbody").empty();
 
-								// add item and quantity to the list of items and then add it to the hidden field so
-								// it can be posted along with the other data
-								items.push(item);
-								quantities.push(qty);
-								$("#hiddenItems").val(items);
-								$("#hiddenQuantities").val(quantities);
+              // re-display the table
+              for (i = 0, len = items.length; i < len; i++) {
+                $("#items > tbody:last-child").append(
+                  "<tr><td>" +
+                    items[i] +
+                    "</td><td>" +
+                    quantities[i] +
+                    "</td><td><button type='button' class='removeBtn' id='" +
+                    i +
+                    "'>Remove</button></td></tr>"
+                );
+              }
 
-								// clear input fields
-								$('#item_autocomplete').val('');
-								$('#qty').val('');
-							}
+              // if no requests in the cart, reset the wtform field so an empty checkout won't process
+              if (items.length == 0) {
+                $("#hiddenItems").val = "";
+                $("#hiddenQuantities").val = "";
+              }
+            });
+          });
+        </script>
+      </div>
+    </div>
+  </div>
+</div>
 
-							else if (item.length > 30) {
-								alert("Item name must be no greater than 30 characters.")
-							}
-
-							else if (length < 5) {
-								alert("Enter a valid item and quantity.")
-							}
-						});
-
-						// add event listener for remove button
-						$(document).on('click', '.removeBtn', function(){
-							
-							// remove item from the items and quantities arrays
-							items.splice(this.id, 1);
-							quantities.splice(this.id, 1);
-
-							// update the hidden form fields so the updated data gets posted
-							$("#hiddenItems").val(items);
-							$("#hiddenQuantities").val(quantities);
-
-							// erase the table contents
-							$("#items > tbody").empty();
-
-							// re-display the table
-							for (i=0, len = items.length; i < len; i++) { 
-								$("#items > tbody:last-child").append("<tr><td>" + items[i] + "</td><td>" + quantities[i] + "</td><td><button type='button' class='removeBtn' id='" + i + "'>Remove</button></td></tr>");
-							}
-
-							// if no requests in the cart, reset the wtform field so an empty checkout won't process
-							if (items.length == 0) {
-								$("#hiddenItems").val = ""
-								$("#hiddenQuantities").val = ""
-
-							}
-						});
-					});
-
-				</script>
-			</div>
-		</div>
-		</div>
-	</div>
-
-	{% endblock content %}
+{% endblock content %}
