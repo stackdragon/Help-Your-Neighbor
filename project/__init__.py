@@ -30,14 +30,14 @@ login_manager.login_view = 'login'
 
 
 # this is a CSRF token for security (required for WTForms)
-app.config['SECRET_KEY'] = 'ba8ed3f480b55b599b397e000da63ccf'
+app.config['SECRET_KEY'] = 'XXX'
 
 # this is the connection to the mysql
-# db = mysql.connector.connect(host='us-cdbr-iron-east-01.cleardb.net', user='b94531a8a9be0d', password='440412d5', db='heroku_c22f6c727a9c888')
+# XXX
 
 # this function grabs a connection to the mySQL database 
 def get_db():
-	db = mysql.connector.connect(host='us-cdbr-iron-east-01.cleardb.net', user='b94531a8a9be0d', password='440412d5', db='heroku_c22f6c727a9c888')
+	db = mysql.connector.connect(host='XXX', user='XXX', password='XXX', db='XXX')
 	return db
 
 # import project routes
