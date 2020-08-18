@@ -14,6 +14,10 @@ password: test
 
 ## Features
 
+**Create your own account to start initiating and fulfilling requests**
+
+![Screenshot add items page](/project_images/1-1.png)
+
 **Search user requests for needed items globally or within your local zip code**
 
 ![Screenshot of requests page](/project_images/3-1.png)
@@ -21,10 +25,6 @@ password: test
 **Add your own requests for needed goods**
 
 ![Screenshot add items page](/project_images/2-1.png)
-
-**Create your own account to start initiating and fulfilling requests right away**
-
-![Screenshot add items page](/project_images/1-1.png)
 
 ## Built with
 
@@ -54,8 +54,8 @@ MySQL server communication
 Clone the source locally
 
 ```
-$ git clone https://github.com/stackdragon/cs340_project_template
-$ cd cs340_project_template
+$ git clone https://github.com/steveperreaul/helpyourneighbor
+$ cd helpyourneighbor
 ```
 
 Create a new virtual environment inside the directory
