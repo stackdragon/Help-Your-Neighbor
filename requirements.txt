@@ -1,6 +1,6 @@
 click==7.1.1               
 bcrypt
-Flask==1.1.1               
+Flask==2.3.2               
 Flask-Bcrypt==0.7.1
 Flask-Login
 Flask-WTF==0.14.2          
